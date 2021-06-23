@@ -120,10 +120,13 @@ class PairwiseRegressionEM(BaseAlgorithm):
 
             self.pointwise_regression_EM(train_output, beta, binary_labels)
             self.loss = self.pointwise_loss
+            self.maximization_op = self.pointwise_maximization_op
             # pairwise em step
             if not self.hparams.pointwise_only:
                 self.pairwise_regression_EM(train_output, reshaped_train_labels, beta, binary_labels)
                 self.loss = self.pointwise_loss + self.pairwise_loss
+                self.maximization_op = tf.group([self.pointwise_maximization_op, \
+                                                 self.pairwise_maximization_op])
 
             # Add l2 loss
             params = tf.trainable_variables()
@@ -161,8 +164,6 @@ class PairwiseRegressionEM(BaseAlgorithm):
                 self.updates = opt.apply_gradients(zip(self.gradients, params),
                                                    global_step=self.global_step)
 
-            self.maximization_op = tf.group([self.pointwise_maximization_op, \
-                                             self.pairwise_maximization_op])
             tf.summary.scalar(
                 'Learning Rate',
                 self.learning_rate,
