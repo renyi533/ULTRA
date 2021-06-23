@@ -44,13 +44,14 @@ class PairwiseRegressionEM(BaseAlgorithm):
             exp_settings: (dictionary) The dictionary containing the model settings.
             forward_only: Set true to conduct prediction only, false to conduct training.
         """
-        print('Build Pairwise Debiasing algorithm.')
-
+        print('Build Pairwise RegressionEM algorithm.')
+        self.tau = 1e-12
         self.hparams = ultra.utils.hparams.HParams(
             EM_step_size=0.05,                  # Step size for EM algorithm.
             learning_rate=0.05,                 # Learning rate.
             max_gradient_norm=5.0,            # Clip gradients to this norm.
             pointwise_only=False,
+            reg_em_type=0,
             # Set strength for L2 regularization.
             l2_loss=0.001,
             grad_strategy='ada',            # Select gradient strategy
@@ -118,36 +119,12 @@ class PairwiseRegressionEM(BaseAlgorithm):
                 y=tf.zeros_like(reshaped_train_labels, dtype=tf.float32))
 
             self.pointwise_regression_EM(train_output, beta, binary_labels)
-            
+            self.loss = self.pointwise_loss
             # pairwise em step
             if not self.hparams.pointwise_only:
-                print('enable pairwise em')
+                self.pairwise_regression_EM(train_output, reshaped_train_labels, beta, binary_labels)
+                self.loss = self.pointwise_loss + self.pairwise_loss
 
-            # Build pairwise loss based on clicks (0 for unclick, 1 for click)
-            '''
-            output_list = tf.split(train_output, self.rank_list_size, axis=1)
-            self.loss = 0.0
-            for i in range(self.rank_list_size):
-                for j in range(self.rank_list_size):
-                    if i == j:
-                        continue
-                    valid_pair_mask = tf.math.minimum(
-                        tf.ones_like(
-                            self.labels[i]), tf.nn.relu(
-                            self.labels[i] - self.labels[j]))
-                    pair_loss = tf.reduce_sum(
-                        valid_pair_mask *
-                        self.pairwise_cross_entropy_loss(
-                            output_list[i], output_list[j])
-                    )
-
-                    self.loss += pair_loss / \
-                        self.splitted_t_plus[i] / self.splitted_t_minus[j]
-            '''
-            # Update propensity
-            
-
-            self.loss = self.pointwise_loss
             # Add l2 loss
             params = tf.trainable_variables()
             if self.hparams.l2_loss > 0:
@@ -184,7 +161,8 @@ class PairwiseRegressionEM(BaseAlgorithm):
                 self.updates = opt.apply_gradients(zip(self.gradients, params),
                                                    global_step=self.global_step)
 
-            self.maximization_op = tf.group([self.pointwise_maximization_op])
+            self.maximization_op = tf.group([self.pointwise_maximization_op, \
+                                             self.pairwise_maximization_op])
             tf.summary.scalar(
                 'Learning Rate',
                 self.learning_rate,
@@ -210,6 +188,102 @@ class PairwiseRegressionEM(BaseAlgorithm):
         self.eval_summary = tf.summary.merge_all(key='eval')
         self.saver = tf.train.Saver(tf.global_variables())
 
+    def pairwise_regression_EM(self, train_output, train_labels, beta, binary_labels):
+        # Conduct pairwise expectation step
+        train_labels_j = tf.expand_dims(train_labels, axis=1)
+        train_labels_i = tf.expand_dims(train_labels, axis=-1)
+        binary_labels_j = tf.expand_dims(binary_labels, axis=1)
+        # S_ij = tf.sign(train_labels_i - train_labels_j)
+        # S_ij = tf.where(tf.equal(S_ij, 0.0), x=-tf.ones_like(S_ij), y=S_ij)
+        # pairwise_labels = (1 / 2) * (1 + S_ij)
+        delta_labels = train_labels_i - train_labels_j
+        pairwise_labels = tf.where(tf.math.greater(delta_labels,0.0), \
+            x=tf.ones_like(delta_labels, dtype=tf.float32), \
+            y=tf.zeros_like(delta_labels, dtype=tf.float32))
+
+        train_output_j = tf.expand_dims(train_output, axis=1)
+        train_output_i = tf.expand_dims(train_output, axis=-1)
+        pairwise_logits = train_output_i - train_output_j
+
+        theta_i = tf.expand_dims(self.propensity, axis=-1)
+        theta_j = tf.expand_dims(self.propensity, axis=1)
+        theta_minus_j = tf.expand_dims(self.propensity_minus, axis=1)
+        theta_ij = theta_i * theta_j
+
+        gamma = tf.sigmoid(pairwise_logits)
+        beta_i = tf.expand_dims(beta, axis=-1)
+        omega_plus_i = tf.expand_dims(self.omega_plus, axis=-1)
+        omega_minus_i = tf.expand_dims(self.omega_minus, axis=-1)
+
+        p_e11_r1_c1 = self.epsilon_plus * theta_ij * gamma
+        p_e11_r0_c1 = self.epsilon_minus * theta_ij * (1.0 - gamma)
+        p_e10_r1_c1 = theta_i * (1 - theta_j) * omega_plus_i * beta_i
+        p_e10_r0_c1 = theta_i * (1 - theta_j) * omega_minus_i * (1 - beta_i)
+
+        pos_prob = p_e11_r1_c1 + p_e11_r0_c1 + p_e10_r1_c1 + p_e10_r0_c1
+        p_e11_r1_c1 = p_e11_r1_c1 / pos_prob
+        p_e11_r0_c1 = p_e11_r0_c1 / pos_prob
+        p_e10_r1_c1 = p_e10_r1_c1 / pos_prob
+        p_e10_r0_c1 = p_e10_r0_c1 / pos_prob
+
+        neg_prob = 1 - pos_prob
+        p_e11_r1_c0 = (1 - self.epsilon_plus) * theta_ij * gamma
+        p_e11_r0_c0 = (1 - self.epsilon_minus) * theta_ij * (1 - gamma)
+        p_e11_r1_c0 = p_e11_r1_c0 / neg_prob
+        p_e11_r0_c0 = p_e11_r0_c0 / neg_prob
+
+        # conduct maximization step
+        sum_p_e11_r1_c1 =  tf.reduce_sum(pairwise_labels * p_e11_r1_c1, axis=0,\
+                 keep_dims=True) 
+        sum_p_e11_r1_c0 = tf.reduce_sum((1-pairwise_labels) * p_e11_r1_c0, axis=0,\
+                 keep_dims=True) 
+
+        self.update_epsilon_plus_op = self.epsilon_plus.assign(
+                (1 - self.hparams.EM_step_size) * self.epsilon_plus + \
+                    self.hparams.EM_step_size * \
+                    (sum_p_e11_r1_c1)/(sum_p_e11_r1_c1+sum_p_e11_r1_c0+self.tau)
+            )
+
+        sum_p_e11_r0_c1 =  tf.reduce_sum(pairwise_labels * p_e11_r0_c1, axis=0,\
+                 keep_dims=True) 
+        sum_p_e11_r0_c0 = tf.reduce_sum((1-pairwise_labels) * p_e11_r0_c0, axis=0,\
+                 keep_dims=True) 
+
+        self.update_epsilon_minus_op = self.epsilon_minus.assign(
+                (1 - self.hparams.EM_step_size) * self.epsilon_minus + \
+                    self.hparams.EM_step_size * \
+                    (sum_p_e11_r0_c1)/(sum_p_e11_r0_c1+sum_p_e11_r0_c0+self.tau)
+            )       
+        
+        p_gamma_pos = self.epsilon_plus * gamma / \
+                (self.epsilon_plus * gamma + self.epsilon_minus * (1 - gamma))
+
+        denominator = theta_minus_j * self.epsilon_plus * gamma + \
+                      theta_minus_j * self.epsilon_minus * (1 - gamma) + \
+                      (1 - theta_minus_j) * omega_plus_i * beta_i + \
+                      (1 - theta_minus_j) * omega_minus_i * (1 - beta_i)
+        numerator =  theta_minus_j * self.epsilon_plus * gamma + \
+                     ( \
+                       (1 - theta_minus_j) * omega_plus_i * beta_i + \
+                       (1 - theta_minus_j) * omega_minus_i * (1 - beta_i) \
+                      ) * 0.5
+        p_gamma_neg = numerator / denominator
+
+        p_gamma = binary_labels_j * p_gamma_pos + (1 - binary_labels_j) * p_gamma_neg
+        pairwise_ranker_labels = get_bernoulli_sample(p_gamma)
+        losses = pairwise_labels * tf.nn.sigmoid_cross_entropy_with_logits(
+                    labels=pairwise_ranker_labels, logits=pairwise_logits)
+
+        self.pairwise_loss = tf.reduce_mean(
+                                    tf.reduce_sum(
+                                        losses,
+                                        axis=[1,2]
+                                    )
+                                )
+
+        self.pairwise_maximization_op = tf.group([self.update_epsilon_plus_op, \
+                                                  self.update_epsilon_minus_op])
+
     def pointwise_regression_EM(self, train_output, beta, binary_labels):
         # Conduct pointwise expectation step
         p_e1_r1_c1 = self.omega_plus * beta / \
@@ -221,23 +295,25 @@ class PairwiseRegressionEM(BaseAlgorithm):
         tf.summary.histogram("p_e1_r0_c1", p_e1_r0_c1, 
                 collections=['train'])
         p_e0_c1 = 0.0
-        denominator = 1 - (self.omega_plus * self.propensity * beta + \
+        neg_prob = 1 - (self.omega_plus * self.propensity * beta + \
                 self.omega_minus * self.propensity * (1 - beta))
         p_e1_r1_c0 = (1 - self.omega_plus) * self.propensity * \
-                beta / denominator
+                beta / neg_prob
         tf.summary.histogram("p_e1_r1_c0", p_e1_r1_c0, 
                 collections=['train'])
         p_e1_r0_c0 = (1 - self.omega_minus) * self.propensity * \
-                (1 - beta) / denominator
+                (1 - beta) / neg_prob
         tf.summary.histogram("p_e1_r0_c0", p_e1_r0_c0, 
                 collections=['train'])
-        p_e0_r1_c0 = (1 - self.propensity) * beta / denominator
+        p_e0_r1_c0 = (1 - self.propensity) * beta / neg_prob
         tf.summary.histogram("p_e0_r1_c0", p_e0_r1_c0, 
                 collections=['train'])
-        p_e0_r0_c0 = (1 - self.propensity) * (1 - beta) / denominator
+        p_e0_r0_c0 = (1 - self.propensity) * (1 - beta) / neg_prob
         tf.summary.histogram("p_e0_r0_c0", p_e0_r0_c0, 
                 collections=['train'])
- 
+
+        pos_prob = 1.0 - neg_prob
+
         # Conduct pointwise maximization step
         p_e1 = (1 - binary_labels) * (p_e1_r1_c0 + p_e1_r0_c0) \
                 + binary_labels
@@ -256,13 +332,11 @@ class PairwiseRegressionEM(BaseAlgorithm):
                 )
             )
             
-        tau = 1e-11
-
         self.update_propensity_minus_op = self.propensity_minus.assign(
                 (1 - self.hparams.EM_step_size) * self.propensity_minus + \
                     self.hparams.EM_step_size * \
                     tf.reduce_sum(p_e1_c0, axis=0, keep_dims=True) / \
-                        (tf.reduce_sum(1-binary_labels, axis=0, keep_dims=True)+tau)
+                        (tf.reduce_sum(1-binary_labels, axis=0, keep_dims=True)+self.tau)
             )
 
         sum_p_e1_r1_c1 =  tf.reduce_sum(binary_labels * p_e1_r1_c1, axis=0,\
@@ -273,7 +347,7 @@ class PairwiseRegressionEM(BaseAlgorithm):
         self.update_omega_plus_op = self.omega_plus.assign(
                 (1 - self.hparams.EM_step_size) * self.omega_plus + \
                     self.hparams.EM_step_size * \
-                    (sum_p_e1_r1_c1)/(sum_p_e1_r1_c1+sum_p_e1_r1_c0+tau)
+                    (sum_p_e1_r1_c1)/(sum_p_e1_r1_c1+sum_p_e1_r1_c0+self.tau)
             )
 
         sum_p_e1_r0_c1 =  tf.reduce_sum(binary_labels * p_e1_r0_c1, axis=0,\
@@ -284,19 +358,23 @@ class PairwiseRegressionEM(BaseAlgorithm):
         self.update_omega_minus_op = self.omega_minus.assign(
                 (1 - self.hparams.EM_step_size) * self.omega_minus + \
                     self.hparams.EM_step_size * \
-                    (sum_p_e1_r0_c1)/(sum_p_e1_r0_c1+sum_p_e1_r0_c0+tau)
+                    (sum_p_e1_r0_c1)/(sum_p_e1_r0_c1+sum_p_e1_r0_c0+self.tau)
             )
-
-        self.pointwise_ranker_labels = get_bernoulli_sample(p_r1)
-        tf.summary.scalar(
-                    'mean_relevance',
-                    tf.reduce_mean(p_r1),
+        
+        tf.summary.histogram(
+                    'p_relevance',
+                    p_r1,
                     collections=['train'])
-
+        if self.hparams.reg_em_type == 0:
+            pointwise_ranker_labels = get_bernoulli_sample(p_r1)
+            losses = tf.nn.sigmoid_cross_entropy_with_logits(
+                        labels=pointwise_ranker_labels, logits=train_output)
+        else:
+            losses = -binary_labels * tf.log(pos_prob) - (1-binary_labels) * tf.log(neg_prob)
+        
         self.pointwise_loss = tf.reduce_mean(
                 tf.reduce_sum(
-                    tf.nn.sigmoid_cross_entropy_with_logits(
-                        labels=self.pointwise_ranker_labels, logits=train_output),
+                    losses,
                     axis=1
                 )
             )
@@ -319,9 +397,9 @@ class PairwiseRegressionEM(BaseAlgorithm):
                 tf.ones([1, self.rank_list_size]) * 0.05, trainable=False)  
 
         self.epsilon_plus = tf.Variable(
-                tf.ones([self.rank_list_size, self.rank_list_size]) * 1.0, trainable=False)
+                tf.ones([1, self.rank_list_size, self.rank_list_size]) * 1.0, trainable=False)
         self.epsilon_minus = tf.Variable(
-                tf.ones([self.rank_list_size, self.rank_list_size]) * 0.05, trainable=False)  
+                tf.ones([1, self.rank_list_size, self.rank_list_size]) * 0.05, trainable=False)  
 
         self.splitted_propensity = tf.split(
                 self.propensity, self.rank_list_size, axis=1)
@@ -340,9 +418,9 @@ class PairwiseRegressionEM(BaseAlgorithm):
 
         for i in range(len(self.splitted_epsilon_plus)):
             self.splitted_epsilon_plus[i] = tf.split(self.splitted_epsilon_plus[i], 
-                    self.rank_list_size, axis=0)
+                    self.rank_list_size, axis=2)
             self.splitted_epsilon_minus[i] = tf.split(self.splitted_epsilon_minus[i], 
-                    self.rank_list_size, axis=0)
+                    self.rank_list_size, axis=2)
 
         for i in range(self.rank_list_size):
             tf.summary.scalar(

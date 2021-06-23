@@ -52,6 +52,8 @@ class Initializer(object):
     """Initializer key strings."""
 
     CONSTANT = 'constant'
+    NORMAL = 'normal'
+    GLOROT = 'glorot'
 
 
 class BaseRankingModel(ABC):
@@ -70,7 +72,9 @@ class BaseRankingModel(ABC):
     }
 
     INITIALIZER_DIC = {
-        Initializer.CONSTANT: tf.constant_initializer(0.001)
+        Initializer.CONSTANT: tf.constant_initializer(0.001),
+        Initializer.NORMAL: tf.random_normal_initializer(0, 0.003),
+        Initializer.GLOROT: tf.keras.initializers.glorot_uniform()
     }
 
     model_parameters = {}

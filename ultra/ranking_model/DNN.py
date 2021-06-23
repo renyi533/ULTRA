@@ -28,7 +28,7 @@ class DNN(BaseRankingModel):
             # Type for activation function, which could be elu, relu, sigmoid,
             # or tanh
             activation_func='elu',
-            initializer='None',                         # Set parameter initializer
+            initializer='glorot',                         # Set parameter initializer
             norm="layer"                                # Set the default normalization
         )
         self.hparams.parse(hparams_str)
