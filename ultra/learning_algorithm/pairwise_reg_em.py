@@ -51,6 +51,7 @@ class PairwiseRegressionEM(BaseAlgorithm):
             learning_rate=0.05,                 # Learning rate.
             max_gradient_norm=5.0,            # Clip gradients to this norm.
             pointwise_only=False,
+            address_pointwise_trust_bias=False,
             reg_em_type=0,
             # Set strength for L2 regularization.
             l2_loss=0.001,
@@ -111,13 +112,18 @@ class PairwiseRegressionEM(BaseAlgorithm):
             tf.summary.histogram("train_output", train_output, 
                 collections=['train'])
             beta = tf.sigmoid(train_output)
+            tf.summary.histogram("beta", beta, 
+                collections=['train'])
             # reshape from [rank_list_size, ?] to [?, rank_list_size]
             reshaped_train_labels = tf.transpose(
                 tf.convert_to_tensor(train_labels))
+            tf.summary.histogram("reshaped_train_labels", reshaped_train_labels, 
+                collections=['train'])
             binary_labels = tf.where(tf.math.greater(reshaped_train_labels,0.0), \
                 x=tf.ones_like(reshaped_train_labels, dtype=tf.float32), \
                 y=tf.zeros_like(reshaped_train_labels, dtype=tf.float32))
-
+            tf.summary.histogram("binary_labels", binary_labels, 
+                collections=['train'])
             self.pointwise_regression_EM(train_output, beta, binary_labels)
             self.loss = self.pointwise_loss
             self.maximization_op = self.pointwise_maximization_op
@@ -198,13 +204,19 @@ class PairwiseRegressionEM(BaseAlgorithm):
         # S_ij = tf.where(tf.equal(S_ij, 0.0), x=-tf.ones_like(S_ij), y=S_ij)
         # pairwise_labels = (1 / 2) * (1 + S_ij)
         delta_labels = train_labels_i - train_labels_j
+        tf.summary.histogram("pairwise_delta_labels", delta_labels, 
+                collections=['train'])
         pairwise_labels = tf.where(tf.math.greater(delta_labels,0.0), \
             x=tf.ones_like(delta_labels, dtype=tf.float32), \
             y=tf.zeros_like(delta_labels, dtype=tf.float32))
+        tf.summary.histogram("pairwise_binary_labels", pairwise_labels, 
+                collections=['train'])
 
         train_output_j = tf.expand_dims(train_output, axis=1)
         train_output_i = tf.expand_dims(train_output, axis=-1)
         pairwise_logits = train_output_i - train_output_j
+        tf.summary.histogram("pairwise_logits", pairwise_logits, 
+                collections=['train'])
 
         theta_i = tf.expand_dims(self.propensity, axis=-1)
         theta_j = tf.expand_dims(self.propensity, axis=1)
@@ -212,6 +224,8 @@ class PairwiseRegressionEM(BaseAlgorithm):
         theta_ij = theta_i * theta_j
 
         gamma = tf.sigmoid(pairwise_logits)
+        tf.summary.histogram("gamma", gamma, 
+                collections=['train'])
         beta_i = tf.expand_dims(beta, axis=-1)
         omega_plus_i = tf.expand_dims(self.omega_plus, axis=-1)
         omega_minus_i = tf.expand_dims(self.omega_minus, axis=-1)
@@ -271,7 +285,11 @@ class PairwiseRegressionEM(BaseAlgorithm):
         p_gamma_neg = numerator / denominator
 
         p_gamma = binary_labels_j * p_gamma_pos + (1 - binary_labels_j) * p_gamma_neg
+        tf.summary.histogram("p_gamma", p_gamma, 
+                collections=['train'])
         pairwise_ranker_labels = get_bernoulli_sample(p_gamma)
+        tf.summary.histogram("pairwise_ranker_labels", pairwise_ranker_labels, 
+                collections=['train'])
         losses = pairwise_labels * tf.nn.sigmoid_cross_entropy_with_logits(
                     labels=pairwise_ranker_labels, logits=pairwise_logits)
 
@@ -379,11 +397,14 @@ class PairwiseRegressionEM(BaseAlgorithm):
                     axis=1
                 )
             )
-        
-        self.pointwise_maximization_op = tf.group([self.update_propensity_op, \
-                                                   self.update_propensity_minus_op, \
-                                                   self.update_omega_plus_op, \
-                                                   self.update_omega_minus_op])
+        if self.hparams.address_pointwise_trust_bias:
+            self.pointwise_maximization_op = tf.group([self.update_propensity_op, \
+                                                       self.update_propensity_minus_op, \
+                                                       self.update_omega_plus_op, \
+                                                       self.update_omega_minus_op])
+        else:
+            self.pointwise_maximization_op = tf.group([self.update_propensity_op, \
+                                                       self.update_propensity_minus_op])
 
     def build_propensity_variables(self):
         # Build propensity parameters
@@ -394,8 +415,12 @@ class PairwiseRegressionEM(BaseAlgorithm):
 
         self.omega_plus = tf.Variable(
                 tf.ones([1, self.rank_list_size]) * 1.0, trainable=False)
-        self.omega_minus = tf.Variable(
-                tf.ones([1, self.rank_list_size]) * 0.05, trainable=False)  
+        if self.hparams.address_pointwise_trust_bias:
+            self.omega_minus = tf.Variable(
+                    tf.ones([1, self.rank_list_size]) * 0.05, trainable=False)  
+        else:
+            self.omega_minus = tf.Variable(
+                    tf.ones([1, self.rank_list_size]) * 0.0, trainable=False)              
 
         self.epsilon_plus = tf.Variable(
                 tf.ones([1, self.rank_list_size, self.rank_list_size]) * 1.0, trainable=False)
