@@ -54,7 +54,7 @@ class PairwiseRegressionEM(BaseAlgorithm):
             address_pointwise_trust_bias=False,
             reg_em_type=0,
             # Set strength for L2 regularization.
-            l2_loss=0.001,
+            l2_loss=0.00,
             grad_strategy='ada',            # Select gradient strategy
         )
         print(exp_settings['learning_algorithm_hparams'])
@@ -102,16 +102,20 @@ class PairwiseRegressionEM(BaseAlgorithm):
                 'sigmoid_prob_b',
                 tf.reduce_mean(sigmoid_prob_b),
                 collections=['train'])
+            point_train_output = self.ranking_model(
+                self.rank_list_size, scope='point_ranking_model')
             train_output = self.ranking_model(
                 self.rank_list_size, scope='ranking_model')
-            train_output = train_output + sigmoid_prob_b
+            point_train_output = point_train_output + sigmoid_prob_b
             train_labels = self.labels[:self.rank_list_size]
             self.build_propensity_variables()                        
 
             # Conduct pointwise regression EM
+            tf.summary.histogram("point_train_output", point_train_output, 
+                collections=['train'])
             tf.summary.histogram("train_output", train_output, 
                 collections=['train'])
-            beta = tf.sigmoid(train_output)
+            beta = tf.sigmoid(point_train_output)
             tf.summary.histogram("beta", beta, 
                 collections=['train'])
             # reshape from [rank_list_size, ?] to [?, rank_list_size]
@@ -124,7 +128,7 @@ class PairwiseRegressionEM(BaseAlgorithm):
                 y=tf.zeros_like(reshaped_train_labels, dtype=tf.float32))
             tf.summary.histogram("binary_labels", binary_labels, 
                 collections=['train'])
-            self.pointwise_regression_EM(train_output, beta, binary_labels)
+            self.pointwise_regression_EM(point_train_output, beta, binary_labels)
             self.loss = self.pointwise_loss
             self.maximization_op = self.pointwise_maximization_op
             # pairwise em step
@@ -236,16 +240,16 @@ class PairwiseRegressionEM(BaseAlgorithm):
         p_e10_r0_c1 = theta_i * (1 - theta_j) * omega_minus_i * (1 - beta_i)
 
         pos_prob = p_e11_r1_c1 + p_e11_r0_c1 + p_e10_r1_c1 + p_e10_r0_c1
-        p_e11_r1_c1 = p_e11_r1_c1 / pos_prob
-        p_e11_r0_c1 = p_e11_r0_c1 / pos_prob
-        p_e10_r1_c1 = p_e10_r1_c1 / pos_prob
-        p_e10_r0_c1 = p_e10_r0_c1 / pos_prob
+        p_e11_r1_c1 = p_e11_r1_c1 / (pos_prob + self.tau)
+        p_e11_r0_c1 = p_e11_r0_c1 / (pos_prob + self.tau)
+        p_e10_r1_c1 = p_e10_r1_c1 / (pos_prob + self.tau)
+        p_e10_r0_c1 = p_e10_r0_c1 / (pos_prob + self.tau)
 
         neg_prob = 1 - pos_prob
         p_e11_r1_c0 = (1 - self.epsilon_plus) * theta_ij * gamma
         p_e11_r0_c0 = (1 - self.epsilon_minus) * theta_ij * (1 - gamma)
-        p_e11_r1_c0 = p_e11_r1_c0 / neg_prob
-        p_e11_r0_c0 = p_e11_r0_c0 / neg_prob
+        p_e11_r1_c0 = p_e11_r1_c0 / (neg_prob + self.tau)
+        p_e11_r0_c0 = p_e11_r0_c0 / (neg_prob + self.tau)
 
         # conduct maximization step
         sum_p_e11_r1_c1 =  tf.reduce_sum(pairwise_labels * p_e11_r1_c1, axis=0,\
@@ -271,7 +275,7 @@ class PairwiseRegressionEM(BaseAlgorithm):
             )       
         
         p_gamma_pos = self.epsilon_plus * gamma / \
-                (self.epsilon_plus * gamma + self.epsilon_minus * (1 - gamma))
+                (self.epsilon_plus * gamma + self.epsilon_minus * (1 - gamma) + self.tau)
 
         denominator = theta_minus_j * self.epsilon_plus * gamma + \
                       theta_minus_j * self.epsilon_minus * (1 - gamma) + \
@@ -282,7 +286,7 @@ class PairwiseRegressionEM(BaseAlgorithm):
                        (1 - theta_minus_j) * omega_plus_i * beta_i + \
                        (1 - theta_minus_j) * omega_minus_i * (1 - beta_i) \
                       ) * 0.5
-        p_gamma_neg = numerator / denominator
+        p_gamma_neg = numerator / (denominator+self.tau)
 
         p_gamma = binary_labels_j * p_gamma_pos + (1 - binary_labels_j) * p_gamma_neg
         tf.summary.histogram("p_gamma", p_gamma, 
@@ -290,8 +294,13 @@ class PairwiseRegressionEM(BaseAlgorithm):
         pairwise_ranker_labels = get_bernoulli_sample(p_gamma)
         tf.summary.histogram("pairwise_ranker_labels", pairwise_ranker_labels, 
                 collections=['train'])
-        losses = pairwise_labels * tf.nn.sigmoid_cross_entropy_with_logits(
-                    labels=pairwise_ranker_labels, logits=pairwise_logits)
+        
+        if self.hparams.reg_em_type == 0:
+            losses = pairwise_labels * tf.nn.sigmoid_cross_entropy_with_logits(
+                        labels=pairwise_ranker_labels, logits=pairwise_logits)
+        else:
+            losses = pairwise_labels * tf.nn.sigmoid_cross_entropy_with_logits(
+                        labels=pairwise_labels, logits=tf.log(pos_prob/(neg_prob+self.tau)))            
 
         self.pairwise_loss = tf.reduce_mean(
                                     tf.reduce_sum(
@@ -306,16 +315,16 @@ class PairwiseRegressionEM(BaseAlgorithm):
     def pointwise_regression_EM(self, train_output, beta, binary_labels):
         # Conduct pointwise expectation step
         p_e1_r1_c1 = self.omega_plus * beta / \
-                (self.omega_plus * beta + self.omega_minus * (1.0 - beta))
+                (self.omega_plus * beta + self.omega_minus * (1.0 - beta) + self.tau)
         tf.summary.histogram("p_e1_r1_c1", p_e1_r1_c1, 
                 collections=['train'])
         p_e1_r0_c1 = self.omega_minus * (1.0 - beta) / \
-                (self.omega_plus * beta + self.omega_minus * (1.0 - beta))       
+                (self.omega_plus * beta + self.omega_minus * (1.0 - beta) + self.tau)       
         tf.summary.histogram("p_e1_r0_c1", p_e1_r0_c1, 
                 collections=['train'])
         p_e0_c1 = 0.0
         neg_prob = 1 - (self.omega_plus * self.propensity * beta + \
-                self.omega_minus * self.propensity * (1 - beta))
+                self.omega_minus * self.propensity * (1 - beta)) + self.tau
         p_e1_r1_c0 = (1 - self.omega_plus) * self.propensity * \
                 beta / neg_prob
         tf.summary.histogram("p_e1_r1_c0", p_e1_r1_c0, 
@@ -389,7 +398,9 @@ class PairwiseRegressionEM(BaseAlgorithm):
             losses = tf.nn.sigmoid_cross_entropy_with_logits(
                         labels=pointwise_ranker_labels, logits=train_output)
         else:
-            losses = -binary_labels * tf.log(pos_prob) - (1-binary_labels) * tf.log(neg_prob)
+            losses = tf.nn.sigmoid_cross_entropy_with_logits(
+                        labels=binary_labels, logits=tf.log(pos_prob/(neg_prob+self.tau))) 
+            # losses = -binary_labels * tf.log(pos_prob) - (1-binary_labels) * tf.log(neg_prob)
         
         self.pointwise_loss = tf.reduce_mean(
                 tf.reduce_sum(
