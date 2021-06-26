@@ -16,7 +16,24 @@ from six.moves import zip
 from tensorflow import dtypes
 from ultra.learning_algorithm.base_algorithm import BaseAlgorithm
 import ultra.utils
+from ultra.utils import losses_impl
+from ultra.utils import utils_func
 
+DEFAULT_GAIN_FN = lambda label: label
+EXP_GAIN_FN = lambda label: tf.pow(2.0, label) - 1
+DEFAULT_RANK_DISCOUNT_FN = lambda rank: tf.math.log(2.) / tf.math.log1p(rank)
+RECIPROCAL_RANK_DISCOUNT_FN = lambda rank: 1. / rank
+
+def create_dcg_lambda_weight(discount_func, gain_func, topn=None, normalized=True, smooth_fraction=0.):
+    """Creates _LambdaWeight for DCG metric."""
+    RANK_DISCOUNT_FN = DEFAULT_RANK_DISCOUNT_FN if discount_func == 'log1p' else RECIPROCAL_RANK_DISCOUNT_FN
+    GAIN_FN = DEFAULT_GAIN_FN if gain_func == 'linear' else EXP_GAIN_FN
+    return losses_impl.DCGLambdaWeight(
+        topn,
+        gain_fn=GAIN_FN,
+        rank_discount_fn=RANK_DISCOUNT_FN,
+        normalized=normalized,
+        smooth_fraction=smooth_fraction)
 
 def get_bernoulli_sample(probs):
     """Conduct Bernoulli sampling according to a specific probability distribution.
@@ -53,6 +70,9 @@ class PairwiseRegressionEM(BaseAlgorithm):
             pointwise_only=False,
             address_pointwise_trust_bias=False,
             reg_em_type=0,
+            gain_fn='exp',
+            discount_fn='log1p',
+            opt_metric='ndcg',
             # Set strength for L2 regularization.
             l2_loss=0.00,
             grad_strategy='ada',            # Select gradient strategy
@@ -65,7 +85,16 @@ class PairwiseRegressionEM(BaseAlgorithm):
         self.feature_size = data_set.feature_size
         self.learning_rate = tf.Variable(
             float(self.hparams.learning_rate), trainable=False)
-
+        self.lambda_weight = None
+        if self.hparams.opt_metric == 'ndcg':
+            self.lambda_weight = create_dcg_lambda_weight(self.hparams.discount_fn, \
+                                                          self.hparams.gain_fn, \
+                                                          normalized=True)
+        elif self.hparams.opt_metric == 'dcg':
+            self.lambda_weight = create_dcg_lambda_weight(self.hparams.discount_fn, \
+                                                          self.hparams.gain_fn, \
+                                                          normalized=False)
+        print(self.lambda_weight)
         # Feeds for inputs.
         self.is_training = tf.placeholder(tf.bool, name="is_train")
         self.docid_inputs = []  # a list of top documents
@@ -295,12 +324,26 @@ class PairwiseRegressionEM(BaseAlgorithm):
         tf.summary.histogram("pairwise_ranker_labels", pairwise_ranker_labels, 
                 collections=['train'])
         
+        mask = utils_func.is_label_valid(train_labels)
+        ranks = losses_impl._compute_ranks(train_output, mask)
+
+        if self.lambda_weight is not None:
+            pairwise_weights = self.lambda_weight.pair_weights(train_labels, ranks)
+            pairwise_weights *= tf.cast(tf.shape(input=train_labels)[1], dtype=tf.float32)
+
+            pairwise_weights = tf.stop_gradient(
+                pairwise_weights, name='weights_stop_gradient')
+        else:
+            pairwise_weights = 1.0
+
         if self.hparams.reg_em_type == 0:
             losses = pairwise_labels * tf.nn.sigmoid_cross_entropy_with_logits(
                         labels=pairwise_ranker_labels, logits=pairwise_logits)
         else:
             losses = pairwise_labels * tf.nn.sigmoid_cross_entropy_with_logits(
-                        labels=pairwise_labels, logits=tf.log(pos_prob/(neg_prob+self.tau)))            
+                        labels=pairwise_labels, logits=tf.log(pos_prob/(neg_prob+self.tau)))  
+
+        losses = losses * pairwise_weights          
 
         self.pairwise_loss = tf.reduce_mean(
                                     tf.reduce_sum(
@@ -401,7 +444,7 @@ class PairwiseRegressionEM(BaseAlgorithm):
             losses = tf.nn.sigmoid_cross_entropy_with_logits(
                         labels=binary_labels, logits=tf.log(pos_prob/(neg_prob+self.tau))) 
             # losses = -binary_labels * tf.log(pos_prob) - (1-binary_labels) * tf.log(neg_prob)
-        
+
         self.pointwise_loss = tf.reduce_mean(
                 tf.reduce_sum(
                     losses,
