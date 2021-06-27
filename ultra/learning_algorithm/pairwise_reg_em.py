@@ -68,7 +68,8 @@ class PairwiseRegressionEM(BaseAlgorithm):
             learning_rate=0.05,                 # Learning rate.
             max_gradient_norm=5.0,            # Clip gradients to this norm.
             pointwise_only=False,
-            address_pointwise_trust_bias=False,
+            corr_point_clk_noise=False,
+            corr_pair_clk_noise=False,
             reg_em_type=0,
             gain_fn='exp',
             discount_fn='log1p',
@@ -351,9 +352,11 @@ class PairwiseRegressionEM(BaseAlgorithm):
                                         axis=[1,2]
                                     )
                                 )
-
-        self.pairwise_maximization_op = tf.group([self.update_epsilon_plus_op, \
-                                                  self.update_epsilon_minus_op])
+        if self.hparams.corr_pair_clk_noise:
+            self.pairwise_maximization_op = tf.group([self.update_epsilon_plus_op, \
+                                                      self.update_epsilon_minus_op])
+        else:
+            self.pairwise_maximization_op = tf.no_op()
 
     def pointwise_regression_EM(self, train_output, beta, binary_labels):
         # Conduct pointwise expectation step
@@ -451,7 +454,7 @@ class PairwiseRegressionEM(BaseAlgorithm):
                     axis=1
                 )
             )
-        if self.hparams.address_pointwise_trust_bias:
+        if self.hparams.corr_point_clk_noise:
             self.pointwise_maximization_op = tf.group([self.update_propensity_op, \
                                                        self.update_propensity_minus_op, \
                                                        self.update_omega_plus_op, \
@@ -467,19 +470,27 @@ class PairwiseRegressionEM(BaseAlgorithm):
         self.propensity_minus = tf.Variable(
                 tf.ones([1, self.rank_list_size]) * 0.2, trainable=False)     
 
-        self.omega_plus = tf.Variable(
-                tf.ones([1, self.rank_list_size]) * 1.0, trainable=False)
-        if self.hparams.address_pointwise_trust_bias:
+        if self.hparams.corr_point_clk_noise:
+            self.omega_plus = tf.Variable(
+                    tf.ones([1, self.rank_list_size]) * 0.95, trainable=False)
             self.omega_minus = tf.Variable(
                     tf.ones([1, self.rank_list_size]) * 0.05, trainable=False)  
         else:
+            self.omega_plus = tf.Variable(
+                    tf.ones([1, self.rank_list_size]) * 1.0, trainable=False)
             self.omega_minus = tf.Variable(
                     tf.ones([1, self.rank_list_size]) * 0.0, trainable=False)              
 
-        self.epsilon_plus = tf.Variable(
-                tf.ones([1, self.rank_list_size, self.rank_list_size]) * 1.0, trainable=False)
-        self.epsilon_minus = tf.Variable(
-                tf.ones([1, self.rank_list_size, self.rank_list_size]) * 0.05, trainable=False)  
+        if self.hparams.corr_pair_clk_noise:
+            self.epsilon_plus = tf.Variable(
+                    tf.ones([1, self.rank_list_size, self.rank_list_size]) * 0.95, trainable=False)
+            self.epsilon_minus = tf.Variable(
+                    tf.ones([1, self.rank_list_size, self.rank_list_size]) * 0.05, trainable=False)  
+        else:
+            self.epsilon_plus = tf.Variable(
+                    tf.ones([1, self.rank_list_size, self.rank_list_size]) * 1.0, trainable=False)
+            self.epsilon_minus = tf.Variable(
+                    tf.ones([1, self.rank_list_size, self.rank_list_size]) * 0.0, trainable=False)            
 
         self.splitted_propensity = tf.split(
                 self.propensity, self.rank_list_size, axis=1)
