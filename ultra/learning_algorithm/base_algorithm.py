@@ -159,6 +159,37 @@ class BaseAlgorithm(ABC):
                 logits=tf.concat([pos_scores, neg_scores], axis=1), labels=label_dis
             ) * propensity_weights
         return loss
+    
+    def pairwise_logistic_loss(
+            self, train_labels, train_outputs, name=None):
+        """Computes pairwise softmax loss without propensity weighting.
+
+        Args:
+            train_labels: (tf.Tensor) A tensor with shape [batch_size, list_size]. Each value is
+            the label of a example.
+            train_outputs: (tf.Tensor) A tensor with shape [batch_size, list_size]. Each value is
+            the ranking score of a example.
+            name: A string used as the name for this variable scope.
+
+        Returns:
+            (tf.Tensor) A single value tensor containing the loss.
+        """
+
+        loss = None
+        with tf.name_scope(name, "pairwise_logistic_loss", [train_labels, train_outputs]):
+            train_labels_j = tf.expand_dims(train_labels, axis=1)
+            train_labels_i = tf.expand_dims(train_labels, axis=-1)
+            delta_labels = train_labels_i - train_labels_j
+
+            pairwise_labels = tf.where(tf.math.greater(delta_labels,0.0), \
+                                      x=tf.ones_like(delta_labels, dtype=tf.float32), \
+                                      y=tf.zeros_like(delta_labels, dtype=tf.float32))
+            train_output_j = tf.expand_dims(train_outputs, axis=1)
+            train_output_i = tf.expand_dims(train_outputs, axis=-1)
+            pairwise_logits = train_output_i - train_output_j
+
+            loss = tf.nn.sigmoid_cross_entropy_with_logits(labels=pairwise_labels, logits=pairwise_logits)
+        return loss
 
     def sigmoid_loss_on_list(self, output, labels,
                              propensity_weights=None, name=None):
