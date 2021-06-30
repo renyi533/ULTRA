@@ -10,6 +10,9 @@ def loadModelFromJson(model_desc):
         click_model = UserBrowsingModel()
     elif model_desc['model_name'] == 'cascade_model':
         click_model = CascadeModel()
+    elif model_desc['model_name'] == 'noisy_position_biased_model':
+        click_model = NoisyPositionBiasedModel()
+
     click_model.eta = model_desc['eta']
     click_model.click_prob = model_desc['click_prob']
     click_model.exam_prob = model_desc['exam_prob']
@@ -109,6 +112,32 @@ class PositionBiasedModel(ClickModel):
     def getExamProb(self, rank):
         return self.exam_prob[rank if rank < len(self.exam_prob) else -1]
 
+class NoisyPositionBiasedModel(PositionBiasedModel):
+
+    @property
+    def model_name(self):
+        return 'noisy_position_biased_model'
+
+    def sampleClicksForOneList(self, label_list):
+        click_list, exam_p_list, click_p_list = [], [], []
+        for rank in range(len(label_list)):
+            click, exam_p, click_p = self.sampleClick(rank, label_list[rank])
+            click_list.append(click)
+            exam_p_list.append(exam_p)
+            click_p_list.append(click_p)
+        return click_list, exam_p_list, click_p_list
+
+    def sampleClick(self, rank, relevance_label):
+        if not relevance_label == int(relevance_label):
+            print('RELEVANCE LABEL MUST BE INTEGER!')
+        relevance_label = int(relevance_label) if relevance_label > 0 else 0
+        exam_p = self.getExamProb(rank)
+        rank_cnt = len(self.exam_prob)
+        relevance_cnt = len(self.click_prob) / rank_cnt
+        click_idx = min(relevance_label, relevance_cnt-1) * rank_cnt + rank
+        click_p = self.click_prob[click_idx]
+        click = 1 if random.random() < exam_p * click_p else 0
+        return click, exam_p, click_p
 
 class UserBrowsingModel(ClickModel):
 
