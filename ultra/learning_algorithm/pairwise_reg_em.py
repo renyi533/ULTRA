@@ -110,8 +110,13 @@ class PairwiseRegressionEM(BaseAlgorithm):
 
         self.global_step = tf.Variable(0, trainable=False)
 
-        self.output = self.ranking_model(
-            self.max_candidate_num, scope='ranking_model')
+        if self.hparams.pointwise_only:
+            self.output = self.ranking_model(
+                self.max_candidate_num, scope='point_ranking_model')
+        else:
+            self.output = self.ranking_model(
+                self.max_candidate_num, scope='ranking_model')            
+
         # reshape from [max_candidate_num, ?] to [?, max_candidate_num]
         reshaped_labels = tf.transpose(tf.convert_to_tensor(self.labels))
         pad_removed_output = self.remove_padding_for_metric_eval(
