@@ -65,7 +65,9 @@ class PairwiseRegressionEM(BaseAlgorithm):
         self.tau = 1e-12
         self.hparams = ultra.utils.hparams.HParams(
             EM_step_size=0.05,                  # Step size for EM algorithm.
+            clk_noise_EM_ratio=1.0,
             learning_rate=0.05,                 # Learning rate.
+            step_decay_ratio=0.0,
             max_gradient_norm=5.0,            # Clip gradients to this norm.
             pointwise_only=False,
             corr_point_clk_noise=False,
@@ -84,8 +86,18 @@ class PairwiseRegressionEM(BaseAlgorithm):
         self.model = None
         self.max_candidate_num = exp_settings['max_candidate_num']
         self.feature_size = data_set.feature_size
+        self.global_step = tf.Variable(0, trainable=False)
         self.learning_rate = tf.Variable(
-            float(self.hparams.learning_rate), trainable=False)
+            float(self.hparams.learning_rate), trainable=False) * \
+            tf.math.pow((1+tf.cast(self.global_step, tf.float32)), \
+                        self.hparams.step_decay_ratio)
+        self.curr_EM_step_size = self.hparams.EM_step_size * \
+            tf.math.pow((1+tf.cast(self.global_step, tf.float32)), \
+                        self.hparams.step_decay_ratio)
+        tf.summary.scalar(
+            'curr_EM_step_size',
+            self.curr_EM_step_size,
+            collections=['train'])        
         self.lambda_weight = None
         if self.hparams.opt_metric == 'ndcg':
             self.lambda_weight = create_dcg_lambda_weight(self.hparams.discount_fn, \
@@ -108,7 +120,6 @@ class PairwiseRegressionEM(BaseAlgorithm):
             self.labels.append(tf.placeholder(tf.float32, shape=[None],
                                               name="label{0}".format(i)))
 
-        self.global_step = tf.Variable(0, trainable=False)
 
         if self.hparams.pointwise_only:
             self.output = self.ranking_model(
@@ -201,7 +212,7 @@ class PairwiseRegressionEM(BaseAlgorithm):
                 self.updates = opt.apply_gradients(zip(self.clipped_gradients, params),
                                                    global_step=self.global_step)
                 tf.summary.scalar(
-                    'Gradient Norm',
+                    'Gradient_Norm',
                     self.norm,
                     collections=['train'])
             else:
@@ -210,7 +221,7 @@ class PairwiseRegressionEM(BaseAlgorithm):
                                                    global_step=self.global_step)
 
             tf.summary.scalar(
-                'Learning Rate',
+                'Learning_Rate',
                 self.learning_rate,
                 collections=['train'])
             tf.summary.scalar(
@@ -291,10 +302,11 @@ class PairwiseRegressionEM(BaseAlgorithm):
                  keep_dims=True) 
         sum_p_e11_r1_c0 = tf.reduce_sum((1-pairwise_labels) * p_e11_r1_c0, axis=0,\
                  keep_dims=True) 
-
+        
+        em_step_size = self.hparams.clk_noise_EM_ratio * self.curr_EM_step_size
         self.update_epsilon_plus_op = self.epsilon_plus.assign(
-                (1 - self.hparams.EM_step_size) * self.epsilon_plus + \
-                    self.hparams.EM_step_size * \
+                (1 - em_step_size) * self.epsilon_plus + \
+                    em_step_size * \
                     (sum_p_e11_r1_c1)/(sum_p_e11_r1_c1+sum_p_e11_r1_c0+self.tau)
             )
 
@@ -304,8 +316,8 @@ class PairwiseRegressionEM(BaseAlgorithm):
                  keep_dims=True) 
 
         self.update_epsilon_minus_op = self.epsilon_minus.assign(
-                (1 - self.hparams.EM_step_size) * self.epsilon_minus + \
-                    self.hparams.EM_step_size * \
+                (1 - em_step_size) * self.epsilon_minus + \
+                    em_step_size * \
                     (sum_p_e11_r0_c1)/(sum_p_e11_r0_c1+sum_p_e11_r0_c0+self.tau)
             )       
         
@@ -406,26 +418,27 @@ class PairwiseRegressionEM(BaseAlgorithm):
         tf.summary.histogram("p_r1", p_r1, 
                 collections=['train'])
         self.update_propensity_op = self.propensity.assign(
-                (1 - self.hparams.EM_step_size) * self.propensity + self.hparams.EM_step_size * tf.reduce_mean(
+                (1 - self.curr_EM_step_size) * self.propensity + self.curr_EM_step_size * tf.reduce_mean(
                     p_e1, axis=0, keep_dims=True
                 )
             )
             
         self.update_propensity_minus_op = self.propensity_minus.assign(
-                (1 - self.hparams.EM_step_size) * self.propensity_minus + \
-                    self.hparams.EM_step_size * \
+                (1 - self.curr_EM_step_size) * self.propensity_minus + \
+                    self.curr_EM_step_size * \
                     tf.reduce_sum(p_e1_c0, axis=0, keep_dims=True) / \
                         (tf.reduce_sum(1-binary_labels, axis=0, keep_dims=True)+self.tau)
             )
 
+        em_step_size = self.hparams.clk_noise_EM_ratio * self.curr_EM_step_size
         sum_p_e1_r1_c1 =  tf.reduce_sum(binary_labels * p_e1_r1_c1, axis=0,\
                  keep_dims=True) 
         sum_p_e1_r1_c0 = tf.reduce_sum((1-binary_labels) * p_e1_r1_c0, axis=0,\
                  keep_dims=True) 
 
         self.update_omega_plus_op = self.omega_plus.assign(
-                (1 - self.hparams.EM_step_size) * self.omega_plus + \
-                    self.hparams.EM_step_size * \
+                (1 - em_step_size) * self.omega_plus + \
+                    em_step_size * \
                     (sum_p_e1_r1_c1)/(sum_p_e1_r1_c1+sum_p_e1_r1_c0+self.tau)
             )
 
@@ -435,8 +448,8 @@ class PairwiseRegressionEM(BaseAlgorithm):
                  keep_dims=True) 
 
         self.update_omega_minus_op = self.omega_minus.assign(
-                (1 - self.hparams.EM_step_size) * self.omega_minus + \
-                    self.hparams.EM_step_size * \
+                (1 - em_step_size) * self.omega_minus + \
+                    em_step_size * \
                     (sum_p_e1_r0_c1)/(sum_p_e1_r0_c1+sum_p_e1_r0_c0+self.tau)
             )
         
