@@ -67,11 +67,12 @@ class PairwiseRegressionEM(BaseAlgorithm):
             EM_step_size=0.05,                  # Step size for EM algorithm.
             clk_noise_EM_ratio=1.0,
             learning_rate=0.05,                 # Learning rate.
-            step_decay_ratio=0.0,
+            step_decay_ratio=-0.05,
             max_gradient_norm=5.0,            # Clip gradients to this norm.
+            enable_ips=False,
             pointwise_only=False,
-            corr_point_clk_noise=False,
-            corr_pair_clk_noise=False,
+            corr_point_clk_noise=True,
+            corr_pair_clk_noise=True,
             reg_em_type=0,
             gain_fn='exp',
             discount_fn='log1p',
@@ -124,6 +125,9 @@ class PairwiseRegressionEM(BaseAlgorithm):
         if self.hparams.pointwise_only:
             self.output = self.ranking_model(
                 self.max_candidate_num, scope='point_ranking_model')
+        elif self.hparams.enable_ips:
+            self.output = self.ranking_model(
+                self.max_candidate_num, scope='ips_ranking_model')              
         else:
             self.output = self.ranking_model(
                 self.max_candidate_num, scope='ranking_model')            
@@ -148,11 +152,17 @@ class PairwiseRegressionEM(BaseAlgorithm):
                 'sigmoid_prob_b',
                 tf.reduce_mean(sigmoid_prob_b),
                 collections=['train'])
+
             point_train_output = self.ranking_model(
                 self.rank_list_size, scope='point_ranking_model')
+            point_train_output = point_train_output + sigmoid_prob_b
+            
             train_output = self.ranking_model(
                 self.rank_list_size, scope='ranking_model')
-            point_train_output = point_train_output + sigmoid_prob_b
+            
+            ips_train_output = self.ranking_model(
+                self.rank_list_size, scope='ips_ranking_model')
+            
             train_labels = self.labels[:self.rank_list_size]
             self.build_propensity_variables()                        
 
@@ -179,8 +189,11 @@ class PairwiseRegressionEM(BaseAlgorithm):
             self.maximization_op = self.pointwise_maximization_op
             # pairwise em step
             if not self.hparams.pointwise_only:
-                self.pairwise_regression_EM(train_output, reshaped_train_labels, beta, binary_labels)
+                self.pairwise_regression_EM(train_output, ips_train_output, \
+                    reshaped_train_labels, beta, binary_labels)
                 self.loss = self.pointwise_loss + self.pairwise_loss
+                if self.hparams.enable_ips:
+                    self.loss = self.loss + self.ips_loss
                 self.maximization_op = tf.group([self.pointwise_maximization_op, \
                                                  self.pairwise_maximization_op])
 
@@ -245,7 +258,8 @@ class PairwiseRegressionEM(BaseAlgorithm):
         self.eval_summary = tf.summary.merge_all(key='eval')
         self.saver = tf.train.Saver(tf.global_variables())
 
-    def pairwise_regression_EM(self, train_output, train_labels, beta, binary_labels):
+    def pairwise_regression_EM(self, train_output, ips_train_output, \
+            train_labels, beta, binary_labels):
         # Conduct pairwise expectation step
         train_labels_j = tf.expand_dims(train_labels, axis=1)
         train_labels_i = tf.expand_dims(train_labels, axis=-1)
@@ -369,6 +383,27 @@ class PairwiseRegressionEM(BaseAlgorithm):
                                         axis=[1,2]
                                     )
                                 )
+
+        ips_train_output_j = tf.expand_dims(ips_train_output, axis=1)
+        ips_train_output_i = tf.expand_dims(ips_train_output, axis=-1)
+        ips_pairwise_logits = ips_train_output_i - ips_train_output_j
+        tf.summary.histogram("ips_pairwise_logits", ips_pairwise_logits, 
+                collections=['train'])
+        m_ij = self.epsilon_plus / (self.epsilon_plus + self.epsilon_minus + self.tau)
+        ips_weights1 = m_ij / (theta_ij + self.tau)
+        ips_weights2 = ips_weights1 * theta_minus_j
+        ips_weights = binary_labels_j * ips_weights1 + (1 - binary_labels_j) * ips_weights2
+
+        losses = pairwise_labels * tf.nn.sigmoid_cross_entropy_with_logits(
+                    labels=pairwise_labels, logits=ips_pairwise_logits)
+        losses = losses * pairwise_weights * ips_weights
+        self.ips_loss = tf.reduce_mean(
+                                    tf.reduce_sum(
+                                        losses,
+                                        axis=[1,2]
+                                    )
+                                )
+
         if self.hparams.corr_pair_clk_noise:
             self.pairwise_maximization_op = tf.group([self.update_epsilon_plus_op, \
                                                       self.update_epsilon_minus_op])
