@@ -1,3 +1,5 @@
+task_name=$1
+
 Data_path="./MSLR_10k_letor"   ## Data path where to unzip the data
 Data_folder="Fold1"            ## subfolder after unzip
 Feature_number=136              ## how many features for LETOR data
@@ -74,10 +76,10 @@ python ./libsvm_tools/prepare_exp_data_with_svmrank.py $Data_path/tmp_toy/data/ 
 
 COMMENT
 
-export SETTING_ARGS="--data_dir=$Data_path/tmp_data/ --model_dir=$Data_path/tmp_model/ --output_dir=$Data_path/tmp_output/ --setting_file=./example/offline_setting/pairwise_debias_exp_settings.json"
+export SETTING_ARGS="--data_dir=$Data_path/tmp_data/ --model_dir=$Data_path/tmp_model_${task_name}/ --output_dir=$Data_path/tmp_output/ --setting_file=./example/offline_setting/pairwise_debias_exp_settings.json"
 echo $SETTING_ARGS
 # Run model
-python3 main.py --max_train_iteration=10000 $SETTING_ARGS
+python3 main.py --max_train_iteration=2000 $SETTING_ARGS
 
 # Test model
 python3 main.py --test_only=True $SETTING_ARGS

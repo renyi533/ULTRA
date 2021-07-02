@@ -86,7 +86,7 @@ class BaseAlgorithm(ABC):
             )
         return tf.stack(output_scores, axis=1)
 
-    def ranking_model(self, list_size, scope=None):
+    def ranking_model(self, list_size, scope=None, forward_only=False):
         """Construct ranking model with the given list size.
 
         Args:
@@ -98,11 +98,11 @@ class BaseAlgorithm(ABC):
 
         """
         output_scores = self.get_ranking_scores(
-            self.docid_inputs[:list_size], self.is_training, scope)
+            self.docid_inputs[:list_size], list_size, self.is_training, scope, forward_only)
         return tf.concat(output_scores, 1)
 
-    def get_ranking_scores(self, input_id_list,
-                           is_training=False, scope=None, **kwargs):
+    def get_ranking_scores(self, input_id_list, rank_list_size,
+                           is_training=False, scope=None, forward_only=False, **kwargs):
         """Compute ranking scores with the given inputs.
 
         Args:
@@ -123,13 +123,17 @@ class BaseAlgorithm(ABC):
                     self.letor_features, PAD_embed])
             input_feature_list = []
             if not hasattr(self, "model") or self.model is None:
+                print("ranking_model:", utils.find_class(self.exp_settings['ranking_model']))
                 self.model = utils.find_class(
                     self.exp_settings['ranking_model'])(
-                    self.exp_settings['ranking_model_hparams'])
+                        self.exp_settings['ranking_model_hparams'])
             for i in range(len(input_id_list)):
                 input_feature_list.append(
                     tf.nn.embedding_lookup(
                         letor_features, input_id_list[i]))
+            kwargs["rank_list_size"] = rank_list_size
+            kwargs["forward_only"] = forward_only
+            print("kwargs:", kwargs)
             return self.model.build(
                 input_feature_list, is_training=is_training, **kwargs)
 
@@ -192,7 +196,7 @@ class BaseAlgorithm(ABC):
         return loss
 
     def sigmoid_loss_on_list(self, output, labels,
-                             propensity_weights=None, name=None):
+                             propensity_weights=None, name=None, enable_sigmoid=True):
         """Computes pointwise sigmoid loss without propensity weighting.
 
         Args:
@@ -212,8 +216,36 @@ class BaseAlgorithm(ABC):
         loss = None
         with tf.name_scope(name, "sigmoid_loss", [output]):
             label_dis = tf.math.minimum(labels, 1)
-            loss = tf.nn.sigmoid_cross_entropy_with_logits(
-                labels=label_dis, logits=output) * propensity_weights
+            if enable_sigmoid:
+                loss = tf.nn.sigmoid_cross_entropy_with_logits(
+                    labels=label_dis, logits=output) * propensity_weights
+            else:
+                loss = - labels * tf.math.log(output) - (1-labels) * tf.math.log(1-output)
+                loss = loss * propensity_weights
+        return tf.reduce_mean(tf.reduce_sum(loss, axis=1))
+    
+    def mse_loss_on_list(self, output, labels,
+                             propensity_weights=None, name=None):
+        """Computes pointwise mse loss without propensity weighting.
+
+        Args:
+            output: (tf.Tensor) A tensor with shape [batch_size, list_size]. Each value is
+            the ranking score of the corresponding example.
+            labels: (tf.Tensor) A tensor of the same shape as `output`. A value >= 1 means a
+            relevant example.
+            propensity_weights: (tf.Tensor) A tensor of the same shape as `output` containing the weight of each element.
+            name: A string used as the name for this variable scope.
+
+        Returns:
+            (tf.Tensor) A single value tensor containing the loss.
+        """
+        if propensity_weights is None:
+            propensity_weights = tf.ones_like(labels)
+
+        loss = None
+        with tf.name_scope(name, "mse_loss", [output]):
+            loss = tf.losses.mean_squared_error(
+                labels=labels, predictions=output, reduction=tf.losses.Reduction.NONE) * propensity_weights
         return tf.reduce_mean(tf.reduce_sum(loss, axis=1))
 
     def pairwise_loss_on_list(self, output, labels,

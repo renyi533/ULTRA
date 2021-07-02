@@ -76,7 +76,7 @@ python ./libsvm_tools/prepare_exp_data_with_svmrank.py $Data_path/tmp_toy/data/ 
 
 COMMENT
 
-export SETTING_ARGS="--data_dir=$Data_path/tmp_data/ --model_dir=$Data_path/tmp_model_${task_name}/ --output_dir=$Data_path/tmp_output/ --setting_file=./example/offline_setting/pairwise_debias_mtl_exp_settings.json"
+export SETTING_ARGS="--data_dir=$Data_path/tmp_data/ --model_dir=$Data_path/tmp_model_${task_name}/ --output_dir=$Data_path/tmp_output/ --setting_file=./example/offline_setting/pointwise_regression_EM_exp_settings.json"
 echo $SETTING_ARGS
 # Run model
 python3 main.py --max_train_iteration=2000 $SETTING_ARGS

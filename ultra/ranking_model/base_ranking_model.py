@@ -123,3 +123,15 @@ class BaseRankingModel(ABC):
         if noisy_params is not None and var.name in noisy_params:
             var = var + noisy_params[var.name] * noise_rate
         return var
+
+    def reverse_sigmoid(self, prediction):
+        """ get logits from predction 
+        
+        Args:
+            prediction: prediction value after sigmoid
+
+        Returns:
+            logits
+        """
+
+        return tf.math.log(prediction / (1-prediction))

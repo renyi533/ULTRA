@@ -36,11 +36,12 @@ class NavieAlgorithm(BaseAlgorithm):
             learning_rate=0.05,                 # Learning rate.
             max_gradient_norm=5.0,            # Clip gradients to this norm.
             loss_func='softmax_cross_entropy',            # Select Loss function
+            loss_enable_sigmoid=True,              # whether enable sigmoid on prediction when calculate loss
             # Set strength for L2 regularization.
             l2_loss=0.0,
             grad_strategy='ada',            # Select gradient strategy
         )
-        print(exp_settings['learning_algorithm_hparams'])
+        print("hparams:", exp_settings['learning_algorithm_hparams'])
         self.hparams.parse(exp_settings['learning_algorithm_hparams'])
         self.exp_settings = exp_settings
         self.model = None
@@ -48,6 +49,8 @@ class NavieAlgorithm(BaseAlgorithm):
         self.feature_size = data_set.feature_size
         self.learning_rate = tf.Variable(
             float(self.hparams.learning_rate), trainable=False)
+
+        print("loss_func:", self.hparams.loss_func)
 
         # Feeds for inputs.
         self.is_training = tf.placeholder(tf.bool, name="is_train")
@@ -65,7 +68,8 @@ class NavieAlgorithm(BaseAlgorithm):
 
         # Build model
         self.output = self.ranking_model(
-            self.max_candidate_num, scope='ranking_model')
+            self.max_candidate_num, scope='ranking_model', forward_only=True) # forward_only: do not use bias tower
+        print("self.output:", self.output)
 
         # reshape from [max_candidate_num, ?] to [?, max_candidate_num]
         reshaped_labels = tf.transpose(tf.convert_to_tensor(self.labels))
@@ -83,8 +87,9 @@ class NavieAlgorithm(BaseAlgorithm):
             # Build model
             self.rank_list_size = exp_settings['selection_bias_cutoff']
             train_output = self.ranking_model(
-                self.rank_list_size, scope='ranking_model')
+                self.rank_list_size, scope='ranking_model', forward_only=forward_only)
             train_labels = self.labels[:self.rank_list_size]
+            print("train_output:", train_output)
 
             tf.summary.scalar(
                 'Max_output_score',
@@ -113,9 +118,12 @@ class NavieAlgorithm(BaseAlgorithm):
             self.loss = None
             if self.hparams.loss_func == 'sigmoid_cross_entropy':
                 self.loss = self.sigmoid_loss_on_list(
-                    train_output, reshaped_train_labels)
+                    train_output, reshaped_train_labels, enable_sigmoid=self.hparams.loss_enable_sigmoid)
             elif self.hparams.loss_func == 'pairwise_loss':
                 self.loss = self.pairwise_loss_on_list(
+                    train_output, reshaped_train_labels)
+            elif self.hparams.loss_func == "mse_loss":
+                self.loss = self.mse_loss_on_list(
                     train_output, reshaped_train_labels)
             else:
                 self.loss = self.softmax_loss(
