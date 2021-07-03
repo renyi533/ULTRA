@@ -316,23 +316,27 @@ class PairwiseRegressionEM(BaseAlgorithm):
                  keep_dims=True) 
         sum_p_e11_r1_c0 = tf.reduce_sum((1-pairwise_labels) * p_e11_r1_c0, axis=0,\
                  keep_dims=True) 
-        
+        epsilon_plus_target = (sum_p_e11_r1_c1)/(sum_p_e11_r1_c1+sum_p_e11_r1_c0+self.tau)
+        epsilon_plus_delta = epsilon_plus_target-self.epsilon_plus
+        tf.summary.histogram("epsilon_plus_delta", epsilon_plus_delta, 
+                collections=['train'])
         em_step_size = self.hparams.clk_noise_EM_ratio * self.curr_EM_step_size
         self.update_epsilon_plus_op = self.epsilon_plus.assign(
                 (1 - em_step_size) * self.epsilon_plus + \
-                    em_step_size * \
-                    (sum_p_e11_r1_c1)/(sum_p_e11_r1_c1+sum_p_e11_r1_c0+self.tau)
+                    em_step_size * epsilon_plus_target
             )
 
         sum_p_e11_r0_c1 =  tf.reduce_sum(pairwise_labels * p_e11_r0_c1, axis=0,\
                  keep_dims=True) 
         sum_p_e11_r0_c0 = tf.reduce_sum((1-pairwise_labels) * p_e11_r0_c0, axis=0,\
                  keep_dims=True) 
-
+        epsilon_minus_target = (sum_p_e11_r0_c1)/(sum_p_e11_r0_c1+sum_p_e11_r0_c0+self.tau)
+        epsilon_minus_delta = epsilon_minus_target-self.epsilon_minus
+        tf.summary.histogram("epsilon_minus_delta", epsilon_minus_delta, 
+                collections=['train'])
         self.update_epsilon_minus_op = self.epsilon_minus.assign(
                 (1 - em_step_size) * self.epsilon_minus + \
-                    em_step_size * \
-                    (sum_p_e11_r0_c1)/(sum_p_e11_r0_c1+sum_p_e11_r0_c0+self.tau)
+                    em_step_size * epsilon_minus_target
             )       
         
         p_gamma_pos = self.epsilon_plus * gamma / \
@@ -452,17 +456,24 @@ class PairwiseRegressionEM(BaseAlgorithm):
                 (1 - binary_labels) * (p_e0_r1_c0 + p_e1_r1_c0)
         tf.summary.histogram("p_r1", p_r1, 
                 collections=['train'])
+
+        propensity_target = tf.reduce_mean(p_e1, axis=0, keep_dims=True)
+        propensity_delta = propensity_target-self.propensity
+        tf.summary.histogram("propensity_delta", propensity_delta, 
+                collections=['train'])  
         self.update_propensity_op = self.propensity.assign(
-                (1 - self.curr_EM_step_size) * self.propensity + self.curr_EM_step_size * tf.reduce_mean(
-                    p_e1, axis=0, keep_dims=True
-                )
+                (1 - self.curr_EM_step_size) * self.propensity + \
+                    self.curr_EM_step_size * propensity_target                
             )
-            
+
+        propensity_minus_target = tf.reduce_sum(p_e1_c0, axis=0, keep_dims=True) / \
+                    (tf.reduce_sum(1-binary_labels, axis=0, keep_dims=True)+self.tau)
+        propensity_minus_delta = propensity_minus_target - self.propensity_minus
+        tf.summary.histogram("propensity_minus_delta", propensity_minus_delta, 
+                collections=['train'])
         self.update_propensity_minus_op = self.propensity_minus.assign(
                 (1 - self.curr_EM_step_size) * self.propensity_minus + \
-                    self.curr_EM_step_size * \
-                    tf.reduce_sum(p_e1_c0, axis=0, keep_dims=True) / \
-                        (tf.reduce_sum(1-binary_labels, axis=0, keep_dims=True)+self.tau)
+                    self.curr_EM_step_size * propensity_minus_target
             )
 
         em_step_size = self.hparams.clk_noise_EM_ratio * self.curr_EM_step_size
@@ -470,22 +481,26 @@ class PairwiseRegressionEM(BaseAlgorithm):
                  keep_dims=True) 
         sum_p_e1_r1_c0 = tf.reduce_sum((1-binary_labels) * p_e1_r1_c0, axis=0,\
                  keep_dims=True) 
-
+        omega_plus_target = (sum_p_e1_r1_c1)/(sum_p_e1_r1_c1+sum_p_e1_r1_c0+self.tau)
+        omega_plus_delta = omega_plus_target - self.omega_plus
+        tf.summary.histogram("omega_plus_delta", omega_plus_delta, 
+                collections=['train'])
         self.update_omega_plus_op = self.omega_plus.assign(
                 (1 - em_step_size) * self.omega_plus + \
-                    em_step_size * \
-                    (sum_p_e1_r1_c1)/(sum_p_e1_r1_c1+sum_p_e1_r1_c0+self.tau)
+                    em_step_size * omega_plus_target
             )
 
         sum_p_e1_r0_c1 =  tf.reduce_sum(binary_labels * p_e1_r0_c1, axis=0,\
                  keep_dims=True) 
         sum_p_e1_r0_c0 = tf.reduce_sum((1-binary_labels) * p_e1_r0_c0, axis=0,\
                  keep_dims=True) 
-
+        omega_minus_target = (sum_p_e1_r0_c1)/(sum_p_e1_r0_c1+sum_p_e1_r0_c0+self.tau)
+        omega_minus_delta = omega_minus_target - self.omega_minus
+        tf.summary.histogram("omega_minus_delta", omega_minus_delta, 
+                collections=['train'])   
         self.update_omega_minus_op = self.omega_minus.assign(
                 (1 - em_step_size) * self.omega_minus + \
-                    em_step_size * \
-                    (sum_p_e1_r0_c1)/(sum_p_e1_r0_c1+sum_p_e1_r0_c0+self.tau)
+                    em_step_size * omega_minus_target
             )
         
         tf.summary.histogram(
