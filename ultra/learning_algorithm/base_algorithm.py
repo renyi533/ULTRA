@@ -223,7 +223,7 @@ class BaseAlgorithm(ABC):
                     loss += cur_label_weight * cur_pair_loss * cur_propensity
         batch_size = tf.shape(labels[0])[0]
         # / (tf.reduce_sum(propensity_weights)+1)
-        return tf.reduce_sum(loss) / tf.cast(batch_size, dtypes.float32)
+        return tf.reduce_sum(loss) / tf.cast(batch_size, tf.float32)
 
     def softmax_loss(self, output, labels, propensity_weights=None, name=None):
         """Computes listwise softmax loss without propensity weighting.
