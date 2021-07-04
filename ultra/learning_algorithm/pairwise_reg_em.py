@@ -67,12 +67,12 @@ class PairwiseRegressionEM(BaseAlgorithm):
             EM_step_size=0.05,                  # Step size for EM algorithm.
             clk_noise_EM_ratio=1.0,
             learning_rate=0.05,                 # Learning rate.
-            step_decay_ratio=-0.05,
+            step_decay_ratio=-0.0,
             max_gradient_norm=5.0,            # Clip gradients to this norm.
             enable_ips=False,
             pointwise_only=False,
-            corr_point_clk_noise=True,
-            corr_pair_clk_noise=True,
+            corr_point_clk_noise=False,
+            corr_pair_clk_noise=False,
             reg_em_type=0,
             gain_fn='exp',
             discount_fn='log1p',
@@ -120,7 +120,6 @@ class PairwiseRegressionEM(BaseAlgorithm):
                                                     name="docid_input{0}".format(i)))
             self.labels.append(tf.placeholder(tf.float32, shape=[None],
                                               name="label{0}".format(i)))
-
 
         if self.hparams.pointwise_only:
             self.output = self.ranking_model(
@@ -171,6 +170,8 @@ class PairwiseRegressionEM(BaseAlgorithm):
                 collections=['train'])
             tf.summary.histogram("train_output", train_output, 
                 collections=['train'])
+            tf.summary.histogram("ips_train_output", ips_train_output, 
+                collections=['train'])
             beta = tf.sigmoid(point_train_output)
             tf.summary.histogram("beta", beta, 
                 collections=['train'])
@@ -199,6 +200,8 @@ class PairwiseRegressionEM(BaseAlgorithm):
 
             # Add l2 loss
             params = tf.trainable_variables()
+            print('trainable vars:')
+            print(params)	
             if self.hparams.l2_loss > 0:
                 for p in params:
                     self.loss += self.hparams.l2_loss * tf.nn.l2_loss(p)
@@ -209,7 +212,7 @@ class PairwiseRegressionEM(BaseAlgorithm):
                 self.optimizer_func = tf.train.GradientDescentOptimizer
 
             # Gradients and SGD update operation for training the model.
-            opt = self.optimizer_func(self.hparams.learning_rate)
+            opt = self.optimizer_func(self.learning_rate)
             self.gradients = tf.gradients(self.loss, params)
             for grad,var in zip(self.gradients, params):
                 tf.summary.histogram(var.op.name, var, collections=['train'])
