@@ -83,6 +83,7 @@ class PairwiseRegressionEM(BaseAlgorithm):
         )
         print(exp_settings['learning_algorithm_hparams'])
         self.hparams.parse(exp_settings['learning_algorithm_hparams'])
+        print("in pairwise regem.. hparams:", self.hparams)
         self.exp_settings = exp_settings
         self.model = None
         self.max_candidate_num = exp_settings['max_candidate_num']
@@ -111,6 +112,8 @@ class PairwiseRegressionEM(BaseAlgorithm):
         print(self.lambda_weight)
         # Feeds for inputs.
         self.is_training = tf.placeholder(tf.bool, name="is_train")
+        self.only_ips = tf.placeholder(tf.bool, name="only_ips")
+        self.only_ips = tf.Print(self.only_ips, [self.only_ips], message="only ips:", first_n=10, summarize=100)
         self.docid_inputs = []  # a list of top documents
         self.letor_features = tf.placeholder(tf.float32, shape=[None, self.feature_size],
                                              name="letor_features")  # the letor features for the documents
@@ -193,7 +196,9 @@ class PairwiseRegressionEM(BaseAlgorithm):
                     reshaped_train_labels, beta, binary_labels)
                 self.loss = self.pointwise_loss + self.pairwise_loss
                 if self.hparams.enable_ips:
-                    self.loss = self.loss + self.ips_loss
+                    loss_weight = 1 - tf.cast(self.only_ips, tf.float32)
+                    loss_weight = tf.Print(loss_weight, [loss_weight], message="loss_weight:", first_n=10, summarize=100)
+                    self.loss = loss_weight * self.loss + self.ips_loss
                 self.maximization_op = tf.group([self.pointwise_maximization_op, \
                                                  self.pairwise_maximization_op])
 
@@ -606,7 +611,7 @@ class PairwiseRegressionEM(BaseAlgorithm):
                             self.splitted_epsilon_minus[i][j]),
                         collections=['train'])
 
-    def step(self, session, input_feed, forward_only):
+    def step(self, session, input_feed, forward_only, only_ips):
         """Run a step of the model feeding the given inputs.
 
         Args:
@@ -623,12 +628,21 @@ class PairwiseRegressionEM(BaseAlgorithm):
         # Output feed: depends on whether we do a backward step or not.
         if not forward_only:
             input_feed[self.is_training.name] = True
-            output_feed = [
-                self.updates,    # Update Op that does SGD.
-                self.loss,    # Loss for this batch.
-                self.maximization_op,
-                self.train_summary  # Summarize statistics.
-            ]
+            if only_ips:
+                input_feed[self.only_ips.name] = True
+                output_feed = [
+                    self.updates,    # Update Op that does SGD.
+                    self.loss,    # Loss for this batch.
+                    self.train_summary  # Summarize statistics.
+                ]
+            else:
+                input_feed[self.only_ips.name] = False
+                output_feed = [
+                    self.updates,    # Update Op that does SGD.
+                    self.loss,    # Loss for this batch.
+                    self.maximization_op,
+                    self.train_summary  # Summarize statistics.
+                ]
         else:
             input_feed[self.is_training.name] = False
             output_feed = [

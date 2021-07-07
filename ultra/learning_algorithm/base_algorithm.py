@@ -46,7 +46,7 @@ class BaseAlgorithm(ABC):
         pass
 
     @abstractmethod
-    def step(self, session, input_feed, forward_only):
+    def step(self, session, input_feed, forward_only, only_ips):
         """Run a step of the model feeding the given inputs.
 
         Args:
@@ -99,7 +99,13 @@ class BaseAlgorithm(ABC):
         """
         output_scores = self.get_ranking_scores(
             self.docid_inputs[:list_size], list_size, self.is_training, scope, forward_only)
-        return tf.concat(output_scores, 1)
+        if type(output_scores[0]) == list:
+            res = [tf.concat(output, 1) for output in output_scores]
+            print("res:", res)
+        else:
+            res = tf.concat(output_scores, 1)
+        return res
+        #return tf.concat(output_scores, 1)
 
     def get_ranking_scores(self, input_id_list, rank_list_size,
                            is_training=False, scope=None, forward_only=False, **kwargs):

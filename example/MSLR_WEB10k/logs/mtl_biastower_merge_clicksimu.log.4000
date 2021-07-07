@@ -1,0 +1,74 @@
+--data_dir=/data/violatang/l2r-paper/data/MSLR_10k_letor/tmp_data/ --model_dir=/data/violatang/l2r-paper/data/MSLR_10k_letor/tmp_model_mtl_biastower_merge/ --output_dir=/data/violatang/l2r-paper/data/MSLR_10k_letor/tmp_output/ --setting_file=./example/offline_setting/biastower_mtl_merge_exp_settings.json
+WARNING:tensorflow:From main.py:344: The name tf.app.run is deprecated. Please use tf.compat.v1.app.run instead.
+
+WARNING:tensorflow:From main.py:107: The name tf.ConfigProto is deprecated. Please use tf.compat.v1.ConfigProto instead.
+
+W0707 17:13:24.246042 139847000221504 module_wrapper.py:139] From main.py:107: The name tf.ConfigProto is deprecated. Please use tf.compat.v1.ConfigProto instead.
+
+WARNING:tensorflow:From main.py:109: The name tf.Session is deprecated. Please use tf.compat.v1.Session instead.
+
+W0707 17:13:24.246423 139847000221504 module_wrapper.py:139] From main.py:109: The name tf.Session is deprecated. Please use tf.compat.v1.Session instead.
+
+2021-07-07 17:13:24.247023: I tensorflow/core/platform/cpu_feature_guard.cc:142] Your CPU supports instructions that this TensorFlow binary was not compiled to use: AVX2 FMA
+2021-07-07 17:13:24.254398: I tensorflow/core/platform/profile_utils/cpu_utils.cc:94] CPU Frequency: 2494140000 Hz
+2021-07-07 17:13:24.254798: I tensorflow/compiler/xla/service/service.cc:168] XLA service 0x411e310 initialized for platform Host (this does not guarantee that XLA will be used). Devices:
+2021-07-07 17:13:24.254824: I tensorflow/compiler/xla/service/service.cc:176]   StreamExecutor device (0): Host, Default Version
+Reading data in /data/violatang/l2r-paper/data/MSLR_10k_letor/tmp_data/
+Read data from /data/violatang/l2r-paper/data/MSLR_10k_letor/tmp_data//train in ULTRA format.
+Feature reading finish.
+List reading finish.
+Label reading finish.
+Remove 183 invalid queries.
+Data reading finish!
+Finished reading 5817 queries with lists.
+Read data from /data/violatang/l2r-paper/data/MSLR_10k_letor/tmp_data//valid in ULTRA format.
+Feature reading finish.
+List reading finish.
+Label reading finish.
+Remove 0 invalid queries.
+Data reading finish!
+Finished reading 1939 queries with lists.
+Train Rank list size 809
+Valid Rank list size 908
+Users can only see the top 10 documents for each query in training.
+Creating model...
+Build NavieAlgorithm
+hparams: loss_func='mse_loss',tasks=['click', 'watchtime']
+Traceback (most recent call last):
+  File "main.py", line 344, in <module>
+    tf.app.run()
+  File "/usr/local/lib64/python3.6/site-packages/tensorflow_core/python/platform/app.py", line 40, in run
+    _run(main=main, argv=argv, flags_parser=_parse_flags_tolerate_undef)
+  File "/usr/local/lib/python3.6/site-packages/absl/app.py", line 303, in run
+    _run_main(main, args)
+  File "/usr/local/lib/python3.6/site-packages/absl/app.py", line 251, in _run_main
+    sys.exit(main(argv))
+  File "main.py", line 341, in main
+    train(exp_settings)
+  File "main.py", line 112, in train
+    model = create_model(sess, exp_settings, train_set, False)
+  File "main.py", line 66, in create_model
+    model = ultra.utils.find_class(exp_settings['learning_algorithm'])(data_set, exp_settings, forward_only)
+  File "/data/violatang/l2r-paper/code/ULTRA/ultra/learning_algorithm/navie_mtlmerge_algorithm.py", line 46, in __init__
+    self.hparams.parse(exp_settings['learning_algorithm_hparams'])
+  File "/data/violatang/l2r-paper/code/ULTRA/ultra/utils/hparams.py", line 438, in parse
+    return self.override_from_dict(values_map)
+  File "/data/violatang/l2r-paper/code/ULTRA/ultra/utils/hparams.py", line 450, in override_from_dict
+    self.set_hparam(name, value)
+  File "/data/violatang/l2r-paper/code/ULTRA/ultra/utils/hparams.py", line 409, in set_hparam
+    'Must pass a list for multi-valued parameter: %s.' % name)
+ValueError: Must pass a list for multi-valued parameter: loss_func.
+WARNING:tensorflow:From main.py:344: The name tf.app.run is deprecated. Please use tf.compat.v1.app.run instead.
+
+WARNING:tensorflow:From main.py:279: The name tf.ConfigProto is deprecated. Please use tf.compat.v1.ConfigProto instead.
+
+W0707 17:13:35.230379 139968630802240 module_wrapper.py:139] From main.py:279: The name tf.ConfigProto is deprecated. Please use tf.compat.v1.ConfigProto instead.
+
+WARNING:tensorflow:From main.py:281: The name tf.Session is deprecated. Please use tf.compat.v1.Session instead.
+
+W0707 17:13:35.230687 139968630802240 module_wrapper.py:139] From main.py:281: The name tf.Session is deprecated. Please use tf.compat.v1.Session instead.
+
+2021-07-07 17:13:35.231350: I tensorflow/core/platform/cpu_feature_guard.cc:142] Your CPU supports instructions that this TensorFlow binary was not compiled to use: AVX2 FMA
+2021-07-07 17:13:35.237893: I tensorflow/core/platform/profile_utils/cpu_utils.cc:94] CPU Frequency: 2494140000 Hz
+2021-07-07 17:13:35.238364: I tensorflow/compiler/xla/service/service.cc:168] XLA service 0x54670a0 initialized for platform Host (this does not guarantee that XLA will be used). Devices:
+2021-07-07 17:13:35.238392: I tensorflow/compiler/xla/service/service.cc:176]   StreamExecutor device (0): Host, Default Version

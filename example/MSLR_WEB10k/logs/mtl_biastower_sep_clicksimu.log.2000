@@ -1,0 +1,41 @@
+--data_dir=/data/violatang/l2r-paper/data/MSLR_10k_letor/tmp_data/ --model_dir=/data/violatang/l2r-paper/data/MSLR_10k_letor/tmp_model_mtl_biastower_sep/ --output_dir=/data/violatang/l2r-paper/data/MSLR_10k_letor/tmp_output/ --setting_file=./example/offline_setting/biastower_mtl_sep_exp_settings.json
+Traceback (most recent call last):
+  File "main.py", line 19, in <module>
+    import tensorflow as tf
+  File "/usr/local/lib64/python3.6/site-packages/tensorflow/__init__.py", line 102, in <module>
+    from tensorflow_core import *
+  File "/usr/local/lib64/python3.6/site-packages/tensorflow_core/__init__.py", line 28, in <module>
+    from tensorflow.python import pywrap_tensorflow  # pylint: disable=unused-import
+  File "<frozen importlib._bootstrap>", line 1007, in _handle_fromlist
+  File "/usr/local/lib64/python3.6/site-packages/tensorflow/__init__.py", line 50, in __getattr__
+    module = self._load()
+  File "/usr/local/lib64/python3.6/site-packages/tensorflow/__init__.py", line 44, in _load
+    module = _importlib.import_module(self.__name__)
+  File "/usr/lib64/python3.6/importlib/__init__.py", line 126, in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+  File "/usr/local/lib64/python3.6/site-packages/tensorflow_core/python/__init__.py", line 63, in <module>
+    from tensorflow.python.framework.framework_lib import *  # pylint: disable=redefined-builtin
+  File "/usr/local/lib64/python3.6/site-packages/tensorflow_core/python/framework/framework_lib.py", line 52, in <module>
+    from tensorflow.python.framework.importer import import_graph_def
+  File "/usr/local/lib64/python3.6/site-packages/tensorflow_core/python/framework/importer.py", line 28, in <module>
+    from tensorflow.python.framework import function
+  File "/usr/local/lib64/python3.6/site-packages/tensorflow_core/python/framework/function.py", line 37, in <module>
+    from tensorflow.python.ops import resource_variable_ops
+  File "/usr/local/lib64/python3.6/site-packages/tensorflow_core/python/ops/resource_variable_ops.py", line 40, in <module>
+    from tensorflow.python.ops import math_ops
+  File "<frozen importlib._bootstrap>", line 971, in _find_and_load
+  File "<frozen importlib._bootstrap>", line 955, in _find_and_load_unlocked
+  File "<frozen importlib._bootstrap>", line 665, in _load_unlocked
+  File "<frozen importlib._bootstrap_external>", line 674, in exec_module
+  File "<frozen importlib._bootstrap_external>", line 764, in get_code
+  File "<frozen importlib._bootstrap_external>", line 833, in get_data
+KeyboardInterrupt
+Traceback (most recent call last):
+  File "main.py", line 9, in <module>
+    from __future__ import absolute_import
+  File "<frozen importlib._bootstrap>", line 971, in _find_and_load
+  File "<frozen importlib._bootstrap>", line 955, in _find_and_load_unlocked
+  File "<frozen importlib._bootstrap>", line 665, in _load_unlocked
+  File "<frozen importlib._bootstrap_external>", line 674, in exec_module
+  File "<frozen importlib._bootstrap_external>", line 762, in get_code
+KeyboardInterrupt

@@ -4,6 +4,7 @@ from .base_ranking_model import *
 
 from .DNN import *
 from .BiasTowerDNN import *
+from .MTLBiasTowerDNN import *
 from .Linear import *
 from .DLCM import *
 from .GSF import *
