@@ -54,19 +54,22 @@ class PairwiseAdversarial(BaseAlgorithm):
             adv_learning_rate=0.05,         # Learning rate for adversarial model
             learning_rate=0.05,             # Learning rate.
             step_decay_ratio=-0.0,
-            alpha=0.2,
+            alpha=1.0,
             max_gradient_norm=5.0,          # Clip gradients to this norm.
             gain_fn='exp',
             discount_fn='log1p',
             opt_metric=None,
             mode='adv',
             relative_corr=False,
+            self_norm_ips=0,
             # Set strength for L2 regularization.
             l2_loss=0.00,
             grad_strategy='ada',            # Select gradient strategy
         )
         print(exp_settings['learning_algorithm_hparams'])
         self.hparams.parse(exp_settings['learning_algorithm_hparams'])
+        print('hparams:')
+        print(self.hparams)
         self.exp_settings = exp_settings
         self.model = None
         self.max_candidate_num = exp_settings['max_candidate_num']
@@ -165,22 +168,11 @@ class PairwiseAdversarial(BaseAlgorithm):
 
             #for var in tf.global_variables():
             #    tf.summary.histogram(var.op.name, var)
-
-            if self.hparams.max_gradient_norm > 0:
-                self.clipped_gradients, self.norm = tf.clip_by_global_norm(self.gradients,
-                                                                           self.hparams.max_gradient_norm)
-                tf.summary.scalar(
-                    'Gradient_Norm',
-                    self.norm,
-                    collections=['train'])
-            else:
-                self.norm = None
-                self.clipped_gradients = self.gradients
             adv_grad = []
             adv_var = []
             other_grad = []
             other_var = []
-            for grad,var in zip(self.clipped_gradients, params):
+            for grad,var in zip(self.gradients, params):
                 tf.summary.histogram(var.op.name, var, collections=['train'])
                 if grad is not None:
                     tf.summary.histogram(var.op.name + '/gradients', 
@@ -192,10 +184,40 @@ class PairwiseAdversarial(BaseAlgorithm):
                         adv_grad.append(-grad)
                         adv_var.append(var)
 
+            self.norm = tf.global_norm(other_grad)
+            self.adv_norm = tf.global_norm(adv_grad)
+
+            tf.summary.scalar(
+                'Gradient_Norm',
+                self.norm,
+                collections=['train'])
+            tf.summary.scalar(
+                'Adv_Gradient_Norm',
+                self.adv_norm,
+                collections=['train'])
+
             print('adversarial vars:')
             print(adv_var)
             print('other vars:')
             print(other_var)
+            if self.hparams.max_gradient_norm > 0:
+                print('clip gradients separately')
+                other_grad, _ = tf.clip_by_global_norm(other_grad,
+                                                       self.hparams.max_gradient_norm,
+                                                       use_norm=self.norm)
+                adv_grad, _ = tf.clip_by_global_norm(adv_grad,
+                                                     self.hparams.max_gradient_norm,
+                                                     use_norm=self.adv_norm)
+                tf.summary.scalar(
+                    'Gradient_Norm_after_clip',
+                    tf.global_norm(other_grad),
+                    collections=['train'])
+                tf.summary.scalar(
+                    'Adv_Gradient_Norm_after_clip',
+                    tf.global_norm(adv_grad),
+                    collections=['train'])
+
+
             self.updates = opt.apply_gradients(zip(other_grad, other_var),
                                                global_step=self.global_step)
             self.adv_updates = adv_opt.apply_gradients(zip(adv_grad, adv_var))
@@ -247,7 +269,8 @@ class PairwiseAdversarial(BaseAlgorithm):
         train_output_j = tf.expand_dims(train_output, axis=1)
         train_output_i = tf.expand_dims(train_output, axis=-1)
         pairwise_logits = train_output_i - train_output_j
-        tf.summary.histogram("pairwise_logits", pairwise_logits, 
+        tf.summary.histogram("pairwise_logits", 
+                pairwise_logits*pairwise_labels, 
                 collections=['train'])
 
         mask = utils_func.is_label_valid(train_labels)
@@ -262,7 +285,8 @@ class PairwiseAdversarial(BaseAlgorithm):
         else:
             pairwise_weights = tf.ones([], dtype=tf.float32)
 
-        tf.summary.histogram("pairwise_weights", pairwise_weights, 
+        tf.summary.histogram("pairwise_weights", 
+                pairwise_weights*pairwise_labels, 
                 collections=['train'])
         losses = pairwise_labels * tf.nn.sigmoid_cross_entropy_with_logits(
                     labels=pairwise_labels, logits=pairwise_logits)
@@ -281,7 +305,8 @@ class PairwiseAdversarial(BaseAlgorithm):
         ips_train_output_j = tf.expand_dims(ips_train_output, axis=1)
         ips_train_output_i = tf.expand_dims(ips_train_output, axis=-1)
         ips_pairwise_logits = ips_train_output_i - ips_train_output_j
-        tf.summary.histogram("ips_pairwise_logits", ips_pairwise_logits, 
+        tf.summary.histogram("ips_pairwise_logits", 
+                ips_pairwise_logits*pairwise_labels, 
                 collections=['train'])
 
         logits = self.position_bias * self.prob_pos + \
@@ -302,10 +327,33 @@ class PairwiseAdversarial(BaseAlgorithm):
             self_logits += tf.stop_gradient(ips_pairwise_logits)
 
         ips_weights = 1 / (tf.sigmoid(logits) + self.tau)
+
         if self.hparams.relative_corr:
+            print('use relative ips weights')
             ips_weights *= tf.sigmoid(self_logits)
 
-        tf.summary.histogram("ips_weights", ips_weights, 
+        if self.hparams.self_norm_ips == 1:
+            print('self-normalize ips weights via individual sample')
+            ips_weights_sum = tf.reduce_sum(pairwise_labels * ips_weights, \
+                axis=[1,2],keepdims=True)
+            valid_item_count = tf.reduce_sum(pairwise_labels, \
+                axis=[1,2],keepdims=True)
+            ips_weights_mean = ips_weights_sum / (valid_item_count+self.tau)
+            ips_weights = ips_weights / (ips_weights_mean+self.tau)
+        elif self.hparams.self_norm_ips == 2:
+            print('self-normalize ips weights across mini-batch')
+            ips_weights_sum = tf.reduce_sum(pairwise_labels * ips_weights)
+            valid_item_count = tf.reduce_sum(pairwise_labels)
+            ips_weights_mean = ips_weights_sum / (valid_item_count+self.tau)
+            ips_weights = ips_weights / (ips_weights_mean+self.tau)
+
+        tf.summary.scalar(
+            'ips_weights_mean', 
+            tf.reduce_sum(ips_weights * pairwise_labels) \
+                / (tf.reduce_sum(pairwise_labels) + self.tau),
+            collections=['train'])
+
+        tf.summary.histogram("ips_weights", ips_weights * pairwise_labels, 
                 collections=['train'])
 
         losses = pairwise_labels * tf.nn.sigmoid_cross_entropy_with_logits(
@@ -327,7 +375,7 @@ class PairwiseAdversarial(BaseAlgorithm):
              tf.random.truncated_normal([1, self.rank_list_size, self.rank_list_size],\
                  mean=0.0, stddev=0.1), \
              name = 'position_bias'
-	)
+            )
         tf.summary.histogram("position_bias", self.position_bias, 
                 collections=['train'])         
         self.prob_bias = tf.Variable(0.0, name = 'prob_bias')

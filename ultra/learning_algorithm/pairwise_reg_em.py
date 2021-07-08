@@ -84,6 +84,8 @@ class PairwiseRegressionEM(BaseAlgorithm):
         )
         print(exp_settings['learning_algorithm_hparams'])
         self.hparams.parse(exp_settings['learning_algorithm_hparams'])
+        print('hparams:')
+        print(self.hparams)
         self.exp_settings = exp_settings
         self.model = None
         self.max_candidate_num = exp_settings['max_candidate_num']
