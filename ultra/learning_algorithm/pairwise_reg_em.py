@@ -77,6 +77,7 @@ class PairwiseRegressionEM(BaseAlgorithm):
             gain_fn='exp',
             discount_fn='log1p',
             opt_metric='ndcg',
+            exact_ips=False,
             # Set strength for L2 regularization.
             l2_loss=0.00,
             grad_strategy='ada',            # Select gradient strategy
@@ -398,9 +399,22 @@ class PairwiseRegressionEM(BaseAlgorithm):
                 collections=['train'])
         m_ij = self.epsilon_plus / (self.epsilon_plus + self.epsilon_minus + self.tau)
         ips_weights1 = m_ij / (theta_ij + self.tau)
-        ips_weights2 = ips_weights1 * theta_minus_j
+        if not self.hparams.exact_ips:
+            ips_weights2 = ips_weights1 * theta_minus_j
+        else:
+            theta_tmp0 = theta_i * theta_minus_j
+            theta_tmp1 = theta_i * (1 - theta_minus_j)
+            p_e11_r1_c1_minus = self.epsilon_plus * theta_tmp0 * gamma
+            p_e11_r0_c1_minus = self.epsilon_minus * theta_tmp0 * (1.0 - gamma)
+            p_e10_r1_c1_minus = theta_tmp1 * omega_plus_i * beta_i
+            p_e10_r0_c1_minus = theta_tmp1 * omega_minus_i * (1 - beta_i)
+            denominator = p_e11_r1_c1_minus + p_e11_r0_c1_minus + p_e10_r1_c1_minus \
+                + p_e10_r0_c1_minus + self.tau
+            numerator = p_e11_r1_c1_minus + p_e11_r0_c1_minus
+            ips_weights2 = ips_weights1 * numerator / denominator     
         ips_weights = binary_labels_j * ips_weights1 + (1 - binary_labels_j) * ips_weights2
-
+        ips_weights = tf.stop_gradient(
+            ips_weights, name='ips_weights_stop_gradient')
         losses = pairwise_labels * tf.nn.sigmoid_cross_entropy_with_logits(
                     labels=pairwise_labels, logits=ips_pairwise_logits)
         losses = losses * pairwise_weights * ips_weights
