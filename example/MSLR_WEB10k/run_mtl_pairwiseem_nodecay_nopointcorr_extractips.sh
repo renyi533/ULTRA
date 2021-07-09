@@ -1,0 +1,15 @@
+#!/bin/bash
+#
+# Copyright (c) 2017 Tencent Inc. All Rights Reserved
+#
+# File: run_mtl_pairwiseem_nodecay_nopointcorr_extractips.sh
+# Author: root@tencent.com
+# Ddate: 2021/06/26 19:06:07
+# Brief: 
+set -x
+
+sh offline_exp_pipeline_mtl_pairwiseem_nodecay_nopointcorr_extractips.sh mtl_pairwiseem_nodecay_nopointcorr_extractips > logs/mtl_pairwiseem_nodecay_nopointcorr_extractips_clicksimu.log.12000 2>&1
+sh offline_exp_pipeline_mtl_pairwiseem_nodecay_nopointcorr_extractips.sh mtl_pairwiseem_nodecay_nopointcorr_extractips > logs/mtl_pairwiseem_nodecay_nopointcorr_extractips_clicksimu.log.14000 2>&1
+sh offline_exp_pipeline_mtl_pairwiseem_nodecay_nopointcorr_extractips.sh mtl_pairwiseem_nodecay_nopointcorr_extractips > logs/mtl_pairwiseem_nodecay_nopointcorr_extractips_clicksimu.log.16000 2>&1
+sh offline_exp_pipeline_mtl_pairwiseem_nodecay_nopointcorr_extractips.sh mtl_pairwiseem_nodecay_nopointcorr_extractips > logs/mtl_pairwiseem_nodecay_nopointcorr_extractips_clicksimu.log.18000 2>&1
+sh offline_exp_pipeline_mtl_pairwiseem_nodecay_nopointcorr_extractips.sh mtl_pairwiseem_nodecay_nopointcorr_extractips > logs/mtl_pairwiseem_nodecay_nopointcorr_extractips_clicksimu.log.20000 2>&1
