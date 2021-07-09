@@ -13,6 +13,7 @@ from .navie_mtlmerge_algorithm import *
 from .mgd import *
 from .nsgd import *
 from .pairwise_reg_em import *
+from .pairwise_adversarial import *
 
 def list_available() -> list:
     from .base_algorithm import BaseAlgorithm
