@@ -117,15 +117,19 @@ class NavieAlgorithm(BaseAlgorithm):
 
             self.loss = None
             if self.hparams.loss_func == 'sigmoid_cross_entropy':
+                print("sigmoid_cross_entropy loss on task")
                 self.loss = self.sigmoid_loss_on_list(
                     train_output, reshaped_train_labels, enable_sigmoid=self.hparams.loss_enable_sigmoid)
             elif self.hparams.loss_func == 'pairwise_loss':
+                print("pairwise_loss on task")
                 self.loss = self.pairwise_loss_on_list(
                     train_output, reshaped_train_labels)
             elif self.hparams.loss_func == "mse_loss":
+                print("mse_loss on task")
                 self.loss = self.mse_loss_on_list(
                     train_output, reshaped_train_labels)
             else:
+                print("softmax_loss on task")
                 self.loss = self.softmax_loss(
                     train_output, reshaped_train_labels)
             params = tf.trainable_variables()

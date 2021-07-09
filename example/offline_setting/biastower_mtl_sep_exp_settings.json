@@ -10,7 +10,7 @@
 	"ranking_model_hparams":"hidden_layer_sizes=[512, 256, 128]",
     
 	"learning_algorithm": "ultra.learning_algorithm.NavieMTLAlgorithm",
-	"learning_algorithm_hparams":"loss_funcs=['sigmoid_cross_entropy', mse_loss'],tasks=['click', 'watchtime']",
+	"learning_algorithm_hparams":"tasks=['click', 'watchtime']",
     
 	"metrics": [
 	    "mrr", "ndcg"

@@ -69,10 +69,21 @@ class NavieMTLAlgorithm(BaseAlgorithm):
         self.outputs = self.ranking_model(
             self.max_candidate_num, scope='ranking_model', forward_only=True) # forward_only: do not use bias tower
         for task_idx in range(0, len(self.hparams.tasks)):
-            if task_idx == 0:
-                self.output = self.outputs[task_idx]
+            loss_func = self.hparams.loss_funcs[task_idx]
+            print("loss func:", loss_func)
+            print("loss func equals :", str(loss_func) == 'sigmoid_cross_entropy')
+            if str(loss_func) == 'sigmoid_cross_entropy':
+                print("sigmoid on task ", self.hparams.tasks[task_idx])
+                output = tf.nn.sigmoid(self.outputs[task_idx])
             else:
-                self.output += self.outputs[task_idx]
+                print("identity on task ", self.hparams.tasks[task_idx])
+                output = self.outputs[task_idx]
+            if task_idx == 0:
+                self.output = output
+                #self.output = self.outputs[task_idx]
+            else:
+                self.output += output
+                #self.output += self.outputs[task_idx]
 
         # reshape from [max_candidate_num, ?] to [?, max_candidate_num]
         reshaped_labels = tf.transpose(tf.convert_to_tensor(tf.reduce_sum(self.labels, axis=-1)))
@@ -125,15 +136,19 @@ class NavieMTLAlgorithm(BaseAlgorithm):
 
                 loss = None
                 if self.hparams.loss_funcs[task_idx] == 'sigmoid_cross_entropy':
+                    print("sigmoid_cross_entropy loss on task ", self.hparams.tasks[task_idx])
                     loss = self.sigmoid_loss_on_list(
                         train_output, reshaped_train_labels, enable_sigmoid=self.hparams.loss_enable_sigmoid)
                 elif self.hparams.loss_funcs[task_idx] == 'pairwise_loss':
+                    print("pairwise_loss on task ", self.hparams.tasks[task_idx])
                     loss = self.pairwise_loss_on_list(
                         train_output, reshaped_train_labels)
                 elif self.hparams.loss_funcs[task_idx] == "mse_loss":
+                    print("mse_loss on task ", self.hparams.tasks[task_idx])
                     loss = self.mse_loss_on_list(
                         train_output, reshaped_train_labels)
                 else:
+                    print("softmax_loss on task ", self.hparams.tasks[task_idx])
                     loss = self.softmax_loss(
                         train_output, reshaped_train_labels)
                 if task_idx == 0:
@@ -180,10 +195,15 @@ class NavieMTLAlgorithm(BaseAlgorithm):
                 'Loss', tf.reduce_mean(
                     self.loss), collections=['train'])
             for task_idx in range(0, len(self.hparams.tasks)):
-                if task_idx == 0:
-                    train_output_sum = train_outputs[task_idx]
+                if self.hparams.loss_funcs[task_idx] == 'sigmoid_cross_entropy':
+                    print("sigmoid on task ", self.hparams.tasks[task_idx])
+                    train_output = tf.nn.sigmoid(train_outputs[task_idx])
                 else:
-                    train_output_sum += train_outputs[task_idx]
+                    train_output = train_outputs[task_idx]
+                if task_idx == 0:
+                    train_output_sum = train_output
+                else:
+                    train_output_sum += train_output
             print("train_output_sum:", train_output_sum)
             print("train_labelss:", train_labelss)
             reshaped_train_labels_sum = tf.transpose(
