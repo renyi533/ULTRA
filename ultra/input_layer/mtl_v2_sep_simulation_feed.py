@@ -26,7 +26,7 @@ import tensorflow as tf
 from six.moves import zip     # pylint: disable=redefined-builtin
 
 
-class MTLV2SimulationFeed(BaseInputFeed):
+class MTLV2SepSimulationFeed(BaseInputFeed):
     """Simulate clicks based on human annotations.
 
     This class implements a input layer for unbiased learning to rank experiments
@@ -55,7 +55,7 @@ class MTLV2SimulationFeed(BaseInputFeed):
             dynamic_bias_step_interval=1000,
         )
 
-        print('Create simluated clicks feed')
+        print('Create MTL V2 simluated separated label feed')
         print(hparam_str)
         self.hparams.parse(hparam_str)
         self.click_model = None
@@ -81,13 +81,16 @@ class MTLV2SimulationFeed(BaseInputFeed):
             0 if data_set.initial_list[i][x] < 0 else data_set.labels[i][x] for x in range(
                 self.rank_list_size)]
         click_list = None
+        sum_click_list = 0
         if self.hparams.oracle_mode:
             click_list = label_list
+            sum_click_list = sum(click_list)
         else:
             click_list, _, _, watchtime_list = self.click_model.sampleClicksForOneList(
                 list(label_list))
             for j in range(0, len(click_list)):
-                click_list[j] += watchtime_list[j]
+                click_list[j] = [click_list[j], watchtime_list[j]]
+                sum_click_list += sum(click_list[j])
             #sample_count = 0
             # while check_validation and sum(click_list) == 0 and sample_count < self.MAX_SAMPLE_ROUND_NUM:
             #    click_list, _, _ = self.click_model.sampleClicksForOneList(list(label_list))
@@ -95,7 +98,8 @@ class MTLV2SimulationFeed(BaseInputFeed):
 
         # Check if data is valid
         if check_validation:
-            if sum(click_list) == 0:
+            #if sum(click_list) == 0:
+            if sum_click_list == 0:
                 return
         base = len(letor_features)
         for x in range(self.rank_list_size):

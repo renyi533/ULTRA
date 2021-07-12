@@ -41,6 +41,7 @@ class NavieMTLAlgorithm(BaseAlgorithm):
             l2_loss=0.0,
             grad_strategy='ada',            # Select gradient strategy
             tasks=["click", "watchtime"],
+            output_acts=['identity', 'identity']
         )
         print("hparams:", exp_settings['learning_algorithm_hparams'])
         self.hparams.parse(exp_settings['learning_algorithm_hparams'])
@@ -70,9 +71,11 @@ class NavieMTLAlgorithm(BaseAlgorithm):
             self.max_candidate_num, scope='ranking_model', forward_only=True) # forward_only: do not use bias tower
         for task_idx in range(0, len(self.hparams.tasks)):
             loss_func = self.hparams.loss_funcs[task_idx]
+            output_act =  self.hparams.output_acts[task_idx]
             print("loss func:", loss_func)
-            print("loss func equals :", str(loss_func) == 'sigmoid_cross_entropy')
-            if str(loss_func) == 'sigmoid_cross_entropy':
+            print("output_act:", output_act)
+            #if str(loss_func) == 'sigmoid_cross_entropy':
+            if str(output_act) == 'sigmoid':
                 print("sigmoid on task ", self.hparams.tasks[task_idx])
                 output = tf.nn.sigmoid(self.outputs[task_idx])
             else:
@@ -195,10 +198,13 @@ class NavieMTLAlgorithm(BaseAlgorithm):
                 'Loss', tf.reduce_mean(
                     self.loss), collections=['train'])
             for task_idx in range(0, len(self.hparams.tasks)):
-                if self.hparams.loss_funcs[task_idx] == 'sigmoid_cross_entropy':
+                output_act =  self.hparams.output_acts[task_idx]
+                #if self.hparams.loss_funcs[task_idx] == 'sigmoid_cross_entropy':
+                if str(output_act) == 'sigmoid':
                     print("sigmoid on task ", self.hparams.tasks[task_idx])
                     train_output = tf.nn.sigmoid(train_outputs[task_idx])
                 else:
+                    print("identity on task ", self.hparams.tasks[task_idx])
                     train_output = train_outputs[task_idx]
                 if task_idx == 0:
                     train_output_sum = train_output

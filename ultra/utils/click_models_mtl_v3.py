@@ -147,7 +147,7 @@ class PositionBiasedModel(ClickModel):
         unbiased_watchtime = self.getUnbiasedWatchtime(relevance_label)
         while unbiased_watchtime < 0:
             unbiased_watchtime = self.getUnbiasedWatchtime(relevance_label)
-        return watchtime_bias + unbiased_watchtime
+        return watchtime_bias * unbiased_watchtime
 
     def getWatchtimeBias(self, rank):
         """ get bias value of watchtime based on the rank """
