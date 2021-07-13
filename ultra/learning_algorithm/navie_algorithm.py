@@ -185,7 +185,7 @@ class NavieAlgorithm(BaseAlgorithm):
         self.eval_summary = tf.summary.merge_all(key='eval')
         self.saver = tf.train.Saver(tf.global_variables())
 
-    def step(self, session, input_feed, forward_only):
+    def step(self, session, input_feed, forward_only, only_ips):
         """Run a step of the model feeding the given inputs.
 
         Args:
