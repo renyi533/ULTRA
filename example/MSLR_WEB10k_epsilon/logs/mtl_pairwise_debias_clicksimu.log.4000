@@ -1,0 +1,388 @@
+--data_dir=/data/notebooks/jupyter-notebook/violatang/l2r-paper/MSLR_10k_letor/tmp_data/ --model_dir=/data/notebooks/jupyter-notebook/violatang/l2r-paper/MSLR_10k_letor/tmp_model_epsilon_mtl_pairwise_debias/ --output_dir=/data/notebooks/jupyter-notebook/violatang/l2r-paper/MSLR_10k_letor/tmp_output_mtl_pairwise_debias/ --setting_file=./example/offline_setting_epsilon/pairwise_debias_mtl_exp_settings.json
+WARNING:tensorflow:From main.py:350: The name tf.app.run is deprecated. Please use tf.compat.v1.app.run instead.
+
+WARNING:tensorflow:From main.py:113: The name tf.ConfigProto is deprecated. Please use tf.compat.v1.ConfigProto instead.
+
+W0714 13:51:59.693567 140206617311040 module_wrapper.py:139] From main.py:113: The name tf.ConfigProto is deprecated. Please use tf.compat.v1.ConfigProto instead.
+
+WARNING:tensorflow:From main.py:115: The name tf.Session is deprecated. Please use tf.compat.v1.Session instead.
+
+W0714 13:51:59.693928 140206617311040 module_wrapper.py:139] From main.py:115: The name tf.Session is deprecated. Please use tf.compat.v1.Session instead.
+
+2021-07-14 13:51:59.694672: I tensorflow/core/platform/cpu_feature_guard.cc:142] Your CPU supports instructions that this TensorFlow binary was not compiled to use: AVX2 FMA
+2021-07-14 13:51:59.708778: I tensorflow/core/platform/profile_utils/cpu_utils.cc:94] CPU Frequency: 2297610000 Hz
+2021-07-14 13:51:59.710792: I tensorflow/compiler/xla/service/service.cc:168] XLA service 0x7f8469b34180 initialized for platform Host (this does not guarantee that XLA will be used). Devices:
+2021-07-14 13:51:59.710817: I tensorflow/compiler/xla/service/service.cc:176]   StreamExecutor device (0): Host, Default Version
+2021-07-14 13:51:59.713730: W tensorflow/stream_executor/platform/default/dso_loader.cc:55] Could not load dynamic library 'libcuda.so.1'; dlerror: libcuda.so.1: cannot open shared object file: No such file or directory; LD_LIBRARY_PATH: /usr/local/cuda/lib64:/usr/local/cuda/extras/CUPTI/lib64/:/usr/local/nvidia/lib:/usr/local/nvidia/lib64:/usr/lib:/usr/local/lib:/usr/local/cuda/lib64:/usr/local/cuda/extras/CUPTI/lib64/:/usr/local/nvidia/lib:/usr/local/nvidia/lib64:/usr/lib:/usr/local/lib::/usr/local/cuda-10.0/lib64:/usr/local/cuda-10.0/extras/CUPTI/lib64/:/usr/local/cuda-10.0/lib64:/usr/local/cuda-10.0/extras/CUPTI/lib64/
+2021-07-14 13:51:59.713751: E tensorflow/stream_executor/cuda/cuda_driver.cc:318] failed call to cuInit: UNKNOWN ERROR (303)
+2021-07-14 13:51:59.713780: I tensorflow/stream_executor/cuda/cuda_diagnostics.cc:156] kernel driver does not appear to be running on this host (100-107-171-86): /proc/driver/nvidia/version does not exist
+WARNING:tensorflow:From /data/notebooks/jupyter-notebook/violatang/l2r-paper/ULTRA/ultra/learning_algorithm/pairwise_debias.py:84: The name tf.placeholder is deprecated. Please use tf.compat.v1.placeholder instead.
+
+W0714 13:51:59.720643 140206617311040 module_wrapper.py:139] From /data/notebooks/jupyter-notebook/violatang/l2r-paper/ULTRA/ultra/learning_algorithm/pairwise_debias.py:84: The name tf.placeholder is deprecated. Please use tf.compat.v1.placeholder instead.
+
+WARNING:tensorflow:From /data/notebooks/jupyter-notebook/violatang/l2r-paper/ULTRA/ultra/learning_algorithm/base_algorithm.py:124: The name tf.variable_scope is deprecated. Please use tf.compat.v1.variable_scope instead.
+
+W0714 13:52:01.091063 140206617311040 module_wrapper.py:139] From /data/notebooks/jupyter-notebook/violatang/l2r-paper/ULTRA/ultra/learning_algorithm/base_algorithm.py:124: The name tf.variable_scope is deprecated. Please use tf.compat.v1.variable_scope instead.
+
+WARNING:tensorflow:From /data/notebooks/jupyter-notebook/violatang/l2r-paper/ULTRA/ultra/ranking_model/DNN.py:61: The name tf.get_variable_scope is deprecated. Please use tf.compat.v1.get_variable_scope instead.
+
+W0714 13:52:03.761173 140206617311040 module_wrapper.py:139] From /data/notebooks/jupyter-notebook/violatang/l2r-paper/ULTRA/ultra/ranking_model/DNN.py:61: The name tf.get_variable_scope is deprecated. Please use tf.compat.v1.get_variable_scope instead.
+
+WARNING:tensorflow:From /data/notebooks/jupyter-notebook/violatang/l2r-paper/ULTRA/ultra/ranking_model/DNN.py:62: The name tf.AUTO_REUSE is deprecated. Please use tf.compat.v1.AUTO_REUSE instead.
+
+W0714 13:52:03.762073 140206617311040 module_wrapper.py:139] From /data/notebooks/jupyter-notebook/violatang/l2r-paper/ULTRA/ultra/ranking_model/DNN.py:62: The name tf.AUTO_REUSE is deprecated. Please use tf.compat.v1.AUTO_REUSE instead.
+
+WARNING:tensorflow:From /data/miniconda3/envs/env-3.6.8/lib/python3.6/site-packages/tensorflow_core/python/ops/resource_variable_ops.py:1630: calling BaseResourceVariable.__init__ (from tensorflow.python.ops.resource_variable_ops) with constraint is deprecated and will be removed in a future version.
+Instructions for updating:
+If using Keras pass *_constraint arguments to layers.
+W0714 13:52:03.835871 140206617311040 deprecation.py:506] From /data/miniconda3/envs/env-3.6.8/lib/python3.6/site-packages/tensorflow_core/python/ops/resource_variable_ops.py:1630: calling BaseResourceVariable.__init__ (from tensorflow.python.ops.resource_variable_ops) with constraint is deprecated and will be removed in a future version.
+Instructions for updating:
+If using Keras pass *_constraint arguments to layers.
+WARNING:tensorflow:From /data/notebooks/jupyter-notebook/violatang/l2r-paper/ULTRA/ultra/ranking_model/base_ranking_model.py:121: The name tf.get_variable is deprecated. Please use tf.compat.v1.get_variable instead.
+
+W0714 13:52:03.863251 140206617311040 module_wrapper.py:139] From /data/notebooks/jupyter-notebook/violatang/l2r-paper/ULTRA/ultra/ranking_model/base_ranking_model.py:121: The name tf.get_variable is deprecated. Please use tf.compat.v1.get_variable instead.
+
+WARNING:tensorflow:From /data/notebooks/jupyter-notebook/violatang/l2r-paper/ULTRA/ultra/learning_algorithm/base_algorithm.py:85: where (from tensorflow.python.ops.array_ops) is deprecated and will be removed in a future version.
+Instructions for updating:
+Use tf.where in 2.0, which has the same broadcast rule as np.where
+W0714 13:52:07.089714 140206617311040 deprecation.py:323] From /data/notebooks/jupyter-notebook/violatang/l2r-paper/ULTRA/ultra/learning_algorithm/base_algorithm.py:85: where (from tensorflow.python.ops.array_ops) is deprecated and will be removed in a future version.
+Instructions for updating:
+Use tf.where in 2.0, which has the same broadcast rule as np.where
+WARNING:tensorflow:From /data/notebooks/jupyter-notebook/violatang/l2r-paper/ULTRA/ultra/utils/metrics.py:278: to_float (from tensorflow.python.ops.math_ops) is deprecated and will be removed in a future version.
+Instructions for updating:
+Use `tf.cast` instead.
+W0714 13:52:18.318477 140206617311040 deprecation.py:323] From /data/notebooks/jupyter-notebook/violatang/l2r-paper/ULTRA/ultra/utils/metrics.py:278: to_float (from tensorflow.python.ops.math_ops) is deprecated and will be removed in a future version.
+Instructions for updating:
+Use `tf.cast` instead.
+WARNING:tensorflow:From /data/notebooks/jupyter-notebook/violatang/l2r-paper/ULTRA/ultra/learning_algorithm/pairwise_debias.py:107: The name tf.summary.scalar is deprecated. Please use tf.compat.v1.summary.scalar instead.
+
+W0714 13:52:18.379223 140206617311040 module_wrapper.py:139] From /data/notebooks/jupyter-notebook/violatang/l2r-paper/ULTRA/ultra/learning_algorithm/pairwise_debias.py:107: The name tf.summary.scalar is deprecated. Please use tf.compat.v1.summary.scalar instead.
+
+WARNING:tensorflow:From /data/notebooks/jupyter-notebook/violatang/l2r-paper/ULTRA/ultra/utils/metrics.py:172: div (from tensorflow.python.ops.math_ops) is deprecated and will be removed in a future version.
+Instructions for updating:
+Deprecated in favor of operator or tf.math.divide.
+W0714 13:52:19.114361 140206617311040 deprecation.py:323] From /data/notebooks/jupyter-notebook/violatang/l2r-paper/ULTRA/ultra/utils/metrics.py:172: div (from tensorflow.python.ops.math_ops) is deprecated and will be removed in a future version.
+Instructions for updating:
+Deprecated in favor of operator or tf.math.divide.
+INFO:tensorflow:Summary name t_plus Probability 0 is illegal; using t_plus_Probability_0 instead.
+I0714 13:52:19.714544 140206617311040 summary_op_util.py:66] Summary name t_plus Probability 0 is illegal; using t_plus_Probability_0 instead.
+INFO:tensorflow:Summary name t_minus Probability 0 is illegal; using t_minus_Probability_0 instead.
+I0714 13:52:19.717040 140206617311040 summary_op_util.py:66] Summary name t_minus Probability 0 is illegal; using t_minus_Probability_0 instead.
+INFO:tensorflow:Summary name t_plus Probability 1 is illegal; using t_plus_Probability_1 instead.
+I0714 13:52:19.724083 140206617311040 summary_op_util.py:66] Summary name t_plus Probability 1 is illegal; using t_plus_Probability_1 instead.
+INFO:tensorflow:Summary name t_minus Probability 1 is illegal; using t_minus_Probability_1 instead.
+I0714 13:52:19.730093 140206617311040 summary_op_util.py:66] Summary name t_minus Probability 1 is illegal; using t_minus_Probability_1 instead.
+INFO:tensorflow:Summary name t_plus Probability 2 is illegal; using t_plus_Probability_2 instead.
+I0714 13:52:19.736442 140206617311040 summary_op_util.py:66] Summary name t_plus Probability 2 is illegal; using t_plus_Probability_2 instead.
+INFO:tensorflow:Summary name t_minus Probability 2 is illegal; using t_minus_Probability_2 instead.
+I0714 13:52:19.768929 140206617311040 summary_op_util.py:66] Summary name t_minus Probability 2 is illegal; using t_minus_Probability_2 instead.
+INFO:tensorflow:Summary name t_plus Probability 3 is illegal; using t_plus_Probability_3 instead.
+I0714 13:52:19.782526 140206617311040 summary_op_util.py:66] Summary name t_plus Probability 3 is illegal; using t_plus_Probability_3 instead.
+INFO:tensorflow:Summary name t_minus Probability 3 is illegal; using t_minus_Probability_3 instead.
+I0714 13:52:19.789388 140206617311040 summary_op_util.py:66] Summary name t_minus Probability 3 is illegal; using t_minus_Probability_3 instead.
+INFO:tensorflow:Summary name t_plus Probability 4 is illegal; using t_plus_Probability_4 instead.
+I0714 13:52:19.795003 140206617311040 summary_op_util.py:66] Summary name t_plus Probability 4 is illegal; using t_plus_Probability_4 instead.
+INFO:tensorflow:Summary name t_minus Probability 4 is illegal; using t_minus_Probability_4 instead.
+I0714 13:52:19.797527 140206617311040 summary_op_util.py:66] Summary name t_minus Probability 4 is illegal; using t_minus_Probability_4 instead.
+INFO:tensorflow:Summary name t_plus Probability 5 is illegal; using t_plus_Probability_5 instead.
+I0714 13:52:19.799880 140206617311040 summary_op_util.py:66] Summary name t_plus Probability 5 is illegal; using t_plus_Probability_5 instead.
+INFO:tensorflow:Summary name t_minus Probability 5 is illegal; using t_minus_Probability_5 instead.
+I0714 13:52:19.802233 140206617311040 summary_op_util.py:66] Summary name t_minus Probability 5 is illegal; using t_minus_Probability_5 instead.
+INFO:tensorflow:Summary name t_plus Probability 6 is illegal; using t_plus_Probability_6 instead.
+I0714 13:52:19.804587 140206617311040 summary_op_util.py:66] Summary name t_plus Probability 6 is illegal; using t_plus_Probability_6 instead.
+INFO:tensorflow:Summary name t_minus Probability 6 is illegal; using t_minus_Probability_6 instead.
+I0714 13:52:19.807187 140206617311040 summary_op_util.py:66] Summary name t_minus Probability 6 is illegal; using t_minus_Probability_6 instead.
+INFO:tensorflow:Summary name t_plus Probability 7 is illegal; using t_plus_Probability_7 instead.
+I0714 13:52:19.809541 140206617311040 summary_op_util.py:66] Summary name t_plus Probability 7 is illegal; using t_plus_Probability_7 instead.
+INFO:tensorflow:Summary name t_minus Probability 7 is illegal; using t_minus_Probability_7 instead.
+I0714 13:52:19.811896 140206617311040 summary_op_util.py:66] Summary name t_minus Probability 7 is illegal; using t_minus_Probability_7 instead.
+INFO:tensorflow:Summary name t_plus Probability 8 is illegal; using t_plus_Probability_8 instead.
+I0714 13:52:19.814264 140206617311040 summary_op_util.py:66] Summary name t_plus Probability 8 is illegal; using t_plus_Probability_8 instead.
+INFO:tensorflow:Summary name t_minus Probability 8 is illegal; using t_minus_Probability_8 instead.
+I0714 13:52:19.816627 140206617311040 summary_op_util.py:66] Summary name t_minus Probability 8 is illegal; using t_minus_Probability_8 instead.
+INFO:tensorflow:Summary name t_plus Probability 9 is illegal; using t_plus_Probability_9 instead.
+I0714 13:52:19.819056 140206617311040 summary_op_util.py:66] Summary name t_plus Probability 9 is illegal; using t_plus_Probability_9 instead.
+INFO:tensorflow:Summary name t_minus Probability 9 is illegal; using t_minus_Probability_9 instead.
+I0714 13:52:19.821405 140206617311040 summary_op_util.py:66] Summary name t_minus Probability 9 is illegal; using t_minus_Probability_9 instead.
+WARNING:tensorflow:From /data/notebooks/jupyter-notebook/violatang/l2r-paper/ULTRA/ultra/learning_algorithm/base_algorithm.py:169: softmax_cross_entropy_with_logits (from tensorflow.python.ops.nn_ops) is deprecated and will be removed in a future version.
+Instructions for updating:
+
+Future major versions of TensorFlow will allow gradients to flow
+into the labels input on backprop by default.
+
+See `tf.nn.softmax_cross_entropy_with_logits_v2`.
+
+W0714 13:52:19.836334 140206617311040 deprecation.py:323] From /data/notebooks/jupyter-notebook/violatang/l2r-paper/ULTRA/ultra/learning_algorithm/base_algorithm.py:169: softmax_cross_entropy_with_logits (from tensorflow.python.ops.nn_ops) is deprecated and will be removed in a future version.
+Instructions for updating:
+
+Future major versions of TensorFlow will allow gradients to flow
+into the labels input on backprop by default.
+
+See `tf.nn.softmax_cross_entropy_with_logits_v2`.
+
+WARNING:tensorflow:From /data/notebooks/jupyter-notebook/violatang/l2r-paper/ULTRA/ultra/learning_algorithm/pairwise_debias.py:183: The name tf.trainable_variables is deprecated. Please use tf.compat.v1.trainable_variables instead.
+
+W0714 13:52:24.710328 140206617311040 module_wrapper.py:139] From /data/notebooks/jupyter-notebook/violatang/l2r-paper/ULTRA/ultra/learning_algorithm/pairwise_debias.py:183: The name tf.trainable_variables is deprecated. Please use tf.compat.v1.trainable_variables instead.
+
+WARNING:tensorflow:From /data/notebooks/jupyter-notebook/violatang/l2r-paper/ULTRA/ultra/learning_algorithm/pairwise_debias.py:189: The name tf.train.AdagradOptimizer is deprecated. Please use tf.compat.v1.train.AdagradOptimizer instead.
+
+W0714 13:52:24.710778 140206617311040 module_wrapper.py:139] From /data/notebooks/jupyter-notebook/violatang/l2r-paper/ULTRA/ultra/learning_algorithm/pairwise_debias.py:189: The name tf.train.AdagradOptimizer is deprecated. Please use tf.compat.v1.train.AdagradOptimizer instead.
+
+WARNING:tensorflow:From /data/miniconda3/envs/env-3.6.8/lib/python3.6/site-packages/tensorflow_core/python/training/adagrad.py:76: calling Constant.__init__ (from tensorflow.python.ops.init_ops) with dtype is deprecated and will be removed in a future version.
+Instructions for updating:
+Call initializer instance with the dtype argument instead of passing it to the constructor
+W0714 13:52:32.257794 140206617311040 deprecation.py:506] From /data/miniconda3/envs/env-3.6.8/lib/python3.6/site-packages/tensorflow_core/python/training/adagrad.py:76: calling Constant.__init__ (from tensorflow.python.ops.init_ops) with dtype is deprecated and will be removed in a future version.
+Instructions for updating:
+Call initializer instance with the dtype argument instead of passing it to the constructor
+INFO:tensorflow:Summary name Gradient Norm is illegal; using Gradient_Norm instead.
+I0714 13:52:32.399663 140206617311040 summary_op_util.py:66] Summary name Gradient Norm is illegal; using Gradient_Norm instead.
+INFO:tensorflow:Summary name Learning Rate is illegal; using Learning_Rate instead.
+I0714 13:52:32.400977 140206617311040 summary_op_util.py:66] Summary name Learning Rate is illegal; using Learning_Rate instead.
+WARNING:tensorflow:From /data/notebooks/jupyter-notebook/violatang/l2r-paper/ULTRA/ultra/learning_algorithm/pairwise_debias.py:230: The name tf.summary.merge_all is deprecated. Please use tf.compat.v1.summary.merge_all instead.
+
+W0714 13:52:33.394200 140206617311040 module_wrapper.py:139] From /data/notebooks/jupyter-notebook/violatang/l2r-paper/ULTRA/ultra/learning_algorithm/pairwise_debias.py:230: The name tf.summary.merge_all is deprecated. Please use tf.compat.v1.summary.merge_all instead.
+
+WARNING:tensorflow:From /data/notebooks/jupyter-notebook/violatang/l2r-paper/ULTRA/ultra/learning_algorithm/pairwise_debias.py:232: The name tf.train.Saver is deprecated. Please use tf.compat.v1.train.Saver instead.
+
+W0714 13:52:33.398749 140206617311040 module_wrapper.py:139] From /data/notebooks/jupyter-notebook/violatang/l2r-paper/ULTRA/ultra/learning_algorithm/pairwise_debias.py:232: The name tf.train.Saver is deprecated. Please use tf.compat.v1.train.Saver instead.
+
+WARNING:tensorflow:From /data/notebooks/jupyter-notebook/violatang/l2r-paper/ULTRA/ultra/learning_algorithm/pairwise_debias.py:232: The name tf.global_variables is deprecated. Please use tf.compat.v1.global_variables instead.
+
+W0714 13:52:33.399150 140206617311040 module_wrapper.py:139] From /data/notebooks/jupyter-notebook/violatang/l2r-paper/ULTRA/ultra/learning_algorithm/pairwise_debias.py:232: The name tf.global_variables is deprecated. Please use tf.compat.v1.global_variables instead.
+
+INFO:tensorflow:Restoring parameters from /data/notebooks/jupyter-notebook/violatang/l2r-paper/MSLR_10k_letor/tmp_model_epsilon_mtl_pairwise_debias/ultra.learning_algorithm.PairDebias.ckpt-2400
+I0714 13:52:33.488231 140206617311040 saver.py:1284] Restoring parameters from /data/notebooks/jupyter-notebook/violatang/l2r-paper/MSLR_10k_letor/tmp_model_epsilon_mtl_pairwise_debias/ultra.learning_algorithm.PairDebias.ckpt-2400
+WARNING:tensorflow:From main.py:129: The name tf.summary.FileWriter is deprecated. Please use tf.compat.v1.summary.FileWriter instead.
+
+W0714 13:52:35.307708 140206617311040 module_wrapper.py:139] From main.py:129: The name tf.summary.FileWriter is deprecated. Please use tf.compat.v1.summary.FileWriter instead.
+
+WARNING:tensorflow:From /data/notebooks/jupyter-notebook/violatang/l2r-paper/ULTRA/ultra/utils/data_utils.py:367: The name tf.Summary is deprecated. Please use tf.compat.v1.Summary instead.
+
+W0714 13:53:20.582290 140206617311040 module_wrapper.py:139] From /data/notebooks/jupyter-notebook/violatang/l2r-paper/ULTRA/ultra/utils/data_utils.py:367: The name tf.Summary is deprecated. Please use tf.compat.v1.Summary instead.
+
+Reading data in /data/notebooks/jupyter-notebook/violatang/l2r-paper/MSLR_10k_letor/tmp_data/
+Read data from /data/notebooks/jupyter-notebook/violatang/l2r-paper/MSLR_10k_letor/tmp_data//train in ULTRA format.
+Feature reading finish.
+List reading finish.
+Label reading finish.
+Remove 183 invalid queries.
+Data reading finish!
+Finished reading 5817 queries with lists.
+Read data from /data/notebooks/jupyter-notebook/violatang/l2r-paper/MSLR_10k_letor/tmp_data//valid in ULTRA format.
+Feature reading finish.
+List reading finish.
+Label reading finish.
+Remove 0 invalid queries.
+Data reading finish!
+Finished reading 1939 queries with lists.
+Train Rank list size 809
+Valid Rank list size 908
+Users can only see the top 10 documents for each query in training.
+Creating model...
+Build Pairwise Debiasing algorithm.
+
+ranking_model: <class 'ultra.ranking_model.DNN.DNN'>
+kwargs: {'rank_list_size': 908, 'forward_only': False}
+layer_norm objs for ranking_model is:
+[<tensorflow.python.keras.layers.normalization.LayerNormalization object at 0x7f81bc37f550>, <tensorflow.python.keras.layers.normalization.LayerNormalization object at 0x7f8194608160>, <tensorflow.python.keras.layers.normalization.LayerNormalization object at 0x7f81945ec080>, <tensorflow.python.keras.layers.normalization.LayerNormalization object at 0x7f81945ec2b0>]
+kwargs: {'rank_list_size': 10, 'forward_only': False}
+layer_norm objs for ranking_model is:
+[<tensorflow.python.keras.layers.normalization.LayerNormalization object at 0x7f81bc37f550>, <tensorflow.python.keras.layers.normalization.LayerNormalization object at 0x7f8194608160>, <tensorflow.python.keras.layers.normalization.LayerNormalization object at 0x7f81945ec080>, <tensorflow.python.keras.layers.normalization.LayerNormalization object at 0x7f81945ec2b0>]
+Reading model parameters from /data/notebooks/jupyter-notebook/violatang/l2r-paper/MSLR_10k_letor/tmp_model_epsilon_mtl_pairwise_debias/ultra.learning_algorithm.PairDebias.ckpt-2400
+restore all parameters
+Create MTL Epsilon simluated clicks feed
+
+Create direct label feed with list size 908 with feature size 136
+global step 2450 learning rate 0.0050 step-time 0.30 loss 695591.8750
+  valid: mrr_3:0.783 mrr_5:0.783 mrr_10:0.783 ndcg_3:0.321 ndcg_5:0.337 ndcg_10:0.372
+Save model, valid ndcg_10:0.372
+global step 2500 learning rate 0.0050 step-time 0.16 loss 683560.9375
+  valid: mrr_3:0.785 mrr_5:0.785 mrr_10:0.785 ndcg_3:0.327 ndcg_5:0.341 ndcg_10:0.376
+Save model, valid ndcg_10:0.376
+global step 2550 learning rate 0.0050 step-time 0.13 loss 687475.3750
+  valid: mrr_3:0.775 mrr_5:0.775 mrr_10:0.775 ndcg_3:0.319 ndcg_5:0.335 ndcg_10:0.369
+global step 2600 learning rate 0.0050 step-time 0.13 loss 679262.7500
+  valid: mrr_3:0.791 mrr_5:0.791 mrr_10:0.791 ndcg_3:0.325 ndcg_5:0.341 ndcg_10:0.374
+global step 2650 learning rate 0.0050 step-time 0.14 loss 689933.2500
+  valid: mrr_3:0.784 mrr_5:0.784 mrr_10:0.784 ndcg_3:0.330 ndcg_5:0.341 ndcg_10:0.374
+global step 2700 learning rate 0.0050 step-time 0.13 loss 694482.6875
+  valid: mrr_3:0.796 mrr_5:0.796 mrr_10:0.796 ndcg_3:0.334 ndcg_5:0.347 ndcg_10:0.380
+Save model, valid ndcg_10:0.380
+global step 2750 learning rate 0.0050 step-time 0.15 loss 687500.5625
+  valid: mrr_3:0.793 mrr_5:0.793 mrr_10:0.793 ndcg_3:0.322 ndcg_5:0.338 ndcg_10:0.372
+global step 2800 learning rate 0.0050 step-time 0.15 loss 678202.0625
+  valid: mrr_3:0.779 mrr_5:0.779 mrr_10:0.779 ndcg_3:0.324 ndcg_5:0.340 ndcg_10:0.373
+global step 2850 learning rate 0.0050 step-time 0.14 loss 672347.1250
+  valid: mrr_3:0.776 mrr_5:0.776 mrr_10:0.776 ndcg_3:0.317 ndcg_5:0.334 ndcg_10:0.369
+global step 2900 learning rate 0.0050 step-time 0.14 loss 688178.6250
+  valid: mrr_3:0.783 mrr_5:0.783 mrr_10:0.783 ndcg_3:0.321 ndcg_5:0.336 ndcg_10:0.370
+global step 2950 learning rate 0.0050 step-time 0.14 loss 685774.7500
+  valid: mrr_3:0.775 mrr_5:0.775 mrr_10:0.775 ndcg_3:0.318 ndcg_5:0.334 ndcg_10:0.371
+global step 3000 learning rate 0.0050 step-time 0.14 loss 682030.1250
+  valid: mrr_3:0.782 mrr_5:0.782 mrr_10:0.782 ndcg_3:0.321 ndcg_5:0.334 ndcg_10:0.369
+global step 3050 learning rate 0.0050 step-time 0.14 loss 692273.0625
+  valid: mrr_3:0.795 mrr_5:0.795 mrr_10:0.795 ndcg_3:0.326 ndcg_5:0.341 ndcg_10:0.375
+global step 3100 learning rate 0.0050 step-time 0.15 loss 688519.2500
+  valid: mrr_3:0.772 mrr_5:0.772 mrr_10:0.772 ndcg_3:0.321 ndcg_5:0.336 ndcg_10:0.370
+global step 3150 learning rate 0.0050 step-time 0.14 loss 683607.6875
+  valid: mrr_3:0.777 mrr_5:0.777 mrr_10:0.777 ndcg_3:0.321 ndcg_5:0.338 ndcg_10:0.370
+global step 3200 learning rate 0.0050 step-time 0.15 loss 687069.8750
+  valid: mrr_3:0.780 mrr_5:0.780 mrr_10:0.780 ndcg_3:0.323 ndcg_5:0.338 ndcg_10:0.373
+global step 3250 learning rate 0.0050 step-time 0.15 loss 681490.5625
+  valid: mrr_3:0.769 mrr_5:0.769 mrr_10:0.769 ndcg_3:0.316 ndcg_5:0.331 ndcg_10:0.363
+global step 3300 learning rate 0.0050 step-time 0.15 loss 675554.3125
+  valid: mrr_3:0.782 mrr_5:0.782 mrr_10:0.782 ndcg_3:0.321 ndcg_5:0.338 ndcg_10:0.373
+global step 3350 learning rate 0.0050 step-time 0.15 loss 676177.8125
+  valid: mrr_3:0.790 mrr_5:0.790 mrr_10:0.790 ndcg_3:0.324 ndcg_5:0.339 ndcg_10:0.374
+global step 3400 learning rate 0.0050 step-time 0.16 loss 673490.8750
+  valid: mrr_3:0.772 mrr_5:0.772 mrr_10:0.772 ndcg_3:0.318 ndcg_5:0.335 ndcg_10:0.373
+global step 3450 learning rate 0.0050 step-time 0.15 loss 674736.1250
+  valid: mrr_3:0.759 mrr_5:0.759 mrr_10:0.759 ndcg_3:0.304 ndcg_5:0.323 ndcg_10:0.358
+global step 3500 learning rate 0.0050 step-time 0.15 loss 675179.1875
+  valid: mrr_3:0.786 mrr_5:0.786 mrr_10:0.786 ndcg_3:0.324 ndcg_5:0.338 ndcg_10:0.375
+global step 3550 learning rate 0.0050 step-time 0.14 loss 662683.1250
+  valid: mrr_3:0.784 mrr_5:0.784 mrr_10:0.784 ndcg_3:0.317 ndcg_5:0.331 ndcg_10:0.368
+global step 3600 learning rate 0.0050 step-time 0.14 loss 669335.5000
+  valid: mrr_3:0.783 mrr_5:0.783 mrr_10:0.783 ndcg_3:0.326 ndcg_5:0.341 ndcg_10:0.375
+global step 3650 learning rate 0.0050 step-time 0.14 loss 676238.3125
+  valid: mrr_3:0.792 mrr_5:0.792 mrr_10:0.792 ndcg_3:0.331 ndcg_5:0.347 ndcg_10:0.381
+Save model, valid ndcg_10:0.381
+global step 3700 learning rate 0.0050 step-time 0.13 loss 683506.8750
+  valid: mrr_3:0.784 mrr_5:0.784 mrr_10:0.784 ndcg_3:0.312 ndcg_5:0.328 ndcg_10:0.364
+global step 3750 learning rate 0.0050 step-time 0.13 loss 682119.8125
+  valid: mrr_3:0.776 mrr_5:0.776 mrr_10:0.776 ndcg_3:0.310 ndcg_5:0.329 ndcg_10:0.363
+global step 3800 learning rate 0.0050 step-time 0.13 loss 660484.0625
+  valid: mrr_3:0.773 mrr_5:0.773 mrr_10:0.773 ndcg_3:0.311 ndcg_5:0.330 ndcg_10:0.365
+global step 3850 learning rate 0.0050 step-time 0.14 loss 667224.5625
+  valid: mrr_3:0.784 mrr_5:0.784 mrr_10:0.784 ndcg_3:0.315 ndcg_5:0.332 ndcg_10:0.366
+global step 3900 learning rate 0.0050 step-time 0.14 loss 677131.8750
+  valid: mrr_3:0.788 mrr_5:0.788 mrr_10:0.788 ndcg_3:0.321 ndcg_5:0.338 ndcg_10:0.371
+global step 3950 learning rate 0.0050 step-time 0.12 loss 690213.4375
+  valid: mrr_3:0.790 mrr_5:0.790 mrr_10:0.790 ndcg_3:0.324 ndcg_5:0.339 ndcg_10:0.372
+global step 4000 learning rate 0.0050 step-time 0.12 loss 676545.3125
+  valid: mrr_3:0.759 mrr_5:0.759 mrr_10:0.759 ndcg_3:0.305 ndcg_5:0.322 ndcg_10:0.357
+global step 4050 learning rate 0.0050 step-time 0.10 loss 684425.4375
+  valid: mrr_3:0.780 mrr_5:0.780 mrr_10:0.780 ndcg_3:0.313 ndcg_5:0.330 ndcg_10:0.364
+global step 4100 learning rate 0.0050 step-time 0.10 loss 678402.6250
+  valid: mrr_3:0.791 mrr_5:0.791 mrr_10:0.791 ndcg_3:0.314 ndcg_5:0.331 ndcg_10:0.366
+global step 4150 learning rate 0.0050 step-time 0.11 loss 680139.2500
+  valid: mrr_3:0.789 mrr_5:0.789 mrr_10:0.789 ndcg_3:0.322 ndcg_5:0.339 ndcg_10:0.373
+global step 4200 learning rate 0.0050 step-time 0.10 loss 675152.0000
+  valid: mrr_3:0.778 mrr_5:0.778 mrr_10:0.778 ndcg_3:0.314 ndcg_5:0.331 ndcg_10:0.364
+global step 4250 learning rate 0.0050 step-time 0.10 loss 676402.8125
+  valid: mrr_3:0.779 mrr_5:0.779 mrr_10:0.779 ndcg_3:0.320 ndcg_5:0.336 ndcg_10:0.372
+global step 4300 learning rate 0.0050 step-time 0.10 loss 667007.1875
+  valid: mrr_3:0.786 mrr_5:0.786 mrr_10:0.786 ndcg_3:0.319 ndcg_5:0.336 ndcg_10:0.371
+global step 4350 learning rate 0.0050 step-time 0.10 loss 666978.5000
+  valid: mrr_3:0.786 mrr_5:0.786 mrr_10:0.786 ndcg_3:0.325 ndcg_5:0.341 ndcg_10:0.376
+global step 4400 learning rate 0.0050 step-time 0.10 loss 687553.3750
+  valid: mrr_3:0.768 mrr_5:0.768 mrr_10:0.768 ndcg_3:0.310 ndcg_5:0.328 ndcg_10:0.364
+global step 4450 learning rate 0.0050 step-time 0.10 loss 675740.4375
+  valid: mrr_3:0.773 mrr_5:0.773 mrr_10:0.773 ndcg_3:0.313 ndcg_5:0.332 ndcg_10:0.369
+WARNING:tensorflow:From main.py:350: The name tf.app.run is deprecated. Please use tf.compat.v1.app.run instead.
+
+WARNING:tensorflow:From main.py:285: The name tf.ConfigProto is deprecated. Please use tf.compat.v1.ConfigProto instead.
+
+W0714 14:07:30.432252 140619959715648 module_wrapper.py:139] From main.py:285: The name tf.ConfigProto is deprecated. Please use tf.compat.v1.ConfigProto instead.
+
+WARNING:tensorflow:From main.py:287: The name tf.Session is deprecated. Please use tf.compat.v1.Session instead.
+
+W0714 14:07:30.432483 140619959715648 module_wrapper.py:139] From main.py:287: The name tf.Session is deprecated. Please use tf.compat.v1.Session instead.
+
+2021-07-14 14:07:30.433097: I tensorflow/core/platform/cpu_feature_guard.cc:142] Your CPU supports instructions that this TensorFlow binary was not compiled to use: AVX2 FMA
+2021-07-14 14:07:30.441815: I tensorflow/core/platform/profile_utils/cpu_utils.cc:94] CPU Frequency: 2297610000 Hz
+2021-07-14 14:07:30.443795: I tensorflow/compiler/xla/service/service.cc:168] XLA service 0x7fe4a6f70980 initialized for platform Host (this does not guarantee that XLA will be used). Devices:
+2021-07-14 14:07:30.443817: I tensorflow/compiler/xla/service/service.cc:176]   StreamExecutor device (0): Host, Default Version
+2021-07-14 14:07:30.445509: W tensorflow/stream_executor/platform/default/dso_loader.cc:55] Could not load dynamic library 'libcuda.so.1'; dlerror: libcuda.so.1: cannot open shared object file: No such file or directory; LD_LIBRARY_PATH: /usr/local/cuda/lib64:/usr/local/cuda/extras/CUPTI/lib64/:/usr/local/nvidia/lib:/usr/local/nvidia/lib64:/usr/lib:/usr/local/lib:/usr/local/cuda/lib64:/usr/local/cuda/extras/CUPTI/lib64/:/usr/local/nvidia/lib:/usr/local/nvidia/lib64:/usr/lib:/usr/local/lib::/usr/local/cuda-10.0/lib64:/usr/local/cuda-10.0/extras/CUPTI/lib64/:/usr/local/cuda-10.0/lib64:/usr/local/cuda-10.0/extras/CUPTI/lib64/
+2021-07-14 14:07:30.445528: E tensorflow/stream_executor/cuda/cuda_driver.cc:318] failed call to cuInit: UNKNOWN ERROR (303)
+2021-07-14 14:07:30.445551: I tensorflow/stream_executor/cuda/cuda_diagnostics.cc:156] kernel driver does not appear to be running on this host (100-107-171-86): /proc/driver/nvidia/version does not exist
+WARNING:tensorflow:From /data/notebooks/jupyter-notebook/violatang/l2r-paper/ULTRA/ultra/learning_algorithm/pairwise_debias.py:84: The name tf.placeholder is deprecated. Please use tf.compat.v1.placeholder instead.
+
+W0714 14:08:10.629302 140619959715648 module_wrapper.py:139] From /data/notebooks/jupyter-notebook/violatang/l2r-paper/ULTRA/ultra/learning_algorithm/pairwise_debias.py:84: The name tf.placeholder is deprecated. Please use tf.compat.v1.placeholder instead.
+
+WARNING:tensorflow:From /data/notebooks/jupyter-notebook/violatang/l2r-paper/ULTRA/ultra/learning_algorithm/base_algorithm.py:124: The name tf.variable_scope is deprecated. Please use tf.compat.v1.variable_scope instead.
+
+W0714 14:08:11.193058 140619959715648 module_wrapper.py:139] From /data/notebooks/jupyter-notebook/violatang/l2r-paper/ULTRA/ultra/learning_algorithm/base_algorithm.py:124: The name tf.variable_scope is deprecated. Please use tf.compat.v1.variable_scope instead.
+
+WARNING:tensorflow:From /data/notebooks/jupyter-notebook/violatang/l2r-paper/ULTRA/ultra/ranking_model/DNN.py:61: The name tf.get_variable_scope is deprecated. Please use tf.compat.v1.get_variable_scope instead.
+
+W0714 14:08:12.225063 140619959715648 module_wrapper.py:139] From /data/notebooks/jupyter-notebook/violatang/l2r-paper/ULTRA/ultra/ranking_model/DNN.py:61: The name tf.get_variable_scope is deprecated. Please use tf.compat.v1.get_variable_scope instead.
+
+WARNING:tensorflow:From /data/notebooks/jupyter-notebook/violatang/l2r-paper/ULTRA/ultra/ranking_model/DNN.py:62: The name tf.AUTO_REUSE is deprecated. Please use tf.compat.v1.AUTO_REUSE instead.
+
+W0714 14:08:12.225290 140619959715648 module_wrapper.py:139] From /data/notebooks/jupyter-notebook/violatang/l2r-paper/ULTRA/ultra/ranking_model/DNN.py:62: The name tf.AUTO_REUSE is deprecated. Please use tf.compat.v1.AUTO_REUSE instead.
+
+WARNING:tensorflow:From /data/miniconda3/envs/env-3.6.8/lib/python3.6/site-packages/tensorflow_core/python/ops/resource_variable_ops.py:1630: calling BaseResourceVariable.__init__ (from tensorflow.python.ops.resource_variable_ops) with constraint is deprecated and will be removed in a future version.
+Instructions for updating:
+If using Keras pass *_constraint arguments to layers.
+W0714 14:08:12.256738 140619959715648 deprecation.py:506] From /data/miniconda3/envs/env-3.6.8/lib/python3.6/site-packages/tensorflow_core/python/ops/resource_variable_ops.py:1630: calling BaseResourceVariable.__init__ (from tensorflow.python.ops.resource_variable_ops) with constraint is deprecated and will be removed in a future version.
+Instructions for updating:
+If using Keras pass *_constraint arguments to layers.
+WARNING:tensorflow:From /data/notebooks/jupyter-notebook/violatang/l2r-paper/ULTRA/ultra/ranking_model/base_ranking_model.py:121: The name tf.get_variable is deprecated. Please use tf.compat.v1.get_variable instead.
+
+W0714 14:08:12.271596 140619959715648 module_wrapper.py:139] From /data/notebooks/jupyter-notebook/violatang/l2r-paper/ULTRA/ultra/ranking_model/base_ranking_model.py:121: The name tf.get_variable is deprecated. Please use tf.compat.v1.get_variable instead.
+
+WARNING:tensorflow:From /data/notebooks/jupyter-notebook/violatang/l2r-paper/ULTRA/ultra/learning_algorithm/base_algorithm.py:85: where (from tensorflow.python.ops.array_ops) is deprecated and will be removed in a future version.
+Instructions for updating:
+Use tf.where in 2.0, which has the same broadcast rule as np.where
+W0714 14:08:13.465529 140619959715648 deprecation.py:323] From /data/notebooks/jupyter-notebook/violatang/l2r-paper/ULTRA/ultra/learning_algorithm/base_algorithm.py:85: where (from tensorflow.python.ops.array_ops) is deprecated and will be removed in a future version.
+Instructions for updating:
+Use tf.where in 2.0, which has the same broadcast rule as np.where
+WARNING:tensorflow:From /data/notebooks/jupyter-notebook/violatang/l2r-paper/ULTRA/ultra/utils/metrics.py:278: to_float (from tensorflow.python.ops.math_ops) is deprecated and will be removed in a future version.
+Instructions for updating:
+Use `tf.cast` instead.
+W0714 14:08:16.459632 140619959715648 deprecation.py:323] From /data/notebooks/jupyter-notebook/violatang/l2r-paper/ULTRA/ultra/utils/metrics.py:278: to_float (from tensorflow.python.ops.math_ops) is deprecated and will be removed in a future version.
+Instructions for updating:
+Use `tf.cast` instead.
+WARNING:tensorflow:From /data/notebooks/jupyter-notebook/violatang/l2r-paper/ULTRA/ultra/learning_algorithm/pairwise_debias.py:107: The name tf.summary.scalar is deprecated. Please use tf.compat.v1.summary.scalar instead.
+
+W0714 14:08:16.481881 140619959715648 module_wrapper.py:139] From /data/notebooks/jupyter-notebook/violatang/l2r-paper/ULTRA/ultra/learning_algorithm/pairwise_debias.py:107: The name tf.summary.scalar is deprecated. Please use tf.compat.v1.summary.scalar instead.
+
+WARNING:tensorflow:From /data/notebooks/jupyter-notebook/violatang/l2r-paper/ULTRA/ultra/utils/metrics.py:172: div (from tensorflow.python.ops.math_ops) is deprecated and will be removed in a future version.
+Instructions for updating:
+Deprecated in favor of operator or tf.math.divide.
+W0714 14:08:16.825626 140619959715648 deprecation.py:323] From /data/notebooks/jupyter-notebook/violatang/l2r-paper/ULTRA/ultra/utils/metrics.py:172: div (from tensorflow.python.ops.math_ops) is deprecated and will be removed in a future version.
+Instructions for updating:
+Deprecated in favor of operator or tf.math.divide.
+WARNING:tensorflow:From /data/notebooks/jupyter-notebook/violatang/l2r-paper/ULTRA/ultra/learning_algorithm/pairwise_debias.py:230: The name tf.summary.merge_all is deprecated. Please use tf.compat.v1.summary.merge_all instead.
+
+W0714 14:08:17.129129 140619959715648 module_wrapper.py:139] From /data/notebooks/jupyter-notebook/violatang/l2r-paper/ULTRA/ultra/learning_algorithm/pairwise_debias.py:230: The name tf.summary.merge_all is deprecated. Please use tf.compat.v1.summary.merge_all instead.
+
+WARNING:tensorflow:From /data/notebooks/jupyter-notebook/violatang/l2r-paper/ULTRA/ultra/learning_algorithm/pairwise_debias.py:232: The name tf.train.Saver is deprecated. Please use tf.compat.v1.train.Saver instead.
+
+W0714 14:08:17.130069 140619959715648 module_wrapper.py:139] From /data/notebooks/jupyter-notebook/violatang/l2r-paper/ULTRA/ultra/learning_algorithm/pairwise_debias.py:232: The name tf.train.Saver is deprecated. Please use tf.compat.v1.train.Saver instead.
+
+WARNING:tensorflow:From /data/notebooks/jupyter-notebook/violatang/l2r-paper/ULTRA/ultra/learning_algorithm/pairwise_debias.py:232: The name tf.global_variables is deprecated. Please use tf.compat.v1.global_variables instead.
+
+W0714 14:08:17.130218 140619959715648 module_wrapper.py:139] From /data/notebooks/jupyter-notebook/violatang/l2r-paper/ULTRA/ultra/learning_algorithm/pairwise_debias.py:232: The name tf.global_variables is deprecated. Please use tf.compat.v1.global_variables instead.
+
+INFO:tensorflow:Restoring parameters from /data/notebooks/jupyter-notebook/violatang/l2r-paper/MSLR_10k_letor/tmp_model_epsilon_mtl_pairwise_debias/ultra.learning_algorithm.PairDebias.ckpt-3650
+I0714 14:08:17.195764 140619959715648 saver.py:1284] Restoring parameters from /data/notebooks/jupyter-notebook/violatang/l2r-paper/MSLR_10k_letor/tmp_model_epsilon_mtl_pairwise_debias/ultra.learning_algorithm.PairDebias.ckpt-3650
+WARNING:tensorflow:From main.py:302: The name tf.summary.FileWriter is deprecated. Please use tf.compat.v1.summary.FileWriter instead.
+
+W0714 14:08:17.549279 140619959715648 module_wrapper.py:139] From main.py:302: The name tf.summary.FileWriter is deprecated. Please use tf.compat.v1.summary.FileWriter instead.
+
+Reading data in /data/notebooks/jupyter-notebook/violatang/l2r-paper/MSLR_10k_letor/tmp_data/
+Read data from /data/notebooks/jupyter-notebook/violatang/l2r-paper/MSLR_10k_letor/tmp_data//test in ULTRA format.
+Feature reading finish.
+List reading finish.
+Label reading finish.
+Remove 1 invalid queries.
+Data reading finish!
+Finished reading 1927 queries with lists.
+Build Pairwise Debiasing algorithm.
+
+ranking_model: <class 'ultra.ranking_model.DNN.DNN'>
+kwargs: {'rank_list_size': 514, 'forward_only': False}
+layer_norm objs for ranking_model is:
+[<tensorflow.python.keras.layers.normalization.LayerNormalization object at 0x7fdffb9f3f28>, <tensorflow.python.keras.layers.normalization.LayerNormalization object at 0x7fdffb6e6550>, <tensorflow.python.keras.layers.normalization.LayerNormalization object at 0x7fdffb703c50>, <tensorflow.python.keras.layers.normalization.LayerNormalization object at 0x7fdffb703e80>]
+Reading model parameters from /data/notebooks/jupyter-notebook/violatang/l2r-paper/MSLR_10k_letor/tmp_model_epsilon_mtl_pairwise_debias/ultra.learning_algorithm.PairDebias.ckpt-3650
+restore all parameters
+Create direct label feed with list size 514 with feature size 136
+Testing 13% finishedTesting 27% finishedTesting 40% finishedTesting 53% finishedTesting 66% finishedTesting 80% finishedTesting 93% finishedTesting 100% finishedWARNING:tensorflow:From /data/notebooks/jupyter-notebook/violatang/l2r-paper/ULTRA/ultra/utils/data_utils.py:367: The name tf.Summary is deprecated. Please use tf.compat.v1.Summary instead.
+
+W0714 14:08:27.105608 140619959715648 module_wrapper.py:139] From /data/notebooks/jupyter-notebook/violatang/l2r-paper/ULTRA/ultra/utils/data_utils.py:367: The name tf.Summary is deprecated. Please use tf.compat.v1.Summary instead.
+
+
+[Done]
+  eval: mrr_3:0.791 mrr_5:0.791 mrr_10:0.791 ndcg_3:0.329 ndcg_5:0.347 ndcg_10:0.379

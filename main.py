@@ -68,7 +68,13 @@ def create_model(session, exp_settings, data_set, forward_only):
     ckpt = tf.train.get_checkpoint_state(FLAGS.model_dir)
     if ckpt:
         print("Reading model parameters from %s" % ckpt.model_checkpoint_path)
-        model.saver.restore(session, ckpt.model_checkpoint_path)
+        if model.init:
+            print("restore some parameters and init some parameters")
+            model.saver_restore.restore(session, ckpt.model_checkpoint_path)
+            session.run(model.init)
+        else:
+            print("restore all parameters")
+            model.saver.restore(session, ckpt.model_checkpoint_path)
     else:
         print("Created model with fresh parameters.")
         session.run(tf.global_variables_initializer())

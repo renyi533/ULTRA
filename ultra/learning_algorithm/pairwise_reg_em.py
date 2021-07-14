@@ -78,6 +78,7 @@ class PairwiseRegressionEM(BaseAlgorithm):
             discount_fn='log1p',
             opt_metric='ndcg',
             exact_ips=False,
+            ips_hotstart=False,
             # Set strength for L2 regularization.
             l2_loss=0.00,
             grad_strategy='ada',            # Select gradient strategy
@@ -85,6 +86,8 @@ class PairwiseRegressionEM(BaseAlgorithm):
         print(exp_settings['learning_algorithm_hparams'])
         self.hparams.parse(exp_settings['learning_algorithm_hparams'])
         print("in pairwise regem.. hparams:", self.hparams)
+        self.init = None
+        print("model init:", self.init)
         self.exp_settings = exp_settings
         self.model = None
         self.max_candidate_num = exp_settings['max_candidate_num']
@@ -265,7 +268,16 @@ class PairwiseRegressionEM(BaseAlgorithm):
 
         self.train_summary = tf.summary.merge_all(key='train')
         self.eval_summary = tf.summary.merge_all(key='eval')
-        self.saver = tf.train.Saver(tf.global_variables())
+        global_variables = tf.global_variables()
+        print("global_variables:", global_variables)
+        if self.hparams.ips_hotstart:
+            variables_restore = [x for x in global_variables if "ips_ranking_model" not in x.name or "Adagrad" not in x.name]
+            variables_init = [x for x in global_variables if "ips_ranking_model" in x.name and "Adagrad" in x.name]
+            self.init = tf.variables_initializer(variables_init)
+            print("variables_init:", variables_init)
+            self.saver_restore = tf.train.Saver(variables_restore)
+            print("variables_restore:", variables_restore)
+        self.saver = tf.train.Saver(global_variables)
 
     def pairwise_regression_EM(self, train_output, ips_train_output, \
             train_labels, beta, binary_labels):
