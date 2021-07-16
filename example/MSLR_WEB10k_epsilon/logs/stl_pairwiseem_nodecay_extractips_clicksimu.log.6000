@@ -1,0 +1,3 @@
+--data_dir=/data/notebooks/jupyter-notebook/violatang/l2r-paper/MSLR_10k_letor/tmp_data/ --model_dir=/data/notebooks/jupyter-notebook/violatang/l2r-paper/MSLR_10k_letor/tmp_model_epsilon_stl_pairwiseem_nodecay_extractips/ --output_dir=/data/notebooks/jupyter-notebook/violatang/l2r-paper/MSLR_10k_letor/tmp_output/ --setting_file=./example/offline_setting_epsilon/pairwise_regression_EM_stl_nodecay_extractips_exp_settings.json
+WARNING:tensorflow:From main.py:350: The name tf.app.run is deprecated. Please use tf.compat.v1.app.run instead.
+

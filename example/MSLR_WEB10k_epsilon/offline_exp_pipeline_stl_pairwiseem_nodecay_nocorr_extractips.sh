@@ -76,7 +76,7 @@ python ./libsvm_tools/prepare_exp_data_with_svmrank.py $Data_path/tmp_toy/data/ 
 
 COMMENT
 
-export SETTING_ARGS="--data_dir=$Data_path/tmp_data/ --model_dir=$Data_path/tmp_model_epsilon_${task_name}/ --output_dir=$Data_path/tmp_output/ --setting_file=./example/offline_setting_epsilon/pointwise_regression_EM_mtl_nocorr_nodecay_exp_settings.json"
+export SETTING_ARGS="--data_dir=$Data_path/tmp_data/ --model_dir=$Data_path/tmp_model_epsilon_${task_name}/ --output_dir=$Data_path/tmp_output/ --setting_file=./example/offline_setting_epsilon/pairwise_regression_EM_stl_nocorr_nodecay_extractips_exp_settings.json"
 echo $SETTING_ARGS
 # Run model
 python3 main.py --max_train_iteration=2000 $SETTING_ARGS
