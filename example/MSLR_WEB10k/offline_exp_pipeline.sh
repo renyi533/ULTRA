@@ -78,5 +78,5 @@ echo $SETTING_ARGS
 # Run model
 python main.py --max_train_iteration=1000 $SETTING_ARGS
 
-Test model
+# Test model
 python main.py --test_only=True $SETTING_ARGS
