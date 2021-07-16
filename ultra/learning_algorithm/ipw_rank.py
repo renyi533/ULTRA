@@ -133,12 +133,15 @@ class IPWrank(BaseAlgorithm):
             reshaped_propensity = tf.transpose(
                 tf.convert_to_tensor(self.propensity_weights))
             if self.hparams.loss_func == 'sigmoid_loss':
+                print('sigmoid loss')
                 self.loss = self.sigmoid_loss_on_list(
                     train_output, reshaped_train_labels, reshaped_propensity)
             elif self.hparams.loss_func == 'pairwise_loss':
+                print('rankNet loss')
                 self.loss = self.pairwise_loss_on_list(
                     train_output, reshaped_train_labels, reshaped_propensity)
             else:
+                print('listNet loss')
                 self.loss = self.softmax_loss(
                     train_output, reshaped_train_labels, reshaped_propensity)
 

@@ -10,7 +10,7 @@
     "ranking_model_hparams":"hidden_layer_sizes=[512, 256, 128]",
 
     "learning_algorithm": "ultra.learning_algorithm.PairDebias",
-    "learning_algorithm_hparams":"",
+    "learning_algorithm_hparams":"learning_rate=0.02,EM_step_size=0.05",
 
     "metrics": [
         "mrr", "ndcg"

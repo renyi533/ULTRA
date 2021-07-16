@@ -58,7 +58,7 @@ class PairwiseAdversarial(BaseAlgorithm):
             max_gradient_norm=5.0,          # Clip gradients to this norm.
             gain_fn='exp',
             discount_fn='log1p',
-            opt_metric=None,
+            opt_metric='ndcg',
             mode='adv',
             relative_corr=False,
             self_norm_ips=0,

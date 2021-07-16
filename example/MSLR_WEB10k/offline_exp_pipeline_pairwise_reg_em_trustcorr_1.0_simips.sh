@@ -36,10 +36,10 @@ cd ../../
 # Download MSLR-WEB10K dataset.
 # view https://www.microsoft.com/en-us/research/project/mslr/ for the download link
 
-algo_name=pairwise_reg_em_trustcorr_1.0
+algo_name=pairwise_reg_em_trustcorr_1.0_simips
 rm -rf $Data_path/tmp_model_$algo_name/*
 
-export SETTING_ARGS="--data_dir=$Data_path/tmp_data/ --model_dir=$Data_path/tmp_model_$algo_name/ --output_dir=$Data_path/tmp_output_$algo_name/ --setting_file=./example/offline_setting/pairwise_regression_EM_noisy_trustcorr_1.0_exp_settings.json"
+export SETTING_ARGS="--data_dir=$Data_path/tmp_data/ --model_dir=$Data_path/tmp_model_$algo_name/ --output_dir=$Data_path/tmp_output_$algo_name/ --setting_file=./example/offline_setting/pairwise_regression_EM_noisy_trustcorr_1.0_exp_settings_simips.json"
 echo $SETTING_ARGS
 # Run model
 python main.py --max_train_iteration=5000 $SETTING_ARGS

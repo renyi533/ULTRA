@@ -67,6 +67,8 @@ class RegressionEM(BaseAlgorithm):
             EM_step_size=0.05,                  # Step size for EM algorithm.
             learning_rate=0.05,                 # Learning rate.
             max_gradient_norm=5.0,            # Clip gradients to this norm.
+            loss_func='softmax_loss',      # Select Loss function
+            em_only=True,
             # Set strength for L2 regularization.
             l2_loss=0.0,
             grad_strategy='ada',            # Select gradient strategy
@@ -74,6 +76,8 @@ class RegressionEM(BaseAlgorithm):
         print(exp_settings['learning_algorithm_hparams'])
         self.hparams.parse(exp_settings['learning_algorithm_hparams'])
         self.exp_settings = exp_settings
+        print('hparams:')
+        print(self.hparams)
         self.model = None
         self.max_candidate_num = exp_settings['max_candidate_num']
         self.feature_size = data_set.feature_size
@@ -95,8 +99,12 @@ class RegressionEM(BaseAlgorithm):
         self.global_step = tf.Variable(0, trainable=False)
 
         # Build model
-        self.output = self.ranking_model(
-            self.max_candidate_num, scope='ranking_model')
+        if self.hparams.em_only:
+            self.output = self.ranking_model(
+                self.max_candidate_num, scope='ranking_model')
+        else:
+            self.output = self.ranking_model(
+                self.max_candidate_num, scope='ips_ranking_model')            
 
         # reshape from [max_candidate_num, ?] to [?, max_candidate_num]
         reshaped_labels = tf.transpose(tf.convert_to_tensor(self.labels))
@@ -117,6 +125,10 @@ class RegressionEM(BaseAlgorithm):
             train_output = self.ranking_model(
                 self.rank_list_size, scope='ranking_model')
             train_output = train_output + sigmoid_prob_b
+            sigmoid_prob = tf.Variable(tf.ones([1]) - 1.0)
+            ips_train_output = self.ranking_model(
+                self.rank_list_size, scope='ips_ranking_model')
+            ips_train_output += sigmoid_prob
             train_labels = self.labels[:self.rank_list_size]
             self.propensity = tf.Variable(
                 tf.ones([1, self.rank_list_size]) * 0.9, trainable=False)
@@ -174,6 +186,22 @@ class RegressionEM(BaseAlgorithm):
                     i, additional_postive_instance, collections=['train'])
 
             self.propensity_weights = 1.0 / self.propensity
+            if self.hparams.loss_func == 'sigmoid_loss':
+                print('sigmoid loss')
+                ips_loss = self.sigmoid_loss_on_list(
+                    ips_train_output, reshaped_train_labels, self.propensity_weights)
+            elif self.hparams.loss_func == 'pairwise_loss':
+                print('rankNet loss')
+                ips_loss = self.pairwise_loss_on_list(
+                    ips_train_output, reshaped_train_labels, self.propensity_weights)
+            else:
+                print('listNet loss')
+                ips_loss = self.softmax_loss(
+                    ips_train_output, reshaped_train_labels, self.propensity_weights)
+
+            if not self.hparams.em_only:
+                self.loss += ips_loss
+
             params = tf.trainable_variables()
             if self.hparams.l2_loss > 0:
                 for p in params:
@@ -266,3 +294,4 @@ class RegressionEM(BaseAlgorithm):
             return outputs[1], None, outputs[-1]
         else:
             return None, outputs[1], outputs[0]    # loss, outputs, summary.
+

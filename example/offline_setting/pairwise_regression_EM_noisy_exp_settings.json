@@ -10,7 +10,7 @@
 	"ranking_model_hparams":"hidden_layer_sizes=[512, 256, 128]",
     
 	"learning_algorithm": "ultra.learning_algorithm.PairwiseRegressionEM",
-	"learning_algorithm_hparams":"corr_pair_clk_noise=False,corr_point_clk_noise=False,enable_ips=True,exact_ips=True,opt_metric=None",
+	"learning_algorithm_hparams":"learning_rate=0.02,EM_step_size=0.05,corr_pair_clk_noise=False,corr_point_clk_noise=False,enable_ips=True,exact_ips=True,opt_metric=None",
     
 	"metrics": [
 	    "mrr", "ndcg"
