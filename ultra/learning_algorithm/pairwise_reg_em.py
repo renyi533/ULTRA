@@ -385,8 +385,6 @@ class PairwiseRegressionEM(BaseAlgorithm):
             losses = pairwise_labels * tf.nn.sigmoid_cross_entropy_with_logits(
                         labels=pairwise_labels, logits=tf.log(pos_prob/(neg_prob+self.tau)))  
 
-        losses = losses * pairwise_weights          
-
         self.pairwise_loss = tf.reduce_mean(
                                     tf.reduce_sum(
                                         losses,
