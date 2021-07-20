@@ -1,17 +1,18 @@
 Data_path="./Yahoo_letor"   ## Data path where to unzip the data
 Data_folder=""            ## subfolder after unzip
 Feature_number=700              ## how many features for LETOR data
-Prepro_fun=""                ## additional function to do preprocessing, available, "log", "None", we default normalize data to -1 and 1. If choosing log, it will first using log function to the data and then normalize it to -1 and 1. 
+Prepro_fun=""                ## additional function to do preprocessing, available, "log", "None", we default normalize data to -  1 and 1. If choosing log, it will first using log function to the data and then normalize it to -1 and 1. 
 prefix="set1."                       ## name before data, for example setl.train.txt, prefix=set1.
-Data_zip_file=./Yahoodata/ltrc_yahoo.tar.bz2 ## zipped data file path.
+Data_zip_file=./Yahoodata/ltrc_yahoo.tgz ## zipped data file path.
 cd ../../
 # Download Yahoo! Letor dataset.
 # wget https://webscope.sandbox.yahoo.com/download.php?r=39201&d=
-# The link might be expired. If so, please go to https://webscope.sandbox.yahoo.com/catalog.php?datatype=c&did=64 for more information.
+# The link might be expired. If so, please go to https://webscope.sandbox.yahoo.com/catalog.php?datatype=c&did=64 for more         information.
 
 tar -zxvf dataset.tgz
 mkdir Yahoodata/
 mv Learning\ to\ Rank\ Challenge/* Yahoodata/
+mv ltrc_yahoo.tgz Yahoodata/
 mkdir $Data_path
 mkdir $Data_path/cleaned_data  # path to store data after cleaning
 mkdir $Data_path/normalized    # path to store data after nomalization
@@ -19,7 +20,7 @@ mkdir $Data_path/tmp_toy       # path to store toy version of training data whic
 mkdir $Data_path/tmp_toy/data 
 mkdir $Data_path/tmp_toy/tmp
 mkdir $Data_path/tmp_toy/tmp_data_toy
-tar  -xjf   $Data_zip_file --directory $Data_path
+tar  -xvzf   $Data_zip_file --directory $Data_path
 # Prepare the dataset.
 # Sort features, sort query id, remove duplicates, and remove queries without relevant documents in validation and test set.
 
