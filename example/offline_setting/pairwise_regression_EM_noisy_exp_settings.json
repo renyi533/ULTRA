@@ -13,7 +13,7 @@
 	"learning_algorithm_hparams":"learning_rate=0.02,EM_step_size=0.05,corr_pair_clk_noise=False,corr_point_clk_noise=False,enable_ips=True,exact_ips=True,opt_metric=None",
     
 	"metrics": [
-	    "mrr", "ndcg"
+	    "err", "mrr", "ndcg"
 	],
 	"metrics_topn" : [3,5,10],
 	"objective_metric": "ndcg_10"

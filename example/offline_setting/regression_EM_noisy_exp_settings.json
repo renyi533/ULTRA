@@ -13,7 +13,7 @@
 	"learning_algorithm_hparams":"learning_rate=0.02,EM_step_size=0.05,em_only=False,loss_func=softmax_loss",
     
 	"metrics": [
-	    "mrr", "ndcg"
+	    "err", "mrr", "ndcg"
 	],
 	"metrics_topn" : [3,5,10],
 	"objective_metric": "ndcg_10"

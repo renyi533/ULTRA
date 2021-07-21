@@ -14,7 +14,7 @@
     "learning_algorithm_hparams":"learning_rate=0.02",
 
     "metrics": [
-        "mrr", "ndcg"
+        "err", "mrr", "ndcg"
     ],
     "metrics_topn" : [3,5,10],
     "objective_metric": "ndcg_10"

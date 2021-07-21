@@ -13,7 +13,7 @@ wait_function () {
     done
 }
 
-while [ $i -lt 9 ]
+while [ $i -lt 22 ]
 do
 
 echo "starting round $i"
@@ -50,3 +50,6 @@ echo "YAY!"
 else
 echo "FAIL! ($FAIL)"
 fi
+
+echo "results:"
+find $log_dir -type f -name "*log" -exec awk '{s=$0};END{print FILENAME,s}' {} \; | sort
