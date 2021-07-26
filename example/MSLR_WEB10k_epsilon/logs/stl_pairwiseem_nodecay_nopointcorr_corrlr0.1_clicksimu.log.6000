@@ -1,0 +1,375 @@
+--data_dir=/data/notebooks/jupyter-notebook/violatang/l2r-paper/MSLR_10k_letor/tmp_data/ --model_dir=/data/notebooks/jupyter-notebook/violatang/l2r-paper/MSLR_10k_letor/tmp_model_epsilon_stl_pairwiseem_nodecay_nopointcorr_corrlr0.1/ --output_dir=/data/notebooks/jupyter-notebook/violatang/l2r-paper/MSLR_10k_letor/tmp_output/ --setting_file=./example/offline_setting_epsilon/pairwise_regression_EM_stl_nopointcorr_nodecay_corrlr0.1_exp_settings.json
+WARNING:tensorflow:From main.py:350: The name tf.app.run is deprecated. Please use tf.compat.v1.app.run instead.
+
+WARNING:tensorflow:From main.py:113: The name tf.ConfigProto is deprecated. Please use tf.compat.v1.ConfigProto instead.
+
+W0716 20:48:39.088699 139950765049664 module_wrapper.py:139] From main.py:113: The name tf.ConfigProto is deprecated. Please use tf.compat.v1.ConfigProto instead.
+
+WARNING:tensorflow:From main.py:115: The name tf.Session is deprecated. Please use tf.compat.v1.Session instead.
+
+W0716 20:48:39.089128 139950765049664 module_wrapper.py:139] From main.py:115: The name tf.Session is deprecated. Please use tf.compat.v1.Session instead.
+
+2021-07-16 20:48:39.089761: I tensorflow/core/platform/cpu_feature_guard.cc:142] Your CPU supports instructions that this TensorFlow binary was not compiled to use: AVX2 FMA
+2021-07-16 20:48:39.171867: I tensorflow/core/platform/profile_utils/cpu_utils.cc:94] CPU Frequency: 2595120000 Hz
+2021-07-16 20:48:39.175798: I tensorflow/compiler/xla/service/service.cc:168] XLA service 0x7f48d7a83670 initialized for platform Host (this does not guarantee that XLA will be used). Devices:
+2021-07-16 20:48:39.175843: I tensorflow/compiler/xla/service/service.cc:176]   StreamExecutor device (0): Host, Default Version
+2021-07-16 20:48:39.178477: W tensorflow/stream_executor/platform/default/dso_loader.cc:55] Could not load dynamic library 'libcuda.so.1'; dlerror: libcuda.so.1: cannot open shared object file: No such file or directory; LD_LIBRARY_PATH: /usr/local/cuda/lib64:/usr/local/cuda/extras/CUPTI/lib64/:/usr/local/nvidia/lib:/usr/local/nvidia/lib64:/usr/lib:/usr/local/lib:/usr/local/cuda/lib64:/usr/local/cuda/extras/CUPTI/lib64/:/usr/local/nvidia/lib:/usr/local/nvidia/lib64:/usr/lib:/usr/local/lib::/usr/local/cuda-10.0/lib64:/usr/local/cuda-10.0/extras/CUPTI/lib64/:/usr/local/cuda-10.0/lib64:/usr/local/cuda-10.0/extras/CUPTI/lib64/
+2021-07-16 20:48:39.178492: E tensorflow/stream_executor/cuda/cuda_driver.cc:318] failed call to cuInit: UNKNOWN ERROR (303)
+2021-07-16 20:48:39.178517: I tensorflow/stream_executor/cuda/cuda_diagnostics.cc:156] kernel driver does not appear to be running on this host (11-177-144-71): /proc/driver/nvidia/version does not exist
+WARNING:tensorflow:From /data/notebooks/jupyter-notebook/violatang/l2r-paper/ULTRA/ultra/learning_algorithm/pairwise_reg_em.py:103: The name tf.summary.scalar is deprecated. Please use tf.compat.v1.summary.scalar instead.
+
+W0716 20:48:39.192886 139950765049664 module_wrapper.py:139] From /data/notebooks/jupyter-notebook/violatang/l2r-paper/ULTRA/ultra/learning_algorithm/pairwise_reg_em.py:103: The name tf.summary.scalar is deprecated. Please use tf.compat.v1.summary.scalar instead.
+
+WARNING:tensorflow:From /data/notebooks/jupyter-notebook/violatang/l2r-paper/ULTRA/ultra/learning_algorithm/pairwise_reg_em.py:118: The name tf.placeholder is deprecated. Please use tf.compat.v1.placeholder instead.
+
+W0716 20:48:39.194489 139950765049664 module_wrapper.py:139] From /data/notebooks/jupyter-notebook/violatang/l2r-paper/ULTRA/ultra/learning_algorithm/pairwise_reg_em.py:118: The name tf.placeholder is deprecated. Please use tf.compat.v1.placeholder instead.
+
+WARNING:tensorflow:From /data/notebooks/jupyter-notebook/violatang/l2r-paper/ULTRA/ultra/learning_algorithm/pairwise_reg_em.py:120: Print (from tensorflow.python.ops.logging_ops) is deprecated and will be removed after 2018-08-20.
+Instructions for updating:
+Use tf.print instead of tf.Print. Note that tf.print returns a no-output operator that directly prints the output. Outside of defuns or eager mode, this operator will not be executed unless it is directly specified in session.run or used as a control dependency for other operators. This is only a concern in graph mode. Below is an example of how to ensure tf.print executes in graph mode:
+
+W0716 20:48:39.195456 139950765049664 deprecation.py:323] From /data/notebooks/jupyter-notebook/violatang/l2r-paper/ULTRA/ultra/learning_algorithm/pairwise_reg_em.py:120: Print (from tensorflow.python.ops.logging_ops) is deprecated and will be removed after 2018-08-20.
+Instructions for updating:
+Use tf.print instead of tf.Print. Note that tf.print returns a no-output operator that directly prints the output. Outside of defuns or eager mode, this operator will not be executed unless it is directly specified in session.run or used as a control dependency for other operators. This is only a concern in graph mode. Below is an example of how to ensure tf.print executes in graph mode:
+
+WARNING:tensorflow:From /data/notebooks/jupyter-notebook/violatang/l2r-paper/ULTRA/ultra/learning_algorithm/base_algorithm.py:124: The name tf.variable_scope is deprecated. Please use tf.compat.v1.variable_scope instead.
+
+W0716 20:48:40.533953 139950765049664 module_wrapper.py:139] From /data/notebooks/jupyter-notebook/violatang/l2r-paper/ULTRA/ultra/learning_algorithm/base_algorithm.py:124: The name tf.variable_scope is deprecated. Please use tf.compat.v1.variable_scope instead.
+
+WARNING:tensorflow:From /data/notebooks/jupyter-notebook/violatang/l2r-paper/ULTRA/ultra/ranking_model/DNN.py:61: The name tf.get_variable_scope is deprecated. Please use tf.compat.v1.get_variable_scope instead.
+
+W0716 20:48:42.828542 139950765049664 module_wrapper.py:139] From /data/notebooks/jupyter-notebook/violatang/l2r-paper/ULTRA/ultra/ranking_model/DNN.py:61: The name tf.get_variable_scope is deprecated. Please use tf.compat.v1.get_variable_scope instead.
+
+WARNING:tensorflow:From /data/notebooks/jupyter-notebook/violatang/l2r-paper/ULTRA/ultra/ranking_model/DNN.py:62: The name tf.AUTO_REUSE is deprecated. Please use tf.compat.v1.AUTO_REUSE instead.
+
+W0716 20:48:42.828755 139950765049664 module_wrapper.py:139] From /data/notebooks/jupyter-notebook/violatang/l2r-paper/ULTRA/ultra/ranking_model/DNN.py:62: The name tf.AUTO_REUSE is deprecated. Please use tf.compat.v1.AUTO_REUSE instead.
+
+WARNING:tensorflow:From /data/miniconda3/envs/env-3.6.8/lib/python3.6/site-packages/tensorflow_core/python/ops/resource_variable_ops.py:1630: calling BaseResourceVariable.__init__ (from tensorflow.python.ops.resource_variable_ops) with constraint is deprecated and will be removed in a future version.
+Instructions for updating:
+If using Keras pass *_constraint arguments to layers.
+W0716 20:48:42.868031 139950765049664 deprecation.py:506] From /data/miniconda3/envs/env-3.6.8/lib/python3.6/site-packages/tensorflow_core/python/ops/resource_variable_ops.py:1630: calling BaseResourceVariable.__init__ (from tensorflow.python.ops.resource_variable_ops) with constraint is deprecated and will be removed in a future version.
+Instructions for updating:
+If using Keras pass *_constraint arguments to layers.
+WARNING:tensorflow:From /data/notebooks/jupyter-notebook/violatang/l2r-paper/ULTRA/ultra/ranking_model/base_ranking_model.py:121: The name tf.get_variable is deprecated. Please use tf.compat.v1.get_variable instead.
+
+W0716 20:48:42.877700 139950765049664 module_wrapper.py:139] From /data/notebooks/jupyter-notebook/violatang/l2r-paper/ULTRA/ultra/ranking_model/base_ranking_model.py:121: The name tf.get_variable is deprecated. Please use tf.compat.v1.get_variable instead.
+
+WARNING:tensorflow:From /data/notebooks/jupyter-notebook/violatang/l2r-paper/ULTRA/ultra/learning_algorithm/base_algorithm.py:85: where (from tensorflow.python.ops.array_ops) is deprecated and will be removed in a future version.
+Instructions for updating:
+Use tf.where in 2.0, which has the same broadcast rule as np.where
+W0716 20:48:45.831305 139950765049664 deprecation.py:323] From /data/notebooks/jupyter-notebook/violatang/l2r-paper/ULTRA/ultra/learning_algorithm/base_algorithm.py:85: where (from tensorflow.python.ops.array_ops) is deprecated and will be removed in a future version.
+Instructions for updating:
+Use tf.where in 2.0, which has the same broadcast rule as np.where
+WARNING:tensorflow:From /data/notebooks/jupyter-notebook/violatang/l2r-paper/ULTRA/ultra/utils/metrics.py:278: to_float (from tensorflow.python.ops.math_ops) is deprecated and will be removed in a future version.
+Instructions for updating:
+Use `tf.cast` instead.
+W0716 20:48:52.773175 139950765049664 deprecation.py:323] From /data/notebooks/jupyter-notebook/violatang/l2r-paper/ULTRA/ultra/utils/metrics.py:278: to_float (from tensorflow.python.ops.math_ops) is deprecated and will be removed in a future version.
+Instructions for updating:
+Use `tf.cast` instead.
+WARNING:tensorflow:From /data/notebooks/jupyter-notebook/violatang/l2r-paper/ULTRA/ultra/utils/metrics.py:172: div (from tensorflow.python.ops.math_ops) is deprecated and will be removed in a future version.
+Instructions for updating:
+Deprecated in favor of operator or tf.math.divide.
+W0716 20:48:53.508938 139950765049664 deprecation.py:323] From /data/notebooks/jupyter-notebook/violatang/l2r-paper/ULTRA/ultra/utils/metrics.py:172: div (from tensorflow.python.ops.math_ops) is deprecated and will be removed in a future version.
+Instructions for updating:
+Deprecated in favor of operator or tf.math.divide.
+WARNING:tensorflow:From /data/notebooks/jupyter-notebook/violatang/l2r-paper/ULTRA/ultra/learning_algorithm/pairwise_reg_em.py:176: The name tf.summary.histogram is deprecated. Please use tf.compat.v1.summary.histogram instead.
+
+W0716 20:48:54.794006 139950765049664 module_wrapper.py:139] From /data/notebooks/jupyter-notebook/violatang/l2r-paper/ULTRA/ultra/learning_algorithm/pairwise_reg_em.py:176: The name tf.summary.histogram is deprecated. Please use tf.compat.v1.summary.histogram instead.
+
+WARNING:tensorflow:From /data/notebooks/jupyter-notebook/violatang/l2r-paper/ULTRA/ultra/learning_algorithm/pairwise_reg_em.py:503: calling reduce_sum_v1 (from tensorflow.python.ops.math_ops) with keep_dims is deprecated and will be removed in a future version.
+Instructions for updating:
+keep_dims is deprecated, use keepdims instead
+W0716 20:48:54.890210 139950765049664 deprecation.py:506] From /data/notebooks/jupyter-notebook/violatang/l2r-paper/ULTRA/ultra/learning_algorithm/pairwise_reg_em.py:503: calling reduce_sum_v1 (from tensorflow.python.ops.math_ops) with keep_dims is deprecated and will be removed in a future version.
+Instructions for updating:
+keep_dims is deprecated, use keepdims instead
+WARNING:tensorflow:From /data/notebooks/jupyter-notebook/violatang/l2r-paper/ULTRA/ultra/learning_algorithm/pairwise_reg_em.py:48: The name tf.ceil is deprecated. Please use tf.math.ceil instead.
+
+W0716 20:48:54.913165 139950765049664 module_wrapper.py:139] From /data/notebooks/jupyter-notebook/violatang/l2r-paper/ULTRA/ultra/learning_algorithm/pairwise_reg_em.py:48: The name tf.ceil is deprecated. Please use tf.math.ceil instead.
+
+WARNING:tensorflow:From /data/notebooks/jupyter-notebook/violatang/l2r-paper/ULTRA/ultra/learning_algorithm/pairwise_reg_em.py:48: The name tf.random_uniform is deprecated. Please use tf.random.uniform instead.
+
+W0716 20:48:54.913352 139950765049664 module_wrapper.py:139] From /data/notebooks/jupyter-notebook/violatang/l2r-paper/ULTRA/ultra/learning_algorithm/pairwise_reg_em.py:48: The name tf.random_uniform is deprecated. Please use tf.random.uniform instead.
+
+WARNING:tensorflow:From /data/notebooks/jupyter-notebook/violatang/l2r-paper/ULTRA/ultra/learning_algorithm/pairwise_reg_em.py:211: The name tf.trainable_variables is deprecated. Please use tf.compat.v1.trainable_variables instead.
+
+W0716 20:48:55.096500 139950765049664 module_wrapper.py:139] From /data/notebooks/jupyter-notebook/violatang/l2r-paper/ULTRA/ultra/learning_algorithm/pairwise_reg_em.py:211: The name tf.trainable_variables is deprecated. Please use tf.compat.v1.trainable_variables instead.
+
+WARNING:tensorflow:From /data/notebooks/jupyter-notebook/violatang/l2r-paper/ULTRA/ultra/learning_algorithm/pairwise_reg_em.py:219: The name tf.train.AdagradOptimizer is deprecated. Please use tf.compat.v1.train.AdagradOptimizer instead.
+
+W0716 20:48:55.097286 139950765049664 module_wrapper.py:139] From /data/notebooks/jupyter-notebook/violatang/l2r-paper/ULTRA/ultra/learning_algorithm/pairwise_reg_em.py:219: The name tf.train.AdagradOptimizer is deprecated. Please use tf.compat.v1.train.AdagradOptimizer instead.
+
+WARNING:tensorflow:From /data/miniconda3/envs/env-3.6.8/lib/python3.6/site-packages/tensorflow_core/python/training/adagrad.py:76: calling Constant.__init__ (from tensorflow.python.ops.init_ops) with dtype is deprecated and will be removed in a future version.
+Instructions for updating:
+Call initializer instance with the dtype argument instead of passing it to the constructor
+W0716 20:48:55.870460 139950765049664 deprecation.py:506] From /data/miniconda3/envs/env-3.6.8/lib/python3.6/site-packages/tensorflow_core/python/training/adagrad.py:76: calling Constant.__init__ (from tensorflow.python.ops.init_ops) with dtype is deprecated and will be removed in a future version.
+Instructions for updating:
+Call initializer instance with the dtype argument instead of passing it to the constructor
+WARNING:tensorflow:From /data/notebooks/jupyter-notebook/violatang/l2r-paper/ULTRA/ultra/learning_algorithm/pairwise_reg_em.py:269: The name tf.summary.merge_all is deprecated. Please use tf.compat.v1.summary.merge_all instead.
+
+W0716 20:48:57.044268 139950765049664 module_wrapper.py:139] From /data/notebooks/jupyter-notebook/violatang/l2r-paper/ULTRA/ultra/learning_algorithm/pairwise_reg_em.py:269: The name tf.summary.merge_all is deprecated. Please use tf.compat.v1.summary.merge_all instead.
+
+WARNING:tensorflow:From /data/notebooks/jupyter-notebook/violatang/l2r-paper/ULTRA/ultra/learning_algorithm/pairwise_reg_em.py:271: The name tf.global_variables is deprecated. Please use tf.compat.v1.global_variables instead.
+
+W0716 20:48:57.053343 139950765049664 module_wrapper.py:139] From /data/notebooks/jupyter-notebook/violatang/l2r-paper/ULTRA/ultra/learning_algorithm/pairwise_reg_em.py:271: The name tf.global_variables is deprecated. Please use tf.compat.v1.global_variables instead.
+
+WARNING:tensorflow:From /data/notebooks/jupyter-notebook/violatang/l2r-paper/ULTRA/ultra/learning_algorithm/pairwise_reg_em.py:280: The name tf.train.Saver is deprecated. Please use tf.compat.v1.train.Saver instead.
+
+W0716 20:48:57.054618 139950765049664 module_wrapper.py:139] From /data/notebooks/jupyter-notebook/violatang/l2r-paper/ULTRA/ultra/learning_algorithm/pairwise_reg_em.py:280: The name tf.train.Saver is deprecated. Please use tf.compat.v1.train.Saver instead.
+
+INFO:tensorflow:Restoring parameters from /data/notebooks/jupyter-notebook/violatang/l2r-paper/MSLR_10k_letor/tmp_model_epsilon_stl_pairwiseem_nodecay_nopointcorr_corrlr0.1/ultra.learning_algorithm.PairwiseRegressionEM.ckpt-2850
+I0716 20:48:57.224337 139950765049664 saver.py:1284] Restoring parameters from /data/notebooks/jupyter-notebook/violatang/l2r-paper/MSLR_10k_letor/tmp_model_epsilon_stl_pairwiseem_nodecay_nopointcorr_corrlr0.1/ultra.learning_algorithm.PairwiseRegressionEM.ckpt-2850
+WARNING:tensorflow:From main.py:129: The name tf.summary.FileWriter is deprecated. Please use tf.compat.v1.summary.FileWriter instead.
+
+W0716 20:48:59.497757 139950765049664 module_wrapper.py:139] From main.py:129: The name tf.summary.FileWriter is deprecated. Please use tf.compat.v1.summary.FileWriter instead.
+
+WARNING:tensorflow:From /data/notebooks/jupyter-notebook/violatang/l2r-paper/ULTRA/ultra/utils/data_utils.py:367: The name tf.Summary is deprecated. Please use tf.compat.v1.Summary instead.
+
+W0716 20:49:54.812751 139950765049664 module_wrapper.py:139] From /data/notebooks/jupyter-notebook/violatang/l2r-paper/ULTRA/ultra/utils/data_utils.py:367: The name tf.Summary is deprecated. Please use tf.compat.v1.Summary instead.
+
+Reading data in /data/notebooks/jupyter-notebook/violatang/l2r-paper/MSLR_10k_letor/tmp_data/
+Read data from /data/notebooks/jupyter-notebook/violatang/l2r-paper/MSLR_10k_letor/tmp_data//train in ULTRA format.
+Feature reading finish.
+List reading finish.
+Label reading finish.
+Remove 183 invalid queries.
+Data reading finish!
+Finished reading 5817 queries with lists.
+Read data from /data/notebooks/jupyter-notebook/violatang/l2r-paper/MSLR_10k_letor/tmp_data//valid in ULTRA format.
+Feature reading finish.
+List reading finish.
+Label reading finish.
+Remove 0 invalid queries.
+Data reading finish!
+Finished reading 1939 queries with lists.
+Train Rank list size 809
+Valid Rank list size 908
+Users can only see the top 10 documents for each query in training.
+Creating model...
+Build Pairwise RegressionEM algorithm.
+corr_pair_clk_noise=True,opt_metric=None,clk_noise_EM_ratio=0.1
+in pairwise regem.. hparams: [('EM_step_size', 0.05), ('clk_noise_EM_ratio', 0.1), ('corr_pair_clk_noise', True), ('corr_point_clk_noise', False), ('discount_fn', 'log1p'), ('enable_ips', False), ('exact_ips', False), ('gain_fn', 'exp'), ('grad_strategy', 'ada'), ('ips_hotstart', False), ('l2_loss', 0.0), ('learning_rate', 0.05), ('max_gradient_norm', 5.0), ('opt_metric', 'None'), ('pointwise_only', False), ('reg_em_type', 0), ('step_decay_ratio', -0.0)]
+model init: None
+None
+ranking_model: <class 'ultra.ranking_model.DNN.DNN'>
+kwargs: {'rank_list_size': 908, 'forward_only': False}
+layer_norm objs for ranking_model is:
+[<tensorflow.python.keras.layers.normalization.LayerNormalization object at 0x7f44907b1898>, <tensorflow.python.keras.layers.normalization.LayerNormalization object at 0x7f449025f518>, <tensorflow.python.keras.layers.normalization.LayerNormalization object at 0x7f4490211390>, <tensorflow.python.keras.layers.normalization.LayerNormalization object at 0x7f44902115c0>]
+kwargs: {'rank_list_size': 10, 'forward_only': False}
+layer_norm objs for point_ranking_model is:
+[<tensorflow.python.keras.layers.normalization.LayerNormalization object at 0x7f44784b7f98>, <tensorflow.python.keras.layers.normalization.LayerNormalization object at 0x7f447844a358>, <tensorflow.python.keras.layers.normalization.LayerNormalization object at 0x7f447844aa20>, <tensorflow.python.keras.layers.normalization.LayerNormalization object at 0x7f447844ac88>]
+kwargs: {'rank_list_size': 10, 'forward_only': False}
+layer_norm objs for ranking_model is:
+[<tensorflow.python.keras.layers.normalization.LayerNormalization object at 0x7f44907b1898>, <tensorflow.python.keras.layers.normalization.LayerNormalization object at 0x7f449025f518>, <tensorflow.python.keras.layers.normalization.LayerNormalization object at 0x7f4490211390>, <tensorflow.python.keras.layers.normalization.LayerNormalization object at 0x7f44902115c0>]
+kwargs: {'rank_list_size': 10, 'forward_only': False}
+layer_norm objs for ips_ranking_model is:
+[<tensorflow.python.keras.layers.normalization.LayerNormalization object at 0x7f4478388da0>, <tensorflow.python.keras.layers.normalization.LayerNormalization object at 0x7f447839f588>, <tensorflow.python.keras.layers.normalization.LayerNormalization object at 0x7f447839fc50>, <tensorflow.python.keras.layers.normalization.LayerNormalization object at 0x7f447839feb8>]
+trainable vars:
+[<tf.Variable 'ranking_model/ranking_model/layer_norm_0/gamma:0' shape=(136,) dtype=float32>, <tf.Variable 'ranking_model/ranking_model/layer_norm_0/beta:0' shape=(136,) dtype=float32>, <tf.Variable 'ranking_model/dnn_W_0:0' shape=(136, 512) dtype=float32_ref>, <tf.Variable 'ranking_model/dnn_b_0:0' shape=(512,) dtype=float32_ref>, <tf.Variable 'ranking_model/ranking_model/layer_norm_1/gamma:0' shape=(512,) dtype=float32>, <tf.Variable 'ranking_model/ranking_model/layer_norm_1/beta:0' shape=(512,) dtype=float32>, <tf.Variable 'ranking_model/dnn_W_1:0' shape=(512, 256) dtype=float32_ref>, <tf.Variable 'ranking_model/dnn_b_1:0' shape=(256,) dtype=float32_ref>, <tf.Variable 'ranking_model/ranking_model/layer_norm_2/gamma:0' shape=(256,) dtype=float32>, <tf.Variable 'ranking_model/ranking_model/layer_norm_2/beta:0' shape=(256,) dtype=float32>, <tf.Variable 'ranking_model/dnn_W_2:0' shape=(256, 128) dtype=float32_ref>, <tf.Variable 'ranking_model/dnn_b_2:0' shape=(128,) dtype=float32_ref>, <tf.Variable 'ranking_model/ranking_model/layer_norm_3/gamma:0' shape=(128,) dtype=float32>, <tf.Variable 'ranking_model/ranking_model/layer_norm_3/beta:0' shape=(128,) dtype=float32>, <tf.Variable 'ranking_model/dnn_W_3:0' shape=(128, 1) dtype=float32_ref>, <tf.Variable 'ranking_model/dnn_b_3:0' shape=(1,) dtype=float32_ref>, <tf.Variable 'sigmoid_prob_b:0' shape=(1,) dtype=float32_ref>, <tf.Variable 'point_ranking_model/point_ranking_model/layer_norm_0/gamma:0' shape=(136,) dtype=float32>, <tf.Variable 'point_ranking_model/point_ranking_model/layer_norm_0/beta:0' shape=(136,) dtype=float32>, <tf.Variable 'point_ranking_model/dnn_W_0:0' shape=(136, 512) dtype=float32_ref>, <tf.Variable 'point_ranking_model/dnn_b_0:0' shape=(512,) dtype=float32_ref>, <tf.Variable 'point_ranking_model/point_ranking_model/layer_norm_1/gamma:0' shape=(512,) dtype=float32>, <tf.Variable 'point_ranking_model/point_ranking_model/layer_norm_1/beta:0' shape=(512,) dtype=float32>, <tf.Variable 'point_ranking_model/dnn_W_1:0' shape=(512, 256) dtype=float32_ref>, <tf.Variable 'point_ranking_model/dnn_b_1:0' shape=(256,) dtype=float32_ref>, <tf.Variable 'point_ranking_model/point_ranking_model/layer_norm_2/gamma:0' shape=(256,) dtype=float32>, <tf.Variable 'point_ranking_model/point_ranking_model/layer_norm_2/beta:0' shape=(256,) dtype=float32>, <tf.Variable 'point_ranking_model/dnn_W_2:0' shape=(256, 128) dtype=float32_ref>, <tf.Variable 'point_ranking_model/dnn_b_2:0' shape=(128,) dtype=float32_ref>, <tf.Variable 'point_ranking_model/point_ranking_model/layer_norm_3/gamma:0' shape=(128,) dtype=float32>, <tf.Variable 'point_ranking_model/point_ranking_model/layer_norm_3/beta:0' shape=(128,) dtype=float32>, <tf.Variable 'point_ranking_model/dnn_W_3:0' shape=(128, 1) dtype=float32_ref>, <tf.Variable 'point_ranking_model/dnn_b_3:0' shape=(1,) dtype=float32_ref>, <tf.Variable 'ips_ranking_model/ips_ranking_model/layer_norm_0/gamma:0' shape=(136,) dtype=float32>, <tf.Variable 'ips_ranking_model/ips_ranking_model/layer_norm_0/beta:0' shape=(136,) dtype=float32>, <tf.Variable 'ips_ranking_model/dnn_W_0:0' shape=(136, 512) dtype=float32_ref>, <tf.Variable 'ips_ranking_model/dnn_b_0:0' shape=(512,) dtype=float32_ref>, <tf.Variable 'ips_ranking_model/ips_ranking_model/layer_norm_1/gamma:0' shape=(512,) dtype=float32>, <tf.Variable 'ips_ranking_model/ips_ranking_model/layer_norm_1/beta:0' shape=(512,) dtype=float32>, <tf.Variable 'ips_ranking_model/dnn_W_1:0' shape=(512, 256) dtype=float32_ref>, <tf.Variable 'ips_ranking_model/dnn_b_1:0' shape=(256,) dtype=float32_ref>, <tf.Variable 'ips_ranking_model/ips_ranking_model/layer_norm_2/gamma:0' shape=(256,) dtype=float32>, <tf.Variable 'ips_ranking_model/ips_ranking_model/layer_norm_2/beta:0' shape=(256,) dtype=float32>, <tf.Variable 'ips_ranking_model/dnn_W_2:0' shape=(256, 128) dtype=float32_ref>, <tf.Variable 'ips_ranking_model/dnn_b_2:0' shape=(128,) dtype=float32_ref>, <tf.Variable 'ips_ranking_model/ips_ranking_model/layer_norm_3/gamma:0' shape=(128,) dtype=float32>, <tf.Variable 'ips_ranking_model/ips_ranking_model/layer_norm_3/beta:0' shape=(128,) dtype=float32>, <tf.Variable 'ips_ranking_model/dnn_W_3:0' shape=(128, 1) dtype=float32_ref>, <tf.Variable 'ips_ranking_model/dnn_b_3:0' shape=(1,) dtype=float32_ref>]
+global_variables: [<tf.Variable 'Variable:0' shape=() dtype=int32_ref>, <tf.Variable 'Variable_1:0' shape=() dtype=float32_ref>, <tf.Variable 'ranking_model/ranking_model/layer_norm_0/gamma:0' shape=(136,) dtype=float32>, <tf.Variable 'ranking_model/ranking_model/layer_norm_0/beta:0' shape=(136,) dtype=float32>, <tf.Variable 'ranking_model/dnn_W_0:0' shape=(136, 512) dtype=float32_ref>, <tf.Variable 'ranking_model/dnn_b_0:0' shape=(512,) dtype=float32_ref>, <tf.Variable 'ranking_model/ranking_model/layer_norm_1/gamma:0' shape=(512,) dtype=float32>, <tf.Variable 'ranking_model/ranking_model/layer_norm_1/beta:0' shape=(512,) dtype=float32>, <tf.Variable 'ranking_model/dnn_W_1:0' shape=(512, 256) dtype=float32_ref>, <tf.Variable 'ranking_model/dnn_b_1:0' shape=(256,) dtype=float32_ref>, <tf.Variable 'ranking_model/ranking_model/layer_norm_2/gamma:0' shape=(256,) dtype=float32>, <tf.Variable 'ranking_model/ranking_model/layer_norm_2/beta:0' shape=(256,) dtype=float32>, <tf.Variable 'ranking_model/dnn_W_2:0' shape=(256, 128) dtype=float32_ref>, <tf.Variable 'ranking_model/dnn_b_2:0' shape=(128,) dtype=float32_ref>, <tf.Variable 'ranking_model/ranking_model/layer_norm_3/gamma:0' shape=(128,) dtype=float32>, <tf.Variable 'ranking_model/ranking_model/layer_norm_3/beta:0' shape=(128,) dtype=float32>, <tf.Variable 'ranking_model/dnn_W_3:0' shape=(128, 1) dtype=float32_ref>, <tf.Variable 'ranking_model/dnn_b_3:0' shape=(1,) dtype=float32_ref>, <tf.Variable 'sigmoid_prob_b:0' shape=(1,) dtype=float32_ref>, <tf.Variable 'point_ranking_model/point_ranking_model/layer_norm_0/gamma:0' shape=(136,) dtype=float32>, <tf.Variable 'point_ranking_model/point_ranking_model/layer_norm_0/beta:0' shape=(136,) dtype=float32>, <tf.Variable 'point_ranking_model/dnn_W_0:0' shape=(136, 512) dtype=float32_ref>, <tf.Variable 'point_ranking_model/dnn_b_0:0' shape=(512,) dtype=float32_ref>, <tf.Variable 'point_ranking_model/point_ranking_model/layer_norm_1/gamma:0' shape=(512,) dtype=float32>, <tf.Variable 'point_ranking_model/point_ranking_model/layer_norm_1/beta:0' shape=(512,) dtype=float32>, <tf.Variable 'point_ranking_model/dnn_W_1:0' shape=(512, 256) dtype=float32_ref>, <tf.Variable 'point_ranking_model/dnn_b_1:0' shape=(256,) dtype=float32_ref>, <tf.Variable 'point_ranking_model/point_ranking_model/layer_norm_2/gamma:0' shape=(256,) dtype=float32>, <tf.Variable 'point_ranking_model/point_ranking_model/layer_norm_2/beta:0' shape=(256,) dtype=float32>, <tf.Variable 'point_ranking_model/dnn_W_2:0' shape=(256, 128) dtype=float32_ref>, <tf.Variable 'point_ranking_model/dnn_b_2:0' shape=(128,) dtype=float32_ref>, <tf.Variable 'point_ranking_model/point_ranking_model/layer_norm_3/gamma:0' shape=(128,) dtype=float32>, <tf.Variable 'point_ranking_model/point_ranking_model/layer_norm_3/beta:0' shape=(128,) dtype=float32>, <tf.Variable 'point_ranking_model/dnn_W_3:0' shape=(128, 1) dtype=float32_ref>, <tf.Variable 'point_ranking_model/dnn_b_3:0' shape=(1,) dtype=float32_ref>, <tf.Variable 'ips_ranking_model/ips_ranking_model/layer_norm_0/gamma:0' shape=(136,) dtype=float32>, <tf.Variable 'ips_ranking_model/ips_ranking_model/layer_norm_0/beta:0' shape=(136,) dtype=float32>, <tf.Variable 'ips_ranking_model/dnn_W_0:0' shape=(136, 512) dtype=float32_ref>, <tf.Variable 'ips_ranking_model/dnn_b_0:0' shape=(512,) dtype=float32_ref>, <tf.Variable 'ips_ranking_model/ips_ranking_model/layer_norm_1/gamma:0' shape=(512,) dtype=float32>, <tf.Variable 'ips_ranking_model/ips_ranking_model/layer_norm_1/beta:0' shape=(512,) dtype=float32>, <tf.Variable 'ips_ranking_model/dnn_W_1:0' shape=(512, 256) dtype=float32_ref>, <tf.Variable 'ips_ranking_model/dnn_b_1:0' shape=(256,) dtype=float32_ref>, <tf.Variable 'ips_ranking_model/ips_ranking_model/layer_norm_2/gamma:0' shape=(256,) dtype=float32>, <tf.Variable 'ips_ranking_model/ips_ranking_model/layer_norm_2/beta:0' shape=(256,) dtype=float32>, <tf.Variable 'ips_ranking_model/dnn_W_2:0' shape=(256, 128) dtype=float32_ref>, <tf.Variable 'ips_ranking_model/dnn_b_2:0' shape=(128,) dtype=float32_ref>, <tf.Variable 'ips_ranking_model/ips_ranking_model/layer_norm_3/gamma:0' shape=(128,) dtype=float32>, <tf.Variable 'ips_ranking_model/ips_ranking_model/layer_norm_3/beta:0' shape=(128,) dtype=float32>, <tf.Variable 'ips_ranking_model/dnn_W_3:0' shape=(128, 1) dtype=float32_ref>, <tf.Variable 'ips_ranking_model/dnn_b_3:0' shape=(1,) dtype=float32_ref>, <tf.Variable 'Variable_2:0' shape=(1, 10) dtype=float32_ref>, <tf.Variable 'Variable_3:0' shape=(1, 10) dtype=float32_ref>, <tf.Variable 'Variable_4:0' shape=(1, 10) dtype=float32_ref>, <tf.Variable 'Variable_5:0' shape=(1, 10) dtype=float32_ref>, <tf.Variable 'Variable_6:0' shape=(1, 10, 10) dtype=float32_ref>, <tf.Variable 'Variable_7:0' shape=(1, 10, 10) dtype=float32_ref>, <tf.Variable 'ranking_model/ranking_model/layer_norm_0/gamma/Adagrad:0' shape=(136,) dtype=float32>, <tf.Variable 'ranking_model/ranking_model/layer_norm_0/beta/Adagrad:0' shape=(136,) dtype=float32>, <tf.Variable 'ranking_model/dnn_W_0/Adagrad:0' shape=(136, 512) dtype=float32_ref>, <tf.Variable 'ranking_model/dnn_b_0/Adagrad:0' shape=(512,) dtype=float32_ref>, <tf.Variable 'ranking_model/ranking_model/layer_norm_1/gamma/Adagrad:0' shape=(512,) dtype=float32>, <tf.Variable 'ranking_model/ranking_model/layer_norm_1/beta/Adagrad:0' shape=(512,) dtype=float32>, <tf.Variable 'ranking_model/dnn_W_1/Adagrad:0' shape=(512, 256) dtype=float32_ref>, <tf.Variable 'ranking_model/dnn_b_1/Adagrad:0' shape=(256,) dtype=float32_ref>, <tf.Variable 'ranking_model/ranking_model/layer_norm_2/gamma/Adagrad:0' shape=(256,) dtype=float32>, <tf.Variable 'ranking_model/ranking_model/layer_norm_2/beta/Adagrad:0' shape=(256,) dtype=float32>, <tf.Variable 'ranking_model/dnn_W_2/Adagrad:0' shape=(256, 128) dtype=float32_ref>, <tf.Variable 'ranking_model/dnn_b_2/Adagrad:0' shape=(128,) dtype=float32_ref>, <tf.Variable 'ranking_model/ranking_model/layer_norm_3/gamma/Adagrad:0' shape=(128,) dtype=float32>, <tf.Variable 'ranking_model/ranking_model/layer_norm_3/beta/Adagrad:0' shape=(128,) dtype=float32>, <tf.Variable 'ranking_model/dnn_W_3/Adagrad:0' shape=(128, 1) dtype=float32_ref>, <tf.Variable 'ranking_model/dnn_b_3/Adagrad:0' shape=(1,) dtype=float32_ref>, <tf.Variable 'sigmoid_prob_b/Adagrad:0' shape=(1,) dtype=float32_ref>, <tf.Variable 'point_ranking_model/point_ranking_model/layer_norm_0/gamma/Adagrad:0' shape=(136,) dtype=float32>, <tf.Variable 'point_ranking_model/point_ranking_model/layer_norm_0/beta/Adagrad:0' shape=(136,) dtype=float32>, <tf.Variable 'point_ranking_model/dnn_W_0/Adagrad:0' shape=(136, 512) dtype=float32_ref>, <tf.Variable 'point_ranking_model/dnn_b_0/Adagrad:0' shape=(512,) dtype=float32_ref>, <tf.Variable 'point_ranking_model/point_ranking_model/layer_norm_1/gamma/Adagrad:0' shape=(512,) dtype=float32>, <tf.Variable 'point_ranking_model/point_ranking_model/layer_norm_1/beta/Adagrad:0' shape=(512,) dtype=float32>, <tf.Variable 'point_ranking_model/dnn_W_1/Adagrad:0' shape=(512, 256) dtype=float32_ref>, <tf.Variable 'point_ranking_model/dnn_b_1/Adagrad:0' shape=(256,) dtype=float32_ref>, <tf.Variable 'point_ranking_model/point_ranking_model/layer_norm_2/gamma/Adagrad:0' shape=(256,) dtype=float32>, <tf.Variable 'point_ranking_model/point_ranking_model/layer_norm_2/beta/Adagrad:0' shape=(256,) dtype=float32>, <tf.Variable 'point_ranking_model/dnn_W_2/Adagrad:0' shape=(256, 128) dtype=float32_ref>, <tf.Variable 'point_ranking_model/dnn_b_2/Adagrad:0' shape=(128,) dtype=float32_ref>, <tf.Variable 'point_ranking_model/point_ranking_model/layer_norm_3/gamma/Adagrad:0' shape=(128,) dtype=float32>, <tf.Variable 'point_ranking_model/point_ranking_model/layer_norm_3/beta/Adagrad:0' shape=(128,) dtype=float32>, <tf.Variable 'point_ranking_model/dnn_W_3/Adagrad:0' shape=(128, 1) dtype=float32_ref>, <tf.Variable 'point_ranking_model/dnn_b_3/Adagrad:0' shape=(1,) dtype=float32_ref>]
+Reading model parameters from /data/notebooks/jupyter-notebook/violatang/l2r-paper/MSLR_10k_letor/tmp_model_epsilon_stl_pairwiseem_nodecay_nopointcorr_corrlr0.1/ultra.learning_algorithm.PairwiseRegressionEM.ckpt-2850
+restore all parameters
+Create MTL Epsilon simluated clicks feed
+
+Create direct label feed with list size 908 with feature size 136
+global step 2900 learning rate 0.0500 step-time 0.31 loss 13.3846
+  valid: mrr_3:0.752 mrr_5:0.752 mrr_10:0.752 ndcg_3:0.312 ndcg_5:0.324 ndcg_10:0.351
+Save model, valid ndcg_10:0.351
+global step 2950 learning rate 0.0500 step-time 0.21 loss 13.7142
+  valid: mrr_3:0.568 mrr_5:0.568 mrr_10:0.568 ndcg_3:0.122 ndcg_5:0.135 ndcg_10:0.162
+global step 3000 learning rate 0.0500 step-time 0.20 loss 13.3831
+  valid: mrr_3:0.529 mrr_5:0.529 mrr_10:0.529 ndcg_3:0.106 ndcg_5:0.119 ndcg_10:0.145
+global step 3050 learning rate 0.0500 step-time 0.23 loss 13.8289
+  valid: mrr_3:0.499 mrr_5:0.498 mrr_10:0.499 ndcg_3:0.096 ndcg_5:0.113 ndcg_10:0.144
+global step 3100 learning rate 0.0500 step-time 0.27 loss 13.9547
+  valid: mrr_3:0.501 mrr_5:0.501 mrr_10:0.500 ndcg_3:0.099 ndcg_5:0.111 ndcg_10:0.142
+global step 3150 learning rate 0.0500 step-time 0.27 loss 13.9778
+  valid: mrr_3:0.470 mrr_5:0.470 mrr_10:0.470 ndcg_3:0.087 ndcg_5:0.100 ndcg_10:0.128
+global step 3200 learning rate 0.0500 step-time 0.25 loss 13.8506
+  valid: mrr_3:0.491 mrr_5:0.491 mrr_10:0.491 ndcg_3:0.097 ndcg_5:0.113 ndcg_10:0.143
+global step 3250 learning rate 0.0500 step-time 0.23 loss 13.6510
+  valid: mrr_3:0.540 mrr_5:0.540 mrr_10:0.540 ndcg_3:0.123 ndcg_5:0.137 ndcg_10:0.167
+global step 3300 learning rate 0.0500 step-time 0.13 loss 13.7596
+  valid: mrr_3:0.521 mrr_5:0.521 mrr_10:0.521 ndcg_3:0.138 ndcg_5:0.156 ndcg_10:0.193
+global step 3350 learning rate 0.0500 step-time 0.13 loss 13.6499
+  valid: mrr_3:0.465 mrr_5:0.465 mrr_10:0.465 ndcg_3:0.099 ndcg_5:0.112 ndcg_10:0.139
+global step 3400 learning rate 0.0500 step-time 0.13 loss 13.6566
+  valid: mrr_3:0.484 mrr_5:0.484 mrr_10:0.484 ndcg_3:0.091 ndcg_5:0.103 ndcg_10:0.125
+global step 3450 learning rate 0.0500 step-time 0.13 loss 13.5851
+  valid: mrr_3:0.472 mrr_5:0.472 mrr_10:0.472 ndcg_3:0.086 ndcg_5:0.096 ndcg_10:0.119
+global step 3500 learning rate 0.0500 step-time 0.17 loss 13.8220
+  valid: mrr_3:0.465 mrr_5:0.465 mrr_10:0.465 ndcg_3:0.082 ndcg_5:0.093 ndcg_10:0.116
+global step 3550 learning rate 0.0500 step-time 0.12 loss 13.8896
+  valid: mrr_3:0.489 mrr_5:0.489 mrr_10:0.489 ndcg_3:0.087 ndcg_5:0.100 ndcg_10:0.124
+global step 3600 learning rate 0.0500 step-time 0.13 loss 13.4462
+  valid: mrr_3:0.717 mrr_5:0.717 mrr_10:0.717 ndcg_3:0.270 ndcg_5:0.284 ndcg_10:0.311
+global step 3650 learning rate 0.0500 step-time 0.13 loss 13.7223
+  valid: mrr_3:0.508 mrr_5:0.508 mrr_10:0.508 ndcg_3:0.096 ndcg_5:0.109 ndcg_10:0.133
+global step 3700 learning rate 0.0500 step-time 0.13 loss 13.5468
+  valid: mrr_3:0.514 mrr_5:0.514 mrr_10:0.514 ndcg_3:0.098 ndcg_5:0.111 ndcg_10:0.138
+global step 3750 learning rate 0.0500 step-time 0.13 loss 13.7865
+  valid: mrr_3:0.557 mrr_5:0.557 mrr_10:0.557 ndcg_3:0.117 ndcg_5:0.130 ndcg_10:0.158
+global step 3800 learning rate 0.0500 step-time 0.13 loss 14.0656
+  valid: mrr_3:0.701 mrr_5:0.701 mrr_10:0.701 ndcg_3:0.243 ndcg_5:0.257 ndcg_10:0.288
+global step 3850 learning rate 0.0500 step-time 0.13 loss 13.6878
+  valid: mrr_3:0.607 mrr_5:0.607 mrr_10:0.607 ndcg_3:0.161 ndcg_5:0.176 ndcg_10:0.207
+global step 3900 learning rate 0.0500 step-time 0.13 loss 13.7115
+  valid: mrr_3:0.635 mrr_5:0.635 mrr_10:0.635 ndcg_3:0.191 ndcg_5:0.207 ndcg_10:0.238
+global step 3950 learning rate 0.0500 step-time 0.13 loss 13.6796
+  valid: mrr_3:0.541 mrr_5:0.541 mrr_10:0.541 ndcg_3:0.118 ndcg_5:0.132 ndcg_10:0.161
+global step 4000 learning rate 0.0500 step-time 0.12 loss 13.7415
+  valid: mrr_3:0.527 mrr_5:0.527 mrr_10:0.527 ndcg_3:0.109 ndcg_5:0.120 ndcg_10:0.150
+global step 4050 learning rate 0.0500 step-time 0.13 loss 13.5095
+  valid: mrr_3:0.541 mrr_5:0.541 mrr_10:0.541 ndcg_3:0.117 ndcg_5:0.131 ndcg_10:0.162
+global step 4100 learning rate 0.0500 step-time 0.13 loss 13.7166
+  valid: mrr_3:0.586 mrr_5:0.586 mrr_10:0.586 ndcg_3:0.144 ndcg_5:0.157 ndcg_10:0.188
+global step 4150 learning rate 0.0500 step-time 0.15 loss 13.6590
+  valid: mrr_3:0.756 mrr_5:0.756 mrr_10:0.756 ndcg_3:0.313 ndcg_5:0.323 ndcg_10:0.346
+global step 4200 learning rate 0.0500 step-time 0.13 loss 13.5356
+  valid: mrr_3:0.558 mrr_5:0.558 mrr_10:0.558 ndcg_3:0.128 ndcg_5:0.142 ndcg_10:0.172
+global step 4250 learning rate 0.0500 step-time 0.19 loss 13.5866
+  valid: mrr_3:0.628 mrr_5:0.628 mrr_10:0.628 ndcg_3:0.156 ndcg_5:0.170 ndcg_10:0.201
+global step 4300 learning rate 0.0500 step-time 0.28 loss 13.6979
+  valid: mrr_3:0.553 mrr_5:0.553 mrr_10:0.553 ndcg_3:0.111 ndcg_5:0.122 ndcg_10:0.149
+global step 4350 learning rate 0.0500 step-time 0.27 loss 13.6916
+  valid: mrr_3:0.607 mrr_5:0.607 mrr_10:0.607 ndcg_3:0.135 ndcg_5:0.153 ndcg_10:0.182
+global step 4400 learning rate 0.0500 step-time 0.22 loss 13.7649
+  valid: mrr_3:0.599 mrr_5:0.599 mrr_10:0.599 ndcg_3:0.137 ndcg_5:0.155 ndcg_10:0.187
+global step 4450 learning rate 0.0500 step-time 0.20 loss 13.6286
+  valid: mrr_3:0.640 mrr_5:0.640 mrr_10:0.641 ndcg_3:0.156 ndcg_5:0.174 ndcg_10:0.209
+global step 4500 learning rate 0.0500 step-time 0.23 loss 13.7575
+  valid: mrr_3:0.604 mrr_5:0.604 mrr_10:0.604 ndcg_3:0.139 ndcg_5:0.158 ndcg_10:0.190
+global step 4550 learning rate 0.0500 step-time 0.28 loss 13.5584
+  valid: mrr_3:0.680 mrr_5:0.680 mrr_10:0.680 ndcg_3:0.229 ndcg_5:0.248 ndcg_10:0.283
+global step 4600 learning rate 0.0500 step-time 0.23 loss 13.6456
+  valid: mrr_3:0.611 mrr_5:0.611 mrr_10:0.611 ndcg_3:0.159 ndcg_5:0.176 ndcg_10:0.209
+global step 4650 learning rate 0.0500 step-time 0.21 loss 13.6472
+  valid: mrr_3:0.558 mrr_5:0.558 mrr_10:0.558 ndcg_3:0.115 ndcg_5:0.130 ndcg_10:0.159
+global step 4700 learning rate 0.0500 step-time 0.21 loss 13.8282
+  valid: mrr_3:0.568 mrr_5:0.568 mrr_10:0.568 ndcg_3:0.125 ndcg_5:0.140 ndcg_10:0.170
+global step 4750 learning rate 0.0500 step-time 0.25 loss 13.9866
+  valid: mrr_3:0.556 mrr_5:0.556 mrr_10:0.556 ndcg_3:0.111 ndcg_5:0.126 ndcg_10:0.155
+global step 4800 learning rate 0.0500 step-time 0.28 loss 13.9612
+  valid: mrr_3:0.545 mrr_5:0.545 mrr_10:0.544 ndcg_3:0.132 ndcg_5:0.145 ndcg_10:0.177
+global step 4850 learning rate 0.0500 step-time 0.28 loss 13.4601
+  valid: mrr_3:0.562 mrr_5:0.562 mrr_10:0.562 ndcg_3:0.193 ndcg_5:0.209 ndcg_10:0.249
+global step 4900 learning rate 0.0500 step-time 0.25 loss 13.5239
+  valid: mrr_3:0.605 mrr_5:0.605 mrr_10:0.605 ndcg_3:0.214 ndcg_5:0.230 ndcg_10:0.265
+WARNING:tensorflow:From main.py:350: The name tf.app.run is deprecated. Please use tf.compat.v1.app.run instead.
+
+WARNING:tensorflow:From main.py:285: The name tf.ConfigProto is deprecated. Please use tf.compat.v1.ConfigProto instead.
+
+W0716 21:09:12.785228 139855190021952 module_wrapper.py:139] From main.py:285: The name tf.ConfigProto is deprecated. Please use tf.compat.v1.ConfigProto instead.
+
+WARNING:tensorflow:From main.py:287: The name tf.Session is deprecated. Please use tf.compat.v1.Session instead.
+
+W0716 21:09:12.785520 139855190021952 module_wrapper.py:139] From main.py:287: The name tf.Session is deprecated. Please use tf.compat.v1.Session instead.
+
+2021-07-16 21:09:12.786180: I tensorflow/core/platform/cpu_feature_guard.cc:142] Your CPU supports instructions that this TensorFlow binary was not compiled to use: AVX2 FMA
+2021-07-16 21:09:12.795917: I tensorflow/core/platform/profile_utils/cpu_utils.cc:94] CPU Frequency: 2595120000 Hz
+2021-07-16 21:09:12.799687: I tensorflow/compiler/xla/service/service.cc:168] XLA service 0x7f3297ef2e20 initialized for platform Host (this does not guarantee that XLA will be used). Devices:
+2021-07-16 21:09:12.799736: I tensorflow/compiler/xla/service/service.cc:176]   StreamExecutor device (0): Host, Default Version
+2021-07-16 21:09:12.801284: W tensorflow/stream_executor/platform/default/dso_loader.cc:55] Could not load dynamic library 'libcuda.so.1'; dlerror: libcuda.so.1: cannot open shared object file: No such file or directory; LD_LIBRARY_PATH: /usr/local/cuda/lib64:/usr/local/cuda/extras/CUPTI/lib64/:/usr/local/nvidia/lib:/usr/local/nvidia/lib64:/usr/lib:/usr/local/lib:/usr/local/cuda/lib64:/usr/local/cuda/extras/CUPTI/lib64/:/usr/local/nvidia/lib:/usr/local/nvidia/lib64:/usr/lib:/usr/local/lib::/usr/local/cuda-10.0/lib64:/usr/local/cuda-10.0/extras/CUPTI/lib64/:/usr/local/cuda-10.0/lib64:/usr/local/cuda-10.0/extras/CUPTI/lib64/
+2021-07-16 21:09:12.801307: E tensorflow/stream_executor/cuda/cuda_driver.cc:318] failed call to cuInit: UNKNOWN ERROR (303)
+2021-07-16 21:09:12.801334: I tensorflow/stream_executor/cuda/cuda_diagnostics.cc:156] kernel driver does not appear to be running on this host (11-177-144-71): /proc/driver/nvidia/version does not exist
+WARNING:tensorflow:From /data/notebooks/jupyter-notebook/violatang/l2r-paper/ULTRA/ultra/learning_algorithm/pairwise_reg_em.py:103: The name tf.summary.scalar is deprecated. Please use tf.compat.v1.summary.scalar instead.
+
+W0716 21:10:11.517076 139855190021952 module_wrapper.py:139] From /data/notebooks/jupyter-notebook/violatang/l2r-paper/ULTRA/ultra/learning_algorithm/pairwise_reg_em.py:103: The name tf.summary.scalar is deprecated. Please use tf.compat.v1.summary.scalar instead.
+
+WARNING:tensorflow:From /data/notebooks/jupyter-notebook/violatang/l2r-paper/ULTRA/ultra/learning_algorithm/pairwise_reg_em.py:118: The name tf.placeholder is deprecated. Please use tf.compat.v1.placeholder instead.
+
+W0716 21:10:11.518775 139855190021952 module_wrapper.py:139] From /data/notebooks/jupyter-notebook/violatang/l2r-paper/ULTRA/ultra/learning_algorithm/pairwise_reg_em.py:118: The name tf.placeholder is deprecated. Please use tf.compat.v1.placeholder instead.
+
+WARNING:tensorflow:From /data/notebooks/jupyter-notebook/violatang/l2r-paper/ULTRA/ultra/learning_algorithm/pairwise_reg_em.py:120: Print (from tensorflow.python.ops.logging_ops) is deprecated and will be removed after 2018-08-20.
+Instructions for updating:
+Use tf.print instead of tf.Print. Note that tf.print returns a no-output operator that directly prints the output. Outside of defuns or eager mode, this operator will not be executed unless it is directly specified in session.run or used as a control dependency for other operators. This is only a concern in graph mode. Below is an example of how to ensure tf.print executes in graph mode:
+
+W0716 21:10:11.519625 139855190021952 deprecation.py:323] From /data/notebooks/jupyter-notebook/violatang/l2r-paper/ULTRA/ultra/learning_algorithm/pairwise_reg_em.py:120: Print (from tensorflow.python.ops.logging_ops) is deprecated and will be removed after 2018-08-20.
+Instructions for updating:
+Use tf.print instead of tf.Print. Note that tf.print returns a no-output operator that directly prints the output. Outside of defuns or eager mode, this operator will not be executed unless it is directly specified in session.run or used as a control dependency for other operators. This is only a concern in graph mode. Below is an example of how to ensure tf.print executes in graph mode:
+
+WARNING:tensorflow:From /data/notebooks/jupyter-notebook/violatang/l2r-paper/ULTRA/ultra/learning_algorithm/base_algorithm.py:124: The name tf.variable_scope is deprecated. Please use tf.compat.v1.variable_scope instead.
+
+W0716 21:10:11.965055 139855190021952 module_wrapper.py:139] From /data/notebooks/jupyter-notebook/violatang/l2r-paper/ULTRA/ultra/learning_algorithm/base_algorithm.py:124: The name tf.variable_scope is deprecated. Please use tf.compat.v1.variable_scope instead.
+
+WARNING:tensorflow:From /data/notebooks/jupyter-notebook/violatang/l2r-paper/ULTRA/ultra/ranking_model/DNN.py:61: The name tf.get_variable_scope is deprecated. Please use tf.compat.v1.get_variable_scope instead.
+
+W0716 21:10:12.891948 139855190021952 module_wrapper.py:139] From /data/notebooks/jupyter-notebook/violatang/l2r-paper/ULTRA/ultra/ranking_model/DNN.py:61: The name tf.get_variable_scope is deprecated. Please use tf.compat.v1.get_variable_scope instead.
+
+WARNING:tensorflow:From /data/notebooks/jupyter-notebook/violatang/l2r-paper/ULTRA/ultra/ranking_model/DNN.py:62: The name tf.AUTO_REUSE is deprecated. Please use tf.compat.v1.AUTO_REUSE instead.
+
+W0716 21:10:12.892144 139855190021952 module_wrapper.py:139] From /data/notebooks/jupyter-notebook/violatang/l2r-paper/ULTRA/ultra/ranking_model/DNN.py:62: The name tf.AUTO_REUSE is deprecated. Please use tf.compat.v1.AUTO_REUSE instead.
+
+WARNING:tensorflow:From /data/miniconda3/envs/env-3.6.8/lib/python3.6/site-packages/tensorflow_core/python/ops/resource_variable_ops.py:1630: calling BaseResourceVariable.__init__ (from tensorflow.python.ops.resource_variable_ops) with constraint is deprecated and will be removed in a future version.
+Instructions for updating:
+If using Keras pass *_constraint arguments to layers.
+W0716 21:10:12.917832 139855190021952 deprecation.py:506] From /data/miniconda3/envs/env-3.6.8/lib/python3.6/site-packages/tensorflow_core/python/ops/resource_variable_ops.py:1630: calling BaseResourceVariable.__init__ (from tensorflow.python.ops.resource_variable_ops) with constraint is deprecated and will be removed in a future version.
+Instructions for updating:
+If using Keras pass *_constraint arguments to layers.
+WARNING:tensorflow:From /data/notebooks/jupyter-notebook/violatang/l2r-paper/ULTRA/ultra/ranking_model/base_ranking_model.py:121: The name tf.get_variable is deprecated. Please use tf.compat.v1.get_variable instead.
+
+W0716 21:10:12.928185 139855190021952 module_wrapper.py:139] From /data/notebooks/jupyter-notebook/violatang/l2r-paper/ULTRA/ultra/ranking_model/base_ranking_model.py:121: The name tf.get_variable is deprecated. Please use tf.compat.v1.get_variable instead.
+
+WARNING:tensorflow:From /data/notebooks/jupyter-notebook/violatang/l2r-paper/ULTRA/ultra/learning_algorithm/base_algorithm.py:85: where (from tensorflow.python.ops.array_ops) is deprecated and will be removed in a future version.
+Instructions for updating:
+Use tf.where in 2.0, which has the same broadcast rule as np.where
+W0716 21:10:14.481911 139855190021952 deprecation.py:323] From /data/notebooks/jupyter-notebook/violatang/l2r-paper/ULTRA/ultra/learning_algorithm/base_algorithm.py:85: where (from tensorflow.python.ops.array_ops) is deprecated and will be removed in a future version.
+Instructions for updating:
+Use tf.where in 2.0, which has the same broadcast rule as np.where
+WARNING:tensorflow:From /data/notebooks/jupyter-notebook/violatang/l2r-paper/ULTRA/ultra/utils/metrics.py:278: to_float (from tensorflow.python.ops.math_ops) is deprecated and will be removed in a future version.
+Instructions for updating:
+Use `tf.cast` instead.
+W0716 21:10:19.173288 139855190021952 deprecation.py:323] From /data/notebooks/jupyter-notebook/violatang/l2r-paper/ULTRA/ultra/utils/metrics.py:278: to_float (from tensorflow.python.ops.math_ops) is deprecated and will be removed in a future version.
+Instructions for updating:
+Use `tf.cast` instead.
+WARNING:tensorflow:From /data/notebooks/jupyter-notebook/violatang/l2r-paper/ULTRA/ultra/utils/metrics.py:172: div (from tensorflow.python.ops.math_ops) is deprecated and will be removed in a future version.
+Instructions for updating:
+Deprecated in favor of operator or tf.math.divide.
+W0716 21:10:19.759544 139855190021952 deprecation.py:323] From /data/notebooks/jupyter-notebook/violatang/l2r-paper/ULTRA/ultra/utils/metrics.py:172: div (from tensorflow.python.ops.math_ops) is deprecated and will be removed in a future version.
+Instructions for updating:
+Deprecated in favor of operator or tf.math.divide.
+WARNING:tensorflow:From /data/notebooks/jupyter-notebook/violatang/l2r-paper/ULTRA/ultra/learning_algorithm/pairwise_reg_em.py:269: The name tf.summary.merge_all is deprecated. Please use tf.compat.v1.summary.merge_all instead.
+
+W0716 21:10:19.991795 139855190021952 module_wrapper.py:139] From /data/notebooks/jupyter-notebook/violatang/l2r-paper/ULTRA/ultra/learning_algorithm/pairwise_reg_em.py:269: The name tf.summary.merge_all is deprecated. Please use tf.compat.v1.summary.merge_all instead.
+
+WARNING:tensorflow:From /data/notebooks/jupyter-notebook/violatang/l2r-paper/ULTRA/ultra/learning_algorithm/pairwise_reg_em.py:271: The name tf.global_variables is deprecated. Please use tf.compat.v1.global_variables instead.
+
+W0716 21:10:19.992825 139855190021952 module_wrapper.py:139] From /data/notebooks/jupyter-notebook/violatang/l2r-paper/ULTRA/ultra/learning_algorithm/pairwise_reg_em.py:271: The name tf.global_variables is deprecated. Please use tf.compat.v1.global_variables instead.
+
+WARNING:tensorflow:From /data/notebooks/jupyter-notebook/violatang/l2r-paper/ULTRA/ultra/learning_algorithm/pairwise_reg_em.py:280: The name tf.train.Saver is deprecated. Please use tf.compat.v1.train.Saver instead.
+
+W0716 21:10:19.993216 139855190021952 module_wrapper.py:139] From /data/notebooks/jupyter-notebook/violatang/l2r-paper/ULTRA/ultra/learning_algorithm/pairwise_reg_em.py:280: The name tf.train.Saver is deprecated. Please use tf.compat.v1.train.Saver instead.
+
+INFO:tensorflow:Restoring parameters from /data/notebooks/jupyter-notebook/violatang/l2r-paper/MSLR_10k_letor/tmp_model_epsilon_stl_pairwiseem_nodecay_nopointcorr_corrlr0.1/ultra.learning_algorithm.PairwiseRegressionEM.ckpt-2900
+I0716 21:10:20.052489 139855190021952 saver.py:1284] Restoring parameters from /data/notebooks/jupyter-notebook/violatang/l2r-paper/MSLR_10k_letor/tmp_model_epsilon_stl_pairwiseem_nodecay_nopointcorr_corrlr0.1/ultra.learning_algorithm.PairwiseRegressionEM.ckpt-2900
+WARNING:tensorflow:From main.py:302: The name tf.summary.FileWriter is deprecated. Please use tf.compat.v1.summary.FileWriter instead.
+
+W0716 21:10:21.376777 139855190021952 module_wrapper.py:139] From main.py:302: The name tf.summary.FileWriter is deprecated. Please use tf.compat.v1.summary.FileWriter instead.
+
+Reading data in /data/notebooks/jupyter-notebook/violatang/l2r-paper/MSLR_10k_letor/tmp_data/
+Read data from /data/notebooks/jupyter-notebook/violatang/l2r-paper/MSLR_10k_letor/tmp_data//test in ULTRA format.
+Feature reading finish.
+List reading finish.
+Label reading finish.
+Remove 1 invalid queries.
+Data reading finish!
+Finished reading 1927 queries with lists.
+Build Pairwise RegressionEM algorithm.
+corr_pair_clk_noise=True,opt_metric=None,clk_noise_EM_ratio=0.1
+in pairwise regem.. hparams: [('EM_step_size', 0.05), ('clk_noise_EM_ratio', 0.1), ('corr_pair_clk_noise', True), ('corr_point_clk_noise', False), ('discount_fn', 'log1p'), ('enable_ips', False), ('exact_ips', False), ('gain_fn', 'exp'), ('grad_strategy', 'ada'), ('ips_hotstart', False), ('l2_loss', 0.0), ('learning_rate', 0.05), ('max_gradient_norm', 5.0), ('opt_metric', 'None'), ('pointwise_only', False), ('reg_em_type', 0), ('step_decay_ratio', -0.0)]
+model init: None
+None
+ranking_model: <class 'ultra.ranking_model.DNN.DNN'>
+kwargs: {'rank_list_size': 514, 'forward_only': False}
+layer_norm objs for ranking_model is:
+[<tensorflow.python.keras.layers.normalization.LayerNormalization object at 0x7f2b3444af98>, <tensorflow.python.keras.layers.normalization.LayerNormalization object at 0x7f2b341b8828>, <tensorflow.python.keras.layers.normalization.LayerNormalization object at 0x7f2b34156ef0>, <tensorflow.python.keras.layers.normalization.LayerNormalization object at 0x7f2b34171160>]
+global_variables: [<tf.Variable 'Variable:0' shape=() dtype=int32_ref>, <tf.Variable 'Variable_1:0' shape=() dtype=float32_ref>, <tf.Variable 'ranking_model/ranking_model/layer_norm_0/gamma:0' shape=(136,) dtype=float32>, <tf.Variable 'ranking_model/ranking_model/layer_norm_0/beta:0' shape=(136,) dtype=float32>, <tf.Variable 'ranking_model/dnn_W_0:0' shape=(136, 512) dtype=float32_ref>, <tf.Variable 'ranking_model/dnn_b_0:0' shape=(512,) dtype=float32_ref>, <tf.Variable 'ranking_model/ranking_model/layer_norm_1/gamma:0' shape=(512,) dtype=float32>, <tf.Variable 'ranking_model/ranking_model/layer_norm_1/beta:0' shape=(512,) dtype=float32>, <tf.Variable 'ranking_model/dnn_W_1:0' shape=(512, 256) dtype=float32_ref>, <tf.Variable 'ranking_model/dnn_b_1:0' shape=(256,) dtype=float32_ref>, <tf.Variable 'ranking_model/ranking_model/layer_norm_2/gamma:0' shape=(256,) dtype=float32>, <tf.Variable 'ranking_model/ranking_model/layer_norm_2/beta:0' shape=(256,) dtype=float32>, <tf.Variable 'ranking_model/dnn_W_2:0' shape=(256, 128) dtype=float32_ref>, <tf.Variable 'ranking_model/dnn_b_2:0' shape=(128,) dtype=float32_ref>, <tf.Variable 'ranking_model/ranking_model/layer_norm_3/gamma:0' shape=(128,) dtype=float32>, <tf.Variable 'ranking_model/ranking_model/layer_norm_3/beta:0' shape=(128,) dtype=float32>, <tf.Variable 'ranking_model/dnn_W_3:0' shape=(128, 1) dtype=float32_ref>, <tf.Variable 'ranking_model/dnn_b_3:0' shape=(1,) dtype=float32_ref>]
+Reading model parameters from /data/notebooks/jupyter-notebook/violatang/l2r-paper/MSLR_10k_letor/tmp_model_epsilon_stl_pairwiseem_nodecay_nopointcorr_corrlr0.1/ultra.learning_algorithm.PairwiseRegressionEM.ckpt-2900
+restore all parameters
+Create direct label feed with list size 514 with feature size 136
+Testing 13% finishedTesting 27% finishedTesting 40% finishedTesting 53% finishedTesting 66% finishedTesting 80% finishedTesting 93% finishedTesting 100% finishedWARNING:tensorflow:From /data/notebooks/jupyter-notebook/violatang/l2r-paper/ULTRA/ultra/utils/data_utils.py:367: The name tf.Summary is deprecated. Please use tf.compat.v1.Summary instead.
+
+W0716 21:10:39.486813 139855190021952 module_wrapper.py:139] From /data/notebooks/jupyter-notebook/violatang/l2r-paper/ULTRA/ultra/utils/data_utils.py:367: The name tf.Summary is deprecated. Please use tf.compat.v1.Summary instead.
+
+
+[Done]
+  eval: mrr_3:0.759 mrr_5:0.759 mrr_10:0.759 ndcg_3:0.316 ndcg_5:0.328 ndcg_10:0.356

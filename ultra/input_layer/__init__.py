@@ -5,6 +5,7 @@ from .click_simulation_feed import *
 from .mtl_simulation_feed import *
 from .mtl_v2_simulation_feed import *
 from .mtl_v3_simulation_feed import *
+from .watchtime_v3_simulation_feed import *
 from .mtl_epsilon_simulation_feed import *
 from .click_epsilon_simulation_feed import *
 from .mtl_sep_simulation_feed import *

@@ -75,6 +75,8 @@ class RegressionEM(BaseAlgorithm):
         self.hparams.parse(exp_settings['learning_algorithm_hparams'])
         self.exp_settings = exp_settings
         self.model = None
+        self.init = None
+        print("model init:", self.init)
         self.max_candidate_num = exp_settings['max_candidate_num']
         self.feature_size = data_set.feature_size
         self.learning_rate = tf.Variable(
@@ -230,7 +232,7 @@ class RegressionEM(BaseAlgorithm):
         self.eval_summary = tf.summary.merge_all(key='eval')
         self.saver = tf.train.Saver(tf.global_variables())
 
-    def step(self, session, input_feed, forward_only):
+    def step(self, session, input_feed, forward_only, only_ips):
         """Run a step of the model feeding the given inputs.
 
         Args:

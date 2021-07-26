@@ -43,8 +43,8 @@ class NavieMTLAlgorithm(BaseAlgorithm):
             tasks=["click", "watchtime"],
             output_acts=['identity', 'identity']
         )
-        print("hparams:", exp_settings['learning_algorithm_hparams'])
         self.hparams.parse(exp_settings['learning_algorithm_hparams'])
+        print("hparams:", self.hparams)
         self.exp_settings = exp_settings
         self.model = None
         self.init = None
