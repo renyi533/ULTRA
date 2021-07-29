@@ -78,8 +78,8 @@ class PairwiseRegressionEM(BaseAlgorithm):
             discount_fn='log1p',
             opt_metric='ndcg',
             exact_ips=False,
+            point_ips=False,
             # Set strength for L2 regularization.
-            EM_interval=0,
             l2_loss=0.00,
             grad_strategy='ada',            # Select gradient strategy
         )
@@ -100,15 +100,6 @@ class PairwiseRegressionEM(BaseAlgorithm):
             tf.math.pow((1+tf.cast(self.global_step, tf.float32)), \
                         self.hparams.step_decay_ratio)
 
-        if self.hparams.EM_interval > 0:
-            curr_epoch = self.global_step / self.hparams.EM_interval
-            idx = tf.math.mod(curr_epoch, 2)
-            self.learning_rate = tf.cond(tf.math.equal(idx, 0), 
-                                         true_fn=lambda: self.learning_rate,
-                                         false_fn=lambda: 0.0)
-            self.curr_EM_step_size = tf.cond(tf.math.equal(idx, 1), 
-                                         true_fn=lambda: self.curr_EM_step_size,
-                                         false_fn=lambda: 0.0)
         tf.summary.scalar(
             'curr_EM_step_size',
             self.curr_EM_step_size,
@@ -407,14 +398,19 @@ class PairwiseRegressionEM(BaseAlgorithm):
                                 )
 
         ips_train_output_j = tf.expand_dims(ips_train_output, axis=1)
+        zero_logits_j = tf.zeros_like(ips_train_output_j, dtype=tf.float32)
         ips_train_output_i = tf.expand_dims(ips_train_output, axis=-1)
         ips_pairwise_logits = ips_train_output_i - ips_train_output_j
+        ips_pointwise_logits = ips_train_output_i - zero_logits_j
         self.debug_square_tensor(ips_pairwise_logits, 'ips_pairwise_logits', self.rank_list_size)
         tf.summary.histogram("ips_pairwise_logits", ips_pairwise_logits, 
                 collections=['train'])
         if not self.hparams.exact_ips:
             print('compute m_ij in non-exact ips mode')
             m_ij = self.epsilon_plus / (self.epsilon_plus + self.epsilon_minus + self.tau)
+            n_i = omega_plus_i / (omega_plus_i + omega_minus_i + self.tau)
+            q_i = (1 - omega_minus_i) / \
+                    (2 - omega_plus_i - omega_minus_i + self.tau)
         else:
             print('compute m_ij in exact ips mode')
             m_ij = self.epsilon_plus * gamma / \
@@ -423,14 +419,23 @@ class PairwiseRegressionEM(BaseAlgorithm):
                        self.epsilon_minus * (1-gamma) + \
                        self.tau \
                      )
+            n_i = omega_plus_i * beta_i / \
+                     (omega_plus_i * beta_i + \
+                      omega_minus_i * (1 - beta_i) + self.tau)
+            q_i = (1 - omega_minus_i) * (1 - beta_i) / \
+                    ( \
+                      (1 - omega_plus_i) * beta_i + \
+                      (1 - omega_minus_i) * (1 - beta_i) + \
+                      self.tau \
+                    )
         self.debug_square_tensor(m_ij, 'm_ij', self.rank_list_size)
 
         ips_weights1 = m_ij / (theta_ij + self.tau)
         if not self.hparams.exact_ips:
-            print('compute ips weight in non-exact ips mode')
-            ips_weights2 = ips_weights1 * theta_minus_j
+            print('compute exposure_j in non-exact ips mode')
+            exposure_j = theta_minus_j
         else:
-            print('compute ips weight in exact ips mode')
+            print('compute exposure_j in exact ips mode')
             theta_tmp0 = theta_i * theta_minus_j
             theta_tmp1 = theta_i * (1 - theta_minus_j)
             p_e11_r1_c1_minus = self.epsilon_plus * theta_tmp0 * gamma
@@ -440,14 +445,39 @@ class PairwiseRegressionEM(BaseAlgorithm):
             denominator = p_e11_r1_c1_minus + p_e11_r0_c1_minus + p_e10_r1_c1_minus \
                 + p_e10_r0_c1_minus + self.tau
             numerator = p_e11_r1_c1_minus + p_e11_r0_c1_minus
-            ips_weights2 = ips_weights1 * numerator / denominator     
+            exposure_j = numerator / denominator
+        ips_weights2 = ips_weights1 * exposure_j
         ips_weights = binary_labels_j * ips_weights1 + (1 - binary_labels_j) * ips_weights2
         ips_weights = tf.stop_gradient(
             ips_weights, name='ips_weights_stop_gradient')
+        self.debug_square_tensor(ips_weights, 'ips_weights', self.rank_list_size)
         losses = pairwise_labels * tf.nn.sigmoid_cross_entropy_with_logits(
                     labels=pairwise_labels, logits=ips_pairwise_logits)
         losses = losses * pairwise_weights * ips_weights
-        self.debug_square_tensor(ips_weights, 'ips_weights', self.rank_list_size)
+
+        point_ips_weights1 = n_i / (theta_i * (1 - theta_j) + self.tau) \
+                       * (1 - exposure_j) * (1 - binary_labels_j)
+        point_ips_weights2 = q_i / (theta_i * (1 - theta_j) + self.tau) \
+                       * (1 - theta_minus_j) * (1 - binary_labels_j)
+
+        ones_like_pairwise_labels = tf.ones_like(pairwise_labels, dtype=tf.float32)
+        point_ips_weights1 *= ones_like_pairwise_labels
+        point_ips_weights2 *= ones_like_pairwise_labels
+        
+        point_ips_weights = tf.where(pairwise_labels > 0, 
+                                     x=point_ips_weights1, y=point_ips_weights2)
+        point_ips_weights = tf.stop_gradient(
+            point_ips_weights, name='point_ips_weights_stop_gradient')
+        self.debug_square_tensor(point_ips_weights, 'point_ips_weights', self.rank_list_size)
+        point_losses = tf.nn.sigmoid_cross_entropy_with_logits(
+                    labels=pairwise_labels, logits=ips_pointwise_logits)
+        point_loss_ratio = tf.reduce_sum(pairwise_labels) / \
+                tf.reduce_sum(ones_like_pairwise_labels)
+        point_losses = point_losses * pairwise_weights * point_ips_weights * point_loss_ratio
+
+        if self.hparams.point_ips:
+            losses += point_losses
+
         self.ips_loss = tf.reduce_mean(
                                     tf.reduce_sum(
                                         losses,
