@@ -248,3 +248,26 @@ class BaseAlgorithm(ABC):
             loss = tf.nn.softmax_cross_entropy_with_logits(
                 logits=output, labels=label_dis) * tf.reduce_sum(weighted_labels, 1)
         return tf.reduce_sum(loss) / tf.reduce_sum(weighted_labels)
+
+    def normalize_weights(self, propensity, max_propensity_weight=-1):
+        """Computes listwise softmax loss with propensity weighting.
+
+        Args:
+            propensity: (tf.Tensor) A tensor of the same shape as `output` containing the weight of each element.
+
+        Returns:
+            (tf.Tensor) A tensor containing the propensity weights.
+        """
+        propensity_list = tf.unstack(
+            propensity, axis=1)  # Compute propensity weights
+        pw_list = []
+        for i in range(len(propensity_list)):
+            pw_i = propensity_list[0] / propensity_list[i]
+            pw_list.append(pw_i)
+        propensity_weights = tf.stack(pw_list, axis=1)
+        if max_propensity_weight > 0:
+            propensity_weights = tf.clip_by_value(
+                propensity_weights,
+                clip_value_min=0,
+                clip_value_max=max_propensity_weight)
+        return propensity_weights

@@ -349,19 +349,7 @@ class DLA(BaseAlgorithm):
         Returns:
             (tf.Tensor) A tensor containing the propensity weights.
         """
-        propensity_list = tf.unstack(
-            propensity, axis=1)  # Compute propensity weights
-        pw_list = []
-        for i in range(len(propensity_list)):
-            pw_i = propensity_list[0] / propensity_list[i]
-            pw_list.append(pw_i)
-        propensity_weights = tf.stack(pw_list, axis=1)
-        if self.hparams.max_propensity_weight > 0:
-            propensity_weights = tf.clip_by_value(
-                propensity_weights,
-                clip_value_min=0,
-                clip_value_max=self.hparams.max_propensity_weight)
-        return propensity_weights
+        return self.normalize_weights(propensity, self.hparams.max_propensity_weight)
 
     '''
     def click_weighted_softmax_cross_entropy_loss(

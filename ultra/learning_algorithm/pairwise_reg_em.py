@@ -14,6 +14,7 @@ import copy
 import itertools
 from six.moves import zip
 from tensorflow import dtypes
+from tensorflow.python.ops.gen_array_ops import reverse
 from ultra.learning_algorithm.base_algorithm import BaseAlgorithm
 import ultra.utils
 from ultra.utils import losses_impl
@@ -134,7 +135,7 @@ class PairwiseRegressionEM(BaseAlgorithm):
                 self.max_candidate_num, scope='ips_ranking_model')              
         else:
             self.output = self.ranking_model(
-                self.max_candidate_num, scope='ranking_model')            
+                self.max_candidate_num, scope='pair_ranking_model')            
 
         # reshape from [max_candidate_num, ?] to [?, max_candidate_num]
         reshaped_labels = tf.transpose(tf.convert_to_tensor(self.labels))
@@ -162,7 +163,7 @@ class PairwiseRegressionEM(BaseAlgorithm):
             point_train_output = point_train_output + sigmoid_prob_b
             
             train_output = self.ranking_model(
-                self.rank_list_size, scope='ranking_model')
+                self.rank_list_size, scope='pair_ranking_model')
             
             ips_train_output = self.ranking_model(
                 self.rank_list_size, scope='ips_ranking_model')
@@ -216,6 +217,12 @@ class PairwiseRegressionEM(BaseAlgorithm):
             if self.hparams.grad_strategy == 'sgd':
                 self.optimizer_func = tf.train.GradientDescentOptimizer
 
+            other_grad = []
+            other_var = []
+            ips_grad = []
+            ips_var = []
+            pair_grad = []
+            pair_var = []
             # Gradients and SGD update operation for training the model.
             opt = self.optimizer_func(self.learning_rate)
             self.gradients = tf.gradients(self.loss, params)
@@ -224,20 +231,56 @@ class PairwiseRegressionEM(BaseAlgorithm):
                 if grad is not None:
                     tf.summary.histogram(var.op.name + '/gradients', 
                             grad, collections=['train'])
+                    if var.op.name.find('ips_ranking_model') != -1:
+                        ips_grad.append(grad)
+                        ips_var.append(var)
+                    elif var.op.name.find('pair_ranking_model') != -1:
+                        pair_grad.append(grad)
+                        pair_var.append(var)
+                    else:
+                        other_grad.append(grad)
+                        other_var.append(var)
             #for var in tf.global_variables():
             #    tf.summary.histogram(var.op.name, var)
+            print('ips vars:')
+            print(ips_var)
+            print('pair vars:')
+            print(pair_var)
+            print('other vars:')
+            print(other_var)
+
+            self.norm = tf.global_norm(self.gradients)
+            tf.summary.scalar(
+                'grad_norm',
+                self.norm,
+                collections=['train'])
 
             if self.hparams.max_gradient_norm > 0:
-                self.clipped_gradients, self.norm = tf.clip_by_global_norm(self.gradients,
-                                                                           self.hparams.max_gradient_norm)
-                self.updates = opt.apply_gradients(zip(self.clipped_gradients, params),
+                print('clip gradients separately')
+                other_grad, other_grad_norm = tf.clip_by_global_norm(other_grad,
+                                                       self.hparams.max_gradient_norm)
+                ips_grad, ips_grad_norm = tf.clip_by_global_norm(ips_grad,
+                                                     self.hparams.max_gradient_norm)
+                pair_grad, pair_grad_norm = tf.clip_by_global_norm(pair_grad,
+                                                     self.hparams.max_gradient_norm)
+                other_updates = opt.apply_gradients(zip(other_grad, other_var),
                                                    global_step=self.global_step)
+                pair_updates = opt.apply_gradients(zip(pair_grad, pair_var))
+                ips_updates = opt.apply_gradients(zip(ips_grad, ips_var))
+                self.updates = tf.group([other_updates, pair_updates, ips_updates])
                 tf.summary.scalar(
-                    'Gradient_Norm',
-                    self.norm,
+                    'other_grad_norm',
+                    other_grad_norm,
+                    collections=['train'])
+                tf.summary.scalar(
+                    'ips_grad_norm',
+                    ips_grad_norm,
+                    collections=['train'])
+                tf.summary.scalar(
+                    'pair_grad_norm',
+                    pair_grad_norm,
                     collections=['train'])
             else:
-                self.norm = None
                 self.updates = opt.apply_gradients(zip(self.gradients, params),
                                                    global_step=self.global_step)
 
@@ -396,6 +439,9 @@ class PairwiseRegressionEM(BaseAlgorithm):
                                         axis=[1,2]
                                     )
                                 )
+        tf.summary.scalar(
+                'pairwise_loss', tf.reduce_mean(
+                    self.pairwise_loss), collections=['train'])
 
         ips_train_output_j = tf.expand_dims(ips_train_output, axis=1)
         zero_logits_j = tf.zeros_like(ips_train_output_j, dtype=tf.float32)
@@ -409,8 +455,6 @@ class PairwiseRegressionEM(BaseAlgorithm):
             print('compute m_ij in non-exact ips mode')
             m_ij = self.epsilon_plus / (self.epsilon_plus + self.epsilon_minus + self.tau)
             n_i = omega_plus_i / (omega_plus_i + omega_minus_i + self.tau)
-            q_i = (1 - omega_minus_i) / \
-                    (2 - omega_plus_i - omega_minus_i + self.tau)
         else:
             print('compute m_ij in exact ips mode')
             m_ij = self.epsilon_plus * gamma / \
@@ -422,12 +466,6 @@ class PairwiseRegressionEM(BaseAlgorithm):
             n_i = omega_plus_i * beta_i / \
                      (omega_plus_i * beta_i + \
                       omega_minus_i * (1 - beta_i) + self.tau)
-            q_i = (1 - omega_minus_i) * (1 - beta_i) / \
-                    ( \
-                      (1 - omega_plus_i) * beta_i + \
-                      (1 - omega_minus_i) * (1 - beta_i) + \
-                      self.tau \
-                    )
         self.debug_square_tensor(m_ij, 'm_ij', self.rank_list_size)
 
         ips_weights1 = m_ij / (theta_ij + self.tau)
@@ -454,36 +492,45 @@ class PairwiseRegressionEM(BaseAlgorithm):
         losses = pairwise_labels * tf.nn.sigmoid_cross_entropy_with_logits(
                     labels=pairwise_labels, logits=ips_pairwise_logits)
         losses = losses * pairwise_weights * ips_weights
-
-        point_ips_weights1 = n_i / (theta_i * (1 - theta_j) + self.tau) \
-                       * (1 - exposure_j) * (1 - binary_labels_j)
-        point_ips_weights2 = q_i / (theta_i * (1 - theta_j) + self.tau) \
-                       * (1 - theta_minus_j) * (1 - binary_labels_j)
-
-        ones_like_pairwise_labels = tf.ones_like(pairwise_labels, dtype=tf.float32)
-        point_ips_weights1 *= ones_like_pairwise_labels
-        point_ips_weights2 *= ones_like_pairwise_labels
-        
-        point_ips_weights = tf.where(pairwise_labels > 0, 
-                                     x=point_ips_weights1, y=point_ips_weights2)
-        point_ips_weights = tf.stop_gradient(
-            point_ips_weights, name='point_ips_weights_stop_gradient')
-        self.debug_square_tensor(point_ips_weights, 'point_ips_weights', self.rank_list_size)
-        point_losses = tf.nn.sigmoid_cross_entropy_with_logits(
-                    labels=pairwise_labels, logits=ips_pointwise_logits)
-        point_loss_ratio = tf.reduce_sum(pairwise_labels) / \
-                tf.reduce_sum(ones_like_pairwise_labels)
-        point_losses = point_losses * pairwise_weights * point_ips_weights * point_loss_ratio
-
-        if self.hparams.point_ips:
-            losses += point_losses
-
         self.ips_loss = tf.reduce_mean(
                                     tf.reduce_sum(
                                         losses,
                                         axis=[1,2]
                                     )
                                 )
+        tf.summary.scalar(
+                'pair_ips_loss', tf.reduce_mean(
+                    self.ips_loss), collections=['train'])
+
+        point_ips_weights = n_i / (theta_i * (1 - theta_j) + self.tau) \
+                       * (1 - exposure_j) * (1 - binary_labels_j)
+        eye_matrix = tf.eye(num_rows=self.rank_list_size, \
+                num_columns=self.rank_list_size, \
+                dtype=tf.dtypes.float32)
+        reverse_eye_matrix = 1.0 - eye_matrix
+        reverse_eye_matrix = tf.expand_dims(reverse_eye_matrix, axis=0)
+        point_ips_weights *= reverse_eye_matrix
+        point_ips_weights = tf.stop_gradient(
+            point_ips_weights, name='point_ips_weights_stop_gradient')
+        self.debug_square_tensor(point_ips_weights, 
+                                'point_ips_weights', self.rank_list_size)
+        reduced_point_ips_weights = tf.reduce_sum(point_ips_weights, 
+                                axis=2, keepdims=False)
+        self.debug_vector_tensor(reduced_point_ips_weights, 
+                                'reduced_point_ips_weights', self.rank_list_size)
+        normalized_point_ips_weights = \
+            self.normalize_weights(1.0 / (reduced_point_ips_weights + self.tau))
+        self.debug_vector_tensor(normalized_point_ips_weights, 
+                                'normalized_point_ips_weights', self.rank_list_size)
+        point_ips_loss = self.softmax_loss(ips_train_output,train_labels,
+                                propensity_weights=normalized_point_ips_weights)
+
+        tf.summary.scalar(
+                'point_ips_loss', tf.reduce_mean(
+                    point_ips_loss), collections=['train'])
+
+        if self.hparams.point_ips:
+            self.ips_loss += point_ips_loss
 
         if self.hparams.corr_pair_clk_noise:
             self.pairwise_maximization_op = tf.group([self.update_epsilon_plus_op, \
@@ -599,6 +646,10 @@ class PairwiseRegressionEM(BaseAlgorithm):
                     axis=1
                 )
             )
+        tf.summary.scalar(
+                'pointwise_loss', tf.reduce_mean(
+                    self.pointwise_loss), collections=['train'])
+
         if self.hparams.corr_point_clk_noise:
             self.pointwise_maximization_op = tf.group([self.update_propensity_op, \
                                                        self.update_propensity_minus_op, \
@@ -626,6 +677,11 @@ class PairwiseRegressionEM(BaseAlgorithm):
             self.omega_minus = tf.Variable(
                     tf.ones([1, self.rank_list_size]) * 0.0, trainable=False)              
 
+        self.debug_vector_tensor(self.propensity, 'propensity', self.rank_list_size)
+        self.debug_vector_tensor(self.propensity_minus, 'propensity_minus', self.rank_list_size)
+        self.debug_vector_tensor(self.omega_plus, 'omega_plus', self.rank_list_size)
+        self.debug_vector_tensor(self.omega_minus, 'omega_minus', self.rank_list_size)
+
         if self.hparams.corr_pair_clk_noise:
             self.epsilon_plus = tf.Variable(
                     tf.ones([1, self.rank_list_size, self.rank_list_size]) * 0.95, trainable=False)
@@ -635,72 +691,13 @@ class PairwiseRegressionEM(BaseAlgorithm):
             self.epsilon_plus = tf.Variable(
                     tf.ones([1, self.rank_list_size, self.rank_list_size]) * 1.0, trainable=False)
             self.epsilon_minus = tf.Variable(
-                    tf.ones([1, self.rank_list_size, self.rank_list_size]) * 0.0, trainable=False)            
-
-        self.splitted_propensity = tf.split(
-                self.propensity, self.rank_list_size, axis=1)
-        self.splitted_propensity_minus = tf.split(
-                self.propensity_minus, self.rank_list_size, axis=1)    
-
-        self.splitted_omega_plus = tf.split(
-                self.omega_plus, self.rank_list_size, axis=1)
-        self.splitted_omega_minus = tf.split(
-                self.omega_minus, self.rank_list_size, axis=1) 
-
-        self.splitted_epsilon_plus = tf.split(
-                self.epsilon_plus, self.rank_list_size, axis=1)
-        self.splitted_epsilon_minus = tf.split(
-                self.epsilon_minus, self.rank_list_size, axis=1)
-
-        for i in range(len(self.splitted_epsilon_plus)):
-            self.splitted_epsilon_plus[i] = tf.split(self.splitted_epsilon_plus[i], 
-                    self.rank_list_size, axis=2)
-            self.splitted_epsilon_minus[i] = tf.split(self.splitted_epsilon_minus[i], 
-                    self.rank_list_size, axis=2)
-
-        for i in range(self.rank_list_size):
-            tf.summary.scalar(
-                    'splitted_propensity_%d' %
-                    i,
-                    tf.reduce_max(
-                        self.splitted_propensity[i]),
-                    collections=['train'])
-
-            tf.summary.scalar(
-                    'splitted_propensity_minus_%d' %
-                    i,
-                    tf.reduce_max(
-                        self.splitted_propensity_minus[i]),
-                    collections=['train'])
-
-            tf.summary.scalar(
-                    'splitted_omega_plus_%d' %
-                    i,
-                    tf.reduce_max(
-                        self.splitted_omega_plus[i]),
-                    collections=['train'])
-
-            tf.summary.scalar(
-                    'splitted_omega_minus_%d' %
-                    i,
-                    tf.reduce_max(
-                        self.splitted_omega_minus[i]),
-                    collections=['train'])
-            for j in range(self.rank_list_size):
-                tf.summary.scalar(
-                        'splitted_epsilon_plus_%d_%d' % (i,j),
-                        tf.reduce_max(
-                            self.splitted_epsilon_plus[i][j]),
-                        collections=['train'])
-                tf.summary.scalar(
-                        'splitted_epsilon_minus_%d_%d' % (i,j),
-                        tf.reduce_max(
-                            self.splitted_epsilon_minus[i][j]),
-                        collections=['train'])
-
+                    tf.ones([1, self.rank_list_size, self.rank_list_size]) * 0.0, trainable=False)   
+        self.debug_square_tensor(self.epsilon_plus, 'epsilon_plus', self.rank_list_size)
+        self.debug_square_tensor(self.epsilon_minus, 'epsilon_minus', self.rank_list_size)
+                 
     def debug_square_tensor(self, var, name, size):
         splitted_var = tf.split(var, size, axis=1)
-        print('debug tensor: ' + name)
+        print('debug square tensor: ' + name)
         for i in range(len(splitted_var)):
             splitted_var[i] = tf.split(splitted_var[i], 
                     size, axis=2)
@@ -716,6 +713,21 @@ class PairwiseRegressionEM(BaseAlgorithm):
                                 '%s_%d_%d_histogram' % (name, i,j),
                                 splitted_var[i][j],
                                 collections=['train'])
+
+    def debug_vector_tensor(self, var, name, size):
+        splitted_var = tf.split(var, size, axis=1)
+        print('debug vector tensor: ' + name)
+
+        for i in range(size):
+            tf.summary.scalar(
+                    '%s_%d' % (name, i),
+                    tf.reduce_mean(
+                        splitted_var[i]),
+                    collections=['train'])
+            tf.summary.histogram(
+                            '%s_%d_histogram' % (name, i),
+                            splitted_var[i],
+                            collections=['train'])
 
     def step(self, session, input_feed, forward_only):
         """Run a step of the model feeding the given inputs.
