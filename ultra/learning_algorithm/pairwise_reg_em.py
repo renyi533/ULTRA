@@ -79,7 +79,7 @@ class PairwiseRegressionEM(BaseAlgorithm):
             discount_fn='log1p',
             opt_metric='ndcg',
             exact_ips=False,
-            point_ips=False,
+            point_ips_ratio=0.0,
             # Set strength for L2 regularization.
             l2_loss=0.00,
             grad_strategy='ada',            # Select gradient strategy
@@ -524,12 +524,12 @@ class PairwiseRegressionEM(BaseAlgorithm):
                                 'normalized_point_ips_weights', self.rank_list_size)
         point_ips_loss = self.softmax_loss(ips_train_output,train_labels,
                                 propensity_weights=normalized_point_ips_weights)
-
+        point_ips_loss *= self.hparams.point_ips_ratio
         tf.summary.scalar(
                 'point_ips_loss', tf.reduce_mean(
                     point_ips_loss), collections=['train'])
 
-        if self.hparams.point_ips:
+        if self.hparams.point_ips_ratio > 0:
             self.ips_loss += point_ips_loss
 
         if self.hparams.corr_pair_clk_noise:

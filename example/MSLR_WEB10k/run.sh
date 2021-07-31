@@ -40,6 +40,15 @@ bash ./offline_exp_pipeline_pairwise_reg_em_trustcorr_1.0_pointips.sh > $log_dir
 bash ./offline_exp_pipeline_pairwise_reg_em_trustcorr_1.0_simips_pointips.sh > $log_dir/pair_reg_em_trustcorr1.0_simips_pointips_$i.log 2>&1 &
 wait_function
 
+bash ./offline_exp_pipeline_pairwise_reg_em_trustcorr_1.0_pointips0.1.sh > $log_dir/pair_reg_em_trustcorr1.0_pointips0.1_$i.log 2>&1 &
+bash ./offline_exp_pipeline_pairwise_reg_em_trustcorr_1.0_pointips0.5.sh > $log_dir/pair_reg_em_trustcorr1.0_pointips0.5_$i.log 2>&1 &
+bash ./offline_exp_pipeline_pairwise_reg_em_trustcorr_1.0_pointips0.25.sh > $log_dir/pair_reg_em_trustcorr1.0_pointips0.25_$i.log 2>&1 &
+wait_function
+
+bash ./offline_exp_pipeline_pairwise_reg_em_trustcorr_1.0_pointips4.0.sh > $log_dir/pair_reg_em_trustcorr1.0_pointips4.0_$i.log 2>&1 &
+bash ./offline_exp_pipeline_pairwise_reg_em_trustcorr_1.0_pointips2.0.sh > $log_dir/pair_reg_em_trustcorr1.0_pointips8.0_$i.log 2>&1 &
+wait_function
+
 comment='bash ./offline_exp_pipeline_pairwise_reg_em_trustcorr_0.1_noips.sh > $log_dir/pair_reg_em_trustcorr0.1_noips_$i.log 2>&1 &
 bash ./offline_exp_pipeline_pairwise_reg_em_trustcorr_0.1_ndcg.sh > $log_dir/pair_reg_em_trustcorr0.1_ndcg_$i.log 2>&1 &
 wait_function'
