@@ -10,7 +10,7 @@
 	"ranking_model_hparams":"hidden_layer_sizes=[512, 256, 128]",
     
 	"learning_algorithm": "ultra.learning_algorithm.RegressionEM",
-	"learning_algorithm_hparams":"learning_rate=0.02,EM_step_size=0.05,em_only=True,loss_func=sigmoid_loss",
+	"learning_algorithm_hparams":"learning_rate=0.02,EM_step_size=0.05,em_only=False,loss_func=cross_entropy,pair_corr=False",
     
 	"metrics": [
 	    "err", "mrr", "ndcg"
