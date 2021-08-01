@@ -67,10 +67,11 @@ class RegressionEM(BaseAlgorithm):
             EM_step_size=0.05,                  # Step size for EM algorithm.
             learning_rate=0.05,                 # Learning rate.
             max_gradient_norm=5.0,            # Clip gradients to this norm.
-            loss_func='softmax_loss',      # Select Loss function
+            loss_func='hinge',      # Select Loss function
             em_only=True,
             # Set strength for L2 regularization.
             l2_loss=0.0,
+            pair_corr=False,
             grad_strategy='ada',            # Select gradient strategy
         )
         print(exp_settings['learning_algorithm_hparams'])
@@ -186,18 +187,11 @@ class RegressionEM(BaseAlgorithm):
                     i, additional_postive_instance, collections=['train'])
 
             self.propensity_weights = 1.0 / self.propensity
-            if self.hparams.loss_func == 'sigmoid_loss':
-                print('sigmoid loss')
-                ips_loss = self.sigmoid_loss_on_list(
-                    ips_train_output, reshaped_train_labels, self.propensity_weights)
-            elif self.hparams.loss_func == 'pairwise_loss':
-                print('rankNet loss')
-                ips_loss = self.pairwise_loss_on_list(
-                    ips_train_output, reshaped_train_labels, self.propensity_weights)
-            else:
-                print('listNet loss')
-                ips_loss = self.softmax_loss(
-                    ips_train_output, reshaped_train_labels, self.propensity_weights)
+
+            ips_loss = self.pair_loss_on_list(
+                ips_train_output, reshaped_train_labels, 
+                self.propensity_weights, loss_func=self.hparams.loss_func,
+                pair_corr=self.hparams.pair_corr)
 
             if not self.hparams.em_only:
                 self.loss += ips_loss

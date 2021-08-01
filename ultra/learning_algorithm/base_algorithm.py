@@ -65,7 +65,8 @@ class BaseAlgorithm(ABC):
         output_scores = tf.unstack(model_output, axis=1)
         if len(output_scores) > len(input_id_list):
             raise AssertionError(
-                'Input id list is shorter than output score list when remove padding.')
+                'Input id list (%d) is shorter than output score list (%d) when remove padding.' \
+                   % (len(input_id_list), len(output_scores)))
         # Build mask
         valid_flags = tf.cast(
             tf.concat(
@@ -86,7 +87,7 @@ class BaseAlgorithm(ABC):
             )
         return tf.stack(output_scores, axis=1)
 
-    def ranking_model(self, list_size, scope=None):
+    def ranking_model(self, list_size, scope=None, model=None):
         """Construct ranking model with the given list size.
 
         Args:
@@ -98,11 +99,11 @@ class BaseAlgorithm(ABC):
 
         """
         output_scores = self.get_ranking_scores(
-            self.docid_inputs[:list_size], self.is_training, scope)
+            self.docid_inputs[:list_size], self.is_training, scope, model)
         return tf.concat(output_scores, 1)
 
     def get_ranking_scores(self, input_id_list,
-                           is_training=False, scope=None, **kwargs):
+                           is_training=False, scope=None, model=None, **kwargs):
         """Compute ranking scores with the given inputs.
 
         Args:
@@ -130,8 +131,12 @@ class BaseAlgorithm(ABC):
                 input_feature_list.append(
                     tf.nn.embedding_lookup(
                         letor_features, input_id_list[i]))
-            return self.model.build(
-                input_feature_list, is_training=is_training, **kwargs)
+            if model is None:
+                return self.model.build(
+                    input_feature_list, is_training=is_training, **kwargs)
+            else:
+                return model.build(
+                    input_feature_list, is_training=is_training, **kwargs)
 
     def pairwise_cross_entropy_loss(
             self, pos_scores, neg_scores, propensity_weights=None, name=None):
@@ -223,6 +228,56 @@ class BaseAlgorithm(ABC):
         #batch_size = tf.shape(labels[0])[0]
         # / (tf.reduce_sum(propensity_weights)+1)
         return tf.reduce_sum(loss) / tf.cast(batch_size, tf.float32)
+
+    def pair_loss_on_list(self, output, labels,
+                          propensity_weights=None, loss_func='hinge', 
+                          pair_corr=False, name=None):
+        """Computes pairwise entropy loss.
+
+        Args:
+            output: (tf.Tensor) A tensor with shape [batch_size, list_size]. Each value is
+            the ranking score of the corresponding example.
+            labels: (tf.Tensor) A tensor of the same shape as `output`. A value >= 1 means a
+                relevant example.
+            propensity_weights: (tf.Tensor) A tensor of the same shape as `output` containing the weight of each element.
+            loss: 'hinge' or 'pair_cross_entropy'
+            name: A string used as the name for this variable scope.
+
+        Returns:
+            (tf.Tensor) A single value tensor containing the loss.
+        """
+        if propensity_weights is None:
+            propensity_weights = tf.ones_like(labels)
+
+        output_i = tf.expand_dims(output, axis=-1)
+        output_j = tf.expand_dims(output, axis=1)
+        labels_i = tf.expand_dims(labels, axis=-1)
+        labels_j = tf.expand_dims(labels, axis=1)
+        propensity_i = tf.expand_dims(propensity_weights, axis=-1)
+        if not pair_corr:
+            print('point ips corr')
+            pair_weight = 1.0 - tf.eye(num_rows = tf.shape(labels)[1], 
+                                    num_columns=tf.shape(labels)[1], 
+                                    batch_shape=[1], 
+                                    dtype=tf.dtypes.float32, name=None)
+            pair_label = tf.nn.relu(tf.math.sign(labels_i))   
+            pair_label -= tf.zeros_like(labels_j)  
+        else:
+            print('pair ips corr')
+            pair_label = tf.nn.relu(tf.math.sign(labels_i-labels_j))
+            pair_weight = 1.0
+
+        if loss_func == 'hinge':
+            print('hinge loss')
+            cur_pair_loss = tf.nn.relu(1.0 + output_j - output_i)
+        else:
+            print('cross entropy loss')
+            cur_pair_loss = tf.nn.sigmoid_cross_entropy_with_logits(
+                                labels=pair_label,
+                                logits=output_i-output_j
+                            )                
+        loss = cur_pair_loss * pair_weight * propensity_i * pair_label
+        return tf.reduce_mean( tf.reduce_sum(loss, axis=[1,2]) )
 
     def softmax_loss(self, output, labels, propensity_weights=None, name=None):
         """Computes listwise softmax loss without propensity weighting.
