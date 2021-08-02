@@ -129,6 +129,10 @@ class NavieAlgorithm(BaseAlgorithm):
                 print("mse_loss on task")
                 self.loss = self.mse_loss_on_list(
                     train_output, reshaped_train_labels)
+            elif self.hparams.loss_func == "pairwise_logistic_loss":
+                print("pairwise_logistic_loss on task")
+                self.loss = self.pairwise_logistic_loss(
+                    reshaped_train_labels, train_output)
             else:
                 print("softmax_loss on task")
                 self.loss = self.softmax_loss(

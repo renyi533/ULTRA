@@ -7,14 +7,14 @@
 	"test_input_hparams":"",
     
 	"ranking_model":"ultra.ranking_model.MTLBiasTowerDNN",
-	"ranking_model_hparams":"hidden_layer_sizes=[512, 256, 128],combine_mode=dot,output_act=sigmoid",
+	"ranking_model_hparams":"hidden_layer_sizes=[512, 256, 128],enable_biases=[True, False],combine_modes=[dot,sum],output_acts=[sigmoid,identity]",
     
 	"learning_algorithm": "ultra.learning_algorithm.NavieMTLAlgorithm",
 	"learning_algorithm_hparams":"tasks=[click, watchtime],loss_funcs=[sigmoid_cross_entropy,mse_loss],output_acts=[sigmoid,identity]",
     
 	"metrics": [
-	    "mrr", "linear_ndcg"
+	    "mrr", "linear_ndcg", "ndcg"
 	],
 	"metrics_topn" : [3,5,10],
-	"objective_metric": "linear_ndcg_10"
+	"objective_metric": "ndcg_10"
  }

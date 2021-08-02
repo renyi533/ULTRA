@@ -13,8 +13,8 @@
 	"learning_algorithm_hparams":"corr_pair_clk_noise=True,opt_metric=None,enable_ips=True,exact_ips=True,learning_rate=0.02",
     
 	"metrics": [
-	    "mrr", "linear_ndcg"
+	    "mrr", "linear_ndcg", "ndcg"
 	],
 	"metrics_topn" : [3,5,10],
-	"objective_metric": "linear_ndcg_10"
+	"objective_metric": "ndcg_10"
  }

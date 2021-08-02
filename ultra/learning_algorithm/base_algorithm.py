@@ -199,6 +199,7 @@ class BaseAlgorithm(ABC):
             pairwise_logits = train_output_i - train_output_j
 
             loss = tf.nn.sigmoid_cross_entropy_with_logits(labels=pairwise_labels, logits=pairwise_logits)
+            loss = tf.reduce_mean(tf.reduce_sum(loss, axis=[1,2]))
         return loss
 
     def sigmoid_loss_on_list(self, output, labels,
@@ -272,25 +273,24 @@ class BaseAlgorithm(ABC):
         if propensity_weights is None:
             propensity_weights = tf.ones_like(labels)
 
-        loss = None
+        loss = 0.0
         with tf.name_scope(name, "pairwise_loss", [output]):
             sliced_output = tf.unstack(output, axis=1)
             sliced_label = tf.unstack(labels, axis=1)
             sliced_propensity = tf.unstack(propensity_weights, axis=1)
             for i in range(len(sliced_output)):
-                for j in range(i + 1, len(sliced_output)):
-                    cur_label_weight = tf.math.sign(
-                        sliced_label[i] - sliced_label[j])
-                    cur_propensity = sliced_propensity[i] * \
-                        sliced_label[i] + \
-                        sliced_propensity[j] * sliced_label[j]
-                    cur_pair_loss = - \
-                        tf.exp(
-                            sliced_output[i]) / (tf.exp(sliced_output[i]) + tf.exp(sliced_output[j]))
-                    if loss is None:
-                        loss = cur_label_weight * cur_pair_loss
+                cur_propensity = sliced_propensity[i] 
+                for j in range(0, len(sliced_output)):
+                    cur_label_weight = tf.nn.relu(
+                        tf.math.sign(sliced_label[i] - sliced_label[j])
+                    )
+                    cur_pair_loss = tf.nn.sigmoid_cross_entropy_with_logits(
+                                        labels=cur_label_weight, 
+                                        logits=sliced_output[i]-sliced_output[j]
+                                    )
                     loss += cur_label_weight * cur_pair_loss * cur_propensity
-        batch_size = tf.shape(labels[0])[0]
+        batch_size = tf.shape(labels)[0]
+        #batch_size = tf.shape(labels[0])[0]
         # / (tf.reduce_sum(propensity_weights)+1)
         return tf.reduce_sum(loss) / tf.cast(batch_size, tf.float32)
 

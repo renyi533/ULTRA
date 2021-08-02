@@ -41,7 +41,9 @@ class NavieMTLAlgorithm(BaseAlgorithm):
             l2_loss=0.0,
             grad_strategy='ada',            # Select gradient strategy
             tasks=["click", "watchtime"],
-            output_acts=['identity', 'identity']
+            output_acts=['identity', 'identity'],
+            enable_esmm=False,
+            esmm_stop_gradient=False
         )
         self.hparams.parse(exp_settings['learning_algorithm_hparams'])
         print("hparams:", self.hparams)
@@ -86,6 +88,9 @@ class NavieMTLAlgorithm(BaseAlgorithm):
                 self.output = output
                 #self.output = self.outputs[task_idx]
             else:
+                if self.hparams.enable_esmm:
+                    print("enable esmm for task %s when calculate test metric" % self.hparams.tasks[task_idx])
+                    output = tf.nn.sigmoid(self.outputs[0]) * output
                 self.output += output
                 #self.output += self.outputs[task_idx]
 
@@ -113,6 +118,14 @@ class NavieMTLAlgorithm(BaseAlgorithm):
                 train_labels = [tf.squeeze(tf.slice(train_label, [0,task_idx], [-1,1]), axis=-1) for train_label in train_labelss]
                 print("train_labels:", train_labels)
                 train_output = train_outputs[task_idx]
+                if task_idx == 1 and self.hparams.enable_esmm:
+                    print("enable esmm for task %s when calculate loss" % self.hparams.tasks[task_idx])
+                    if self.hparams.esmm_stop_gradient:
+                        print("stop gradient on click when calculate loss")
+                        pred_click = tf.stop_gradient(tf.nn.sigmoid(train_outputs[0]))
+                    else:
+                        pred_click = tf.nn.sigmoid(train_outputs[0])
+                    train_output = train_output * pred_click
                 tf.summary.scalar(
                     'Max_output_score_%s' %task,
                     tf.reduce_max(train_output),
@@ -210,6 +223,9 @@ class NavieMTLAlgorithm(BaseAlgorithm):
                 if task_idx == 0:
                     train_output_sum = train_output
                 else:
+                    if self.hparams.enable_esmm:
+                        print("enable esmm for task %s when calculate train metric" % self.hparams.tasks[task_idx])
+                        train_output = tf.nn.sigmoid(train_outputs[0]) * train_output
                     train_output_sum += train_output
             print("train_output_sum:", train_output_sum)
             print("train_labelss:", train_labelss)

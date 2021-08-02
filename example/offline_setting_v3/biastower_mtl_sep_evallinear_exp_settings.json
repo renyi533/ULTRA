@@ -13,8 +13,8 @@
 	"learning_algorithm_hparams":"tasks=[click, watchtime],loss_funcs=[sigmoid_cross_entropy,mse_loss],output_acts=[sigmoid,identity]",
     
 	"metrics": [
-	    "mrr", "linear_ndcg"
+	    "mrr", "linear_ndcg", "ndcg"
 	],
 	"metrics_topn" : [3,5,10],
-	"objective_metric": "linear_ndcg_10"
+	"objective_metric": "ndcg_10"
  }
