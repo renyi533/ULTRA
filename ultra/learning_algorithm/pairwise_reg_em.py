@@ -78,6 +78,7 @@ class PairwiseRegressionEM(BaseAlgorithm):
             discount_fn='log1p',
             opt_metric='ndcg',
             exact_ips=False,
+            exact_ips_true=False,
             ips_v2=False,
             ips_hotstart=False,
             # Set strength for L2 regularization.
@@ -413,11 +414,21 @@ class PairwiseRegressionEM(BaseAlgorithm):
         ips_pairwise_logits = ips_train_output_i - ips_train_output_j
         tf.summary.histogram("ips_pairwise_logits", ips_pairwise_logits, 
                 collections=['train'])
-        if self.hparams.ips_v2: 
-            print('compute v2 m_ij in exact ips mode') 
-            m_ij = 1 / (self.epsilon_plus + self.epsilon_minus + self.tau)
-        else: 
-            m_ij = self.epsilon_plus / (self.epsilon_plus + self.epsilon_minus + self.tau)
+        if not self.hparams.exact_ips_true:
+            print('compute m_ij in non-exact ips mode')
+            if self.hparams.ips_v2: 
+                print('compute v2 m_ij in exact ips mode') 
+                m_ij = 1 / (self.epsilon_plus + self.epsilon_minus + self.tau)
+            else: 
+                m_ij = self.epsilon_plus / (self.epsilon_plus + self.epsilon_minus + self.tau)
+        else:
+            print('compute m_ij in exact ips mode')
+            m_ij = self.epsilon_plus * gamma / \
+                 ( \
+                   self.epsilon_plus * gamma + \
+                   self.epsilon_minus * (1-gamma) + \
+                   self.tau \
+                 )
         ips_weights1 = m_ij / (theta_ij + self.tau)
         if not self.hparams.exact_ips:
             ips_weights2 = ips_weights1 * theta_minus_j

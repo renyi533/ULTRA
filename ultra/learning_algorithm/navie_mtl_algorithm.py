@@ -97,8 +97,10 @@ class NavieMTLAlgorithm(BaseAlgorithm):
         # reshape from [max_candidate_num, ?] to [?, max_candidate_num]
         reshaped_labels = tf.transpose(tf.convert_to_tensor(tf.reduce_sum(self.labels, axis=-1)))
         print("reshaped_labels:", reshaped_labels)
+        print("self.output:", self.output)
         pad_removed_output = self.remove_padding_for_metric_eval(
             self.docid_inputs, self.output)
+        print("pad_removed_output:", pad_removed_output)
         for metric in self.exp_settings['metrics']:
             for topn in self.exp_settings['metrics_topn']:
                 metric_value = ultra.utils.make_ranking_metric_fn(

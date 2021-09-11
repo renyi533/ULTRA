@@ -36,6 +36,9 @@ class MTLBiasTowerDNN(BaseRankingModel):
             combine_modes=["sum", "sum"],                # combination mode of bias tower and main tower
             output_acts=["identity", "indentity"],        # activation function of output
             tasks=["click", "watchtime"],
+            mtl_model="DNN",
+            expert_num=3,
+            expert_size=512,
         )
         self.hparams.parse(hparams_str)
         print("in bias tower dnn.. hparams:", self.hparams)
@@ -43,6 +46,8 @@ class MTLBiasTowerDNN(BaseRankingModel):
         self.act_func = None
         self.layer_norm = None
         self.layer_norm_biases = [None, None]
+        self.layer_norm_gates = []
+        self.layer_norm_experts = []
 
         if self.hparams.activation_func in BaseRankingModel.ACT_FUNC_DIC:
             self.act_func = BaseRankingModel.ACT_FUNC_DIC[self.hparams.activation_func]
@@ -86,8 +91,68 @@ class MTLBiasTowerDNN(BaseRankingModel):
                     for j in range(len(output_sizes_bias)):
                         self.layer_norm_biases[idx].append(BaseRankingModel.NORM_FUNC_DIC[self.hparams.norm](
                             name="layer_norm_bias_%s_%d" % (task, j)))
+                self.layer_norm_gates.append(BaseRankingModel.NORM_FUNC_DIC[self.hparams.norm](name="layer_norm_gate_%s" %task))
+            for idx in range(0, self.hparams.expert_num):
+                self.layer_norm_experts.append(BaseRankingModel.NORM_FUNC_DIC[self.hparams.norm](name="layer_norm_expert_%d" %idx))
+            print("layer_norm_gates:%s" %self.layer_norm_gates)
+            print("layer_norm_experts:%s" %self.layer_norm_experts)
 
-            output_datas = [output_data, output_data]
+            if self.hparams.mtl_model == "MMOE" or self.hparams.mtl_model == "PLE":
+                experts = []
+                output_datas = []
+                for expert_idx in range(0, self.hparams.expert_num):
+                    input = output_data
+                    #if self.layer_norm is not None:
+                    #    if self.hparams.norm == "layer":
+                    #        input = self.layer_norm_experts[expert_idx](output_data)
+                    #    else:
+                    #        input = self.layer_norm_experts[expert_idx](output_data, training=is_training)
+                    current_size = output_data.get_shape()[-1].value
+                    print("expert_%s param shape:%s" %(expert_idx, [current_size, self.hparams.expert_size]))
+                    expand_W = self.get_variable(
+                        "expert_W_%d" % (expert_idx), [current_size, self.hparams.expert_size], noisy_params=noisy_params, noise_rate=noise_rate)
+                    expand_b = self.get_variable("expert_b_%d" % (expert_idx), [
+                        self.hparams.expert_size], noisy_params=noisy_params, noise_rate=noise_rate)
+                    expert = tf.nn.bias_add(
+                        tf.matmul(input, expand_W), expand_b)
+                    expert = self.act_func(expert)
+                    experts.append(expert)
+                    print("expert_%s shape:%s" %(expert_idx, expert.get_shape().as_list()))
+                for task_index, task_name in enumerate(self.hparams.tasks):
+                    input = output_data
+                    #if self.layer_norm is not None:
+                    #    if self.hparams.norm == "layer":
+                    #        input = self.layer_norm_gates[task_index](output_data)
+                    #    else:
+                    #        input = self.layer_norm_gates[task_index](output_data, training=is_training)
+                    current_size = output_data.get_shape()[-1].value
+                    if self.hparams.mtl_model == "MMOE":
+                        expert_num = self.hparams.expert_num
+                        experts = tf.reshape(tf.concat(experts, axis=-1), [-1, expert_num, self.hparams.expert_size])
+                        print("gate_%s param shape:%s" %(task_name, [current_size, expert_num]))
+                        expand_W = self.get_variable(
+                            "gate_W_%d" % (expert_idx), [current_size, expert_num], noisy_params=noisy_params, noise_rate=noise_rate)
+                        expand_b = self.get_variable("gate_b_%d" % (expert_idx), [
+                            expert_num], noisy_params=noisy_params, noise_rate=noise_rate)
+                    else:
+                        expert_num = self.hparams.expert_num-len(self.hparams.tasks)+1
+                        experts = tf.reshape(tf.concat([experts[task_index]] + experts[len(self.hparams.tasks):], axis=-1), [-1, expert_num, self.hparams.expert_size])
+                        print("gate_%s param shape:%s" %(task_name, [current_size, expert_num]))
+                        expand_W = self.get_variable(
+                            "gate_W_%d" % (expert_idx), [current_size, expert_num], noisy_params=noisy_params, noise_rate=noise_rate)
+                        expand_b = self.get_variable("gate_b_%d" % (expert_idx), [
+                            expert_num], noisy_params=noisy_params, noise_rate=noise_rate)
+                    gate = tf.nn.bias_add(
+                        tf.matmul(input, expand_W), expand_b)
+                    gate = tf.nn.softmax(gate)
+                    gate = tf.reshape(gate, [-1, 1, expert_num])
+                    print("gate_%s shape:%s" %(task_name, gate.get_shape().as_list()))
+                    print("expert_%s shape:%s" %(task_name, experts.get_shape().as_list()))
+                    output = tf.reshape(tf.matmul(gate, experts), [-1, self.hparams.expert_size])
+                    output_datas.append(output)
+                print("output_datas:", output_datas)
+            else:
+                output_datas = [output_data, output_data]
             for task_index, task_name in enumerate(self.hparams.tasks):
                 output_data = output_datas[task_index]
                 current_size = output_data.get_shape()[-1].value

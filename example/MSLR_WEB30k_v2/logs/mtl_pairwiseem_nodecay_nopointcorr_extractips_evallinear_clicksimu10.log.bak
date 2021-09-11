@@ -1,0 +1,655 @@
+--data_dir=/data/notebooks/jupyter-notebook/violatang/l2r-paper/MSLR_30k_letor_v2/MSLR_30k_letor/tmp_data/ --model_dir=/data/notebooks/jupyter-notebook/violatang/l2r-paper/MSLR_30k_letor_v2/MSLR_30k_letor/tmp_model_mtl_pairwiseem_nodecay_nopointcorr_extractips_evallinear_10/ --output_dir=/data/notebooks/jupyter-notebook/violatang/l2r-paper/MSLR_30k_letor_v2/MSLR_30k_letor/tmp_output/ --setting_file=./example/offline_setting_v3/pairwise_regression_EM_mtl_nopointcorr_nodecay_extractips_evallinear_exp_settings.json
+WARNING:tensorflow:From main.py:350: The name tf.app.run is deprecated. Please use tf.compat.v1.app.run instead.
+
+WARNING:tensorflow:From main.py:113: The name tf.ConfigProto is deprecated. Please use tf.compat.v1.ConfigProto instead.
+
+W0730 03:02:06.411673 139848813705024 module_wrapper.py:139] From main.py:113: The name tf.ConfigProto is deprecated. Please use tf.compat.v1.ConfigProto instead.
+
+WARNING:tensorflow:From main.py:115: The name tf.Session is deprecated. Please use tf.compat.v1.Session instead.
+
+W0730 03:02:06.411956 139848813705024 module_wrapper.py:139] From main.py:115: The name tf.Session is deprecated. Please use tf.compat.v1.Session instead.
+
+2021-07-30 03:02:06.412669: I tensorflow/core/platform/cpu_feature_guard.cc:142] Your CPU supports instructions that this TensorFlow binary was not compiled to use: AVX2 FMA
+2021-07-30 03:02:06.427581: I tensorflow/core/platform/profile_utils/cpu_utils.cc:94] CPU Frequency: 2595120000 Hz
+2021-07-30 03:02:06.431030: I tensorflow/compiler/xla/service/service.cc:168] XLA service 0x7f311bf51fc0 initialized for platform Host (this does not guarantee that XLA will be used). Devices:
+2021-07-30 03:02:06.431083: I tensorflow/compiler/xla/service/service.cc:176]   StreamExecutor device (0): Host, Default Version
+2021-07-30 03:02:06.434293: W tensorflow/stream_executor/platform/default/dso_loader.cc:55] Could not load dynamic library 'libcuda.so.1'; dlerror: libcuda.so.1: cannot open shared object file: No such file or directory; LD_LIBRARY_PATH: /usr/local/cuda/lib64:/usr/local/cuda/extras/CUPTI/lib64/:/usr/local/nvidia/lib:/usr/local/nvidia/lib64:/usr/lib:/usr/local/lib:/usr/local/cuda/lib64:/usr/local/cuda/extras/CUPTI/lib64/:/usr/local/nvidia/lib:/usr/local/nvidia/lib64:/usr/lib:/usr/local/lib::/usr/local/cuda-10.0/lib64:/usr/local/cuda-10.0/extras/CUPTI/lib64/:/usr/local/cuda-10.0/lib64:/usr/local/cuda-10.0/extras/CUPTI/lib64/
+2021-07-30 03:02:06.434328: E tensorflow/stream_executor/cuda/cuda_driver.cc:318] failed call to cuInit: UNKNOWN ERROR (303)
+2021-07-30 03:02:06.434354: I tensorflow/stream_executor/cuda/cuda_diagnostics.cc:156] kernel driver does not appear to be running on this host (9-223-245-177): /proc/driver/nvidia/version does not exist
+WARNING:tensorflow:From /data/notebooks/jupyter-notebook/violatang/l2r-paper/ULTRA/ultra/learning_algorithm/pairwise_reg_em.py:103: The name tf.summary.scalar is deprecated. Please use tf.compat.v1.summary.scalar instead.
+
+W0730 03:02:06.448466 139848813705024 module_wrapper.py:139] From /data/notebooks/jupyter-notebook/violatang/l2r-paper/ULTRA/ultra/learning_algorithm/pairwise_reg_em.py:103: The name tf.summary.scalar is deprecated. Please use tf.compat.v1.summary.scalar instead.
+
+WARNING:tensorflow:From /data/notebooks/jupyter-notebook/violatang/l2r-paper/ULTRA/ultra/learning_algorithm/pairwise_reg_em.py:118: The name tf.placeholder is deprecated. Please use tf.compat.v1.placeholder instead.
+
+W0730 03:02:06.450385 139848813705024 module_wrapper.py:139] From /data/notebooks/jupyter-notebook/violatang/l2r-paper/ULTRA/ultra/learning_algorithm/pairwise_reg_em.py:118: The name tf.placeholder is deprecated. Please use tf.compat.v1.placeholder instead.
+
+WARNING:tensorflow:From /data/notebooks/jupyter-notebook/violatang/l2r-paper/ULTRA/ultra/learning_algorithm/pairwise_reg_em.py:120: Print (from tensorflow.python.ops.logging_ops) is deprecated and will be removed after 2018-08-20.
+Instructions for updating:
+Use tf.print instead of tf.Print. Note that tf.print returns a no-output operator that directly prints the output. Outside of defuns or eager mode, this operator will not be executed unless it is directly specified in session.run or used as a control dependency for other operators. This is only a concern in graph mode. Below is an example of how to ensure tf.print executes in graph mode:
+
+W0730 03:02:06.451295 139848813705024 deprecation.py:323] From /data/notebooks/jupyter-notebook/violatang/l2r-paper/ULTRA/ultra/learning_algorithm/pairwise_reg_em.py:120: Print (from tensorflow.python.ops.logging_ops) is deprecated and will be removed after 2018-08-20.
+Instructions for updating:
+Use tf.print instead of tf.Print. Note that tf.print returns a no-output operator that directly prints the output. Outside of defuns or eager mode, this operator will not be executed unless it is directly specified in session.run or used as a control dependency for other operators. This is only a concern in graph mode. Below is an example of how to ensure tf.print executes in graph mode:
+
+WARNING:tensorflow:From /data/notebooks/jupyter-notebook/violatang/l2r-paper/ULTRA/ultra/learning_algorithm/base_algorithm.py:124: The name tf.variable_scope is deprecated. Please use tf.compat.v1.variable_scope instead.
+
+W0730 03:02:07.282747 139848813705024 module_wrapper.py:139] From /data/notebooks/jupyter-notebook/violatang/l2r-paper/ULTRA/ultra/learning_algorithm/base_algorithm.py:124: The name tf.variable_scope is deprecated. Please use tf.compat.v1.variable_scope instead.
+
+WARNING:tensorflow:From /data/notebooks/jupyter-notebook/violatang/l2r-paper/ULTRA/ultra/ranking_model/DNN.py:61: The name tf.get_variable_scope is deprecated. Please use tf.compat.v1.get_variable_scope instead.
+
+W0730 03:02:08.962232 139848813705024 module_wrapper.py:139] From /data/notebooks/jupyter-notebook/violatang/l2r-paper/ULTRA/ultra/ranking_model/DNN.py:61: The name tf.get_variable_scope is deprecated. Please use tf.compat.v1.get_variable_scope instead.
+
+WARNING:tensorflow:From /data/notebooks/jupyter-notebook/violatang/l2r-paper/ULTRA/ultra/ranking_model/DNN.py:62: The name tf.AUTO_REUSE is deprecated. Please use tf.compat.v1.AUTO_REUSE instead.
+
+W0730 03:02:08.962429 139848813705024 module_wrapper.py:139] From /data/notebooks/jupyter-notebook/violatang/l2r-paper/ULTRA/ultra/ranking_model/DNN.py:62: The name tf.AUTO_REUSE is deprecated. Please use tf.compat.v1.AUTO_REUSE instead.
+
+WARNING:tensorflow:From /data/miniconda3/envs/env-3.6.8/lib/python3.6/site-packages/tensorflow_core/python/ops/resource_variable_ops.py:1630: calling BaseResourceVariable.__init__ (from tensorflow.python.ops.resource_variable_ops) with constraint is deprecated and will be removed in a future version.
+Instructions for updating:
+If using Keras pass *_constraint arguments to layers.
+W0730 03:02:09.015201 139848813705024 deprecation.py:506] From /data/miniconda3/envs/env-3.6.8/lib/python3.6/site-packages/tensorflow_core/python/ops/resource_variable_ops.py:1630: calling BaseResourceVariable.__init__ (from tensorflow.python.ops.resource_variable_ops) with constraint is deprecated and will be removed in a future version.
+Instructions for updating:
+If using Keras pass *_constraint arguments to layers.
+WARNING:tensorflow:From /data/notebooks/jupyter-notebook/violatang/l2r-paper/ULTRA/ultra/ranking_model/base_ranking_model.py:121: The name tf.get_variable is deprecated. Please use tf.compat.v1.get_variable instead.
+
+W0730 03:02:09.025407 139848813705024 module_wrapper.py:139] From /data/notebooks/jupyter-notebook/violatang/l2r-paper/ULTRA/ultra/ranking_model/base_ranking_model.py:121: The name tf.get_variable is deprecated. Please use tf.compat.v1.get_variable instead.
+
+WARNING:tensorflow:From /data/notebooks/jupyter-notebook/violatang/l2r-paper/ULTRA/ultra/learning_algorithm/base_algorithm.py:85: where (from tensorflow.python.ops.array_ops) is deprecated and will be removed in a future version.
+Instructions for updating:
+Use tf.where in 2.0, which has the same broadcast rule as np.where
+W0730 03:02:10.817005 139848813705024 deprecation.py:323] From /data/notebooks/jupyter-notebook/violatang/l2r-paper/ULTRA/ultra/learning_algorithm/base_algorithm.py:85: where (from tensorflow.python.ops.array_ops) is deprecated and will be removed in a future version.
+Instructions for updating:
+Use tf.where in 2.0, which has the same broadcast rule as np.where
+WARNING:tensorflow:From /data/notebooks/jupyter-notebook/violatang/l2r-paper/ULTRA/ultra/utils/metrics.py:328: to_float (from tensorflow.python.ops.math_ops) is deprecated and will be removed in a future version.
+Instructions for updating:
+Use `tf.cast` instead.
+W0730 03:02:16.895376 139848813705024 deprecation.py:323] From /data/notebooks/jupyter-notebook/violatang/l2r-paper/ULTRA/ultra/utils/metrics.py:328: to_float (from tensorflow.python.ops.math_ops) is deprecated and will be removed in a future version.
+Instructions for updating:
+Use `tf.cast` instead.
+WARNING:tensorflow:From /data/notebooks/jupyter-notebook/violatang/l2r-paper/ULTRA/ultra/utils/metrics.py:200: div (from tensorflow.python.ops.math_ops) is deprecated and will be removed in a future version.
+Instructions for updating:
+Deprecated in favor of operator or tf.math.divide.
+W0730 03:02:17.595458 139848813705024 deprecation.py:323] From /data/notebooks/jupyter-notebook/violatang/l2r-paper/ULTRA/ultra/utils/metrics.py:200: div (from tensorflow.python.ops.math_ops) is deprecated and will be removed in a future version.
+Instructions for updating:
+Deprecated in favor of operator or tf.math.divide.
+WARNING:tensorflow:From /data/notebooks/jupyter-notebook/violatang/l2r-paper/ULTRA/ultra/learning_algorithm/pairwise_reg_em.py:176: The name tf.summary.histogram is deprecated. Please use tf.compat.v1.summary.histogram instead.
+
+W0730 03:02:19.283933 139848813705024 module_wrapper.py:139] From /data/notebooks/jupyter-notebook/violatang/l2r-paper/ULTRA/ultra/learning_algorithm/pairwise_reg_em.py:176: The name tf.summary.histogram is deprecated. Please use tf.compat.v1.summary.histogram instead.
+
+WARNING:tensorflow:From /data/notebooks/jupyter-notebook/violatang/l2r-paper/ULTRA/ultra/learning_algorithm/pairwise_reg_em.py:501: calling reduce_sum_v1 (from tensorflow.python.ops.math_ops) with keep_dims is deprecated and will be removed in a future version.
+Instructions for updating:
+keep_dims is deprecated, use keepdims instead
+W0730 03:02:19.325546 139848813705024 deprecation.py:506] From /data/notebooks/jupyter-notebook/violatang/l2r-paper/ULTRA/ultra/learning_algorithm/pairwise_reg_em.py:501: calling reduce_sum_v1 (from tensorflow.python.ops.math_ops) with keep_dims is deprecated and will be removed in a future version.
+Instructions for updating:
+keep_dims is deprecated, use keepdims instead
+WARNING:tensorflow:From /data/notebooks/jupyter-notebook/violatang/l2r-paper/ULTRA/ultra/learning_algorithm/pairwise_reg_em.py:48: The name tf.ceil is deprecated. Please use tf.math.ceil instead.
+
+W0730 03:02:19.348828 139848813705024 module_wrapper.py:139] From /data/notebooks/jupyter-notebook/violatang/l2r-paper/ULTRA/ultra/learning_algorithm/pairwise_reg_em.py:48: The name tf.ceil is deprecated. Please use tf.math.ceil instead.
+
+WARNING:tensorflow:From /data/notebooks/jupyter-notebook/violatang/l2r-paper/ULTRA/ultra/learning_algorithm/pairwise_reg_em.py:48: The name tf.random_uniform is deprecated. Please use tf.random.uniform instead.
+
+W0730 03:02:19.349018 139848813705024 module_wrapper.py:139] From /data/notebooks/jupyter-notebook/violatang/l2r-paper/ULTRA/ultra/learning_algorithm/pairwise_reg_em.py:48: The name tf.random_uniform is deprecated. Please use tf.random.uniform instead.
+
+WARNING:tensorflow:From /data/notebooks/jupyter-notebook/violatang/l2r-paper/ULTRA/ultra/learning_algorithm/pairwise_reg_em.py:211: The name tf.trainable_variables is deprecated. Please use tf.compat.v1.trainable_variables instead.
+
+W0730 03:02:19.485600 139848813705024 module_wrapper.py:139] From /data/notebooks/jupyter-notebook/violatang/l2r-paper/ULTRA/ultra/learning_algorithm/pairwise_reg_em.py:211: The name tf.trainable_variables is deprecated. Please use tf.compat.v1.trainable_variables instead.
+
+WARNING:tensorflow:From /data/notebooks/jupyter-notebook/violatang/l2r-paper/ULTRA/ultra/learning_algorithm/pairwise_reg_em.py:219: The name tf.train.AdagradOptimizer is deprecated. Please use tf.compat.v1.train.AdagradOptimizer instead.
+
+W0730 03:02:19.486404 139848813705024 module_wrapper.py:139] From /data/notebooks/jupyter-notebook/violatang/l2r-paper/ULTRA/ultra/learning_algorithm/pairwise_reg_em.py:219: The name tf.train.AdagradOptimizer is deprecated. Please use tf.compat.v1.train.AdagradOptimizer instead.
+
+WARNING:tensorflow:From /data/miniconda3/envs/env-3.6.8/lib/python3.6/site-packages/tensorflow_core/python/training/adagrad.py:76: calling Constant.__init__ (from tensorflow.python.ops.init_ops) with dtype is deprecated and will be removed in a future version.
+Instructions for updating:
+Call initializer instance with the dtype argument instead of passing it to the constructor
+W0730 03:02:20.381009 139848813705024 deprecation.py:506] From /data/miniconda3/envs/env-3.6.8/lib/python3.6/site-packages/tensorflow_core/python/training/adagrad.py:76: calling Constant.__init__ (from tensorflow.python.ops.init_ops) with dtype is deprecated and will be removed in a future version.
+Instructions for updating:
+Call initializer instance with the dtype argument instead of passing it to the constructor
+WARNING:tensorflow:From /data/notebooks/jupyter-notebook/violatang/l2r-paper/ULTRA/ultra/learning_algorithm/pairwise_reg_em.py:269: The name tf.summary.merge_all is deprecated. Please use tf.compat.v1.summary.merge_all instead.
+
+W0730 03:02:21.208710 139848813705024 module_wrapper.py:139] From /data/notebooks/jupyter-notebook/violatang/l2r-paper/ULTRA/ultra/learning_algorithm/pairwise_reg_em.py:269: The name tf.summary.merge_all is deprecated. Please use tf.compat.v1.summary.merge_all instead.
+
+WARNING:tensorflow:From /data/notebooks/jupyter-notebook/violatang/l2r-paper/ULTRA/ultra/learning_algorithm/pairwise_reg_em.py:271: The name tf.global_variables is deprecated. Please use tf.compat.v1.global_variables instead.
+
+W0730 03:02:21.217330 139848813705024 module_wrapper.py:139] From /data/notebooks/jupyter-notebook/violatang/l2r-paper/ULTRA/ultra/learning_algorithm/pairwise_reg_em.py:271: The name tf.global_variables is deprecated. Please use tf.compat.v1.global_variables instead.
+
+WARNING:tensorflow:From /data/notebooks/jupyter-notebook/violatang/l2r-paper/ULTRA/ultra/learning_algorithm/pairwise_reg_em.py:280: The name tf.train.Saver is deprecated. Please use tf.compat.v1.train.Saver instead.
+
+W0730 03:02:21.218617 139848813705024 module_wrapper.py:139] From /data/notebooks/jupyter-notebook/violatang/l2r-paper/ULTRA/ultra/learning_algorithm/pairwise_reg_em.py:280: The name tf.train.Saver is deprecated. Please use tf.compat.v1.train.Saver instead.
+
+WARNING:tensorflow:From main.py:80: The name tf.global_variables_initializer is deprecated. Please use tf.compat.v1.global_variables_initializer instead.
+
+W0730 03:02:21.303078 139848813705024 module_wrapper.py:139] From main.py:80: The name tf.global_variables_initializer is deprecated. Please use tf.compat.v1.global_variables_initializer instead.
+
+WARNING:tensorflow:From main.py:129: The name tf.summary.FileWriter is deprecated. Please use tf.compat.v1.summary.FileWriter instead.
+
+W0730 03:02:23.515744 139848813705024 module_wrapper.py:139] From main.py:129: The name tf.summary.FileWriter is deprecated. Please use tf.compat.v1.summary.FileWriter instead.
+
+loss_weight:[1]
+loss_weight:[1]
+loss_weight:[1]
+loss_weight:[1]
+loss_weight:[1]
+loss_weight:[1]
+loss_weight:[1]
+loss_weight:[1]
+loss_weight:[1]
+loss_weight:[1]
+WARNING:tensorflow:From /data/notebooks/jupyter-notebook/violatang/l2r-paper/ULTRA/ultra/utils/data_utils.py:367: The name tf.Summary is deprecated. Please use tf.compat.v1.Summary instead.
+
+W0730 03:04:14.757753 139848813705024 module_wrapper.py:139] From /data/notebooks/jupyter-notebook/violatang/l2r-paper/ULTRA/ultra/utils/data_utils.py:367: The name tf.Summary is deprecated. Please use tf.compat.v1.Summary instead.
+
+Reading data in /data/notebooks/jupyter-notebook/violatang/l2r-paper/MSLR_30k_letor_v2/MSLR_30k_letor/tmp_data/
+Read data from /data/notebooks/jupyter-notebook/violatang/l2r-paper/MSLR_30k_letor_v2/MSLR_30k_letor/tmp_data//train in ULTRA format.
+Feature reading finish.
+List reading finish.
+Label reading finish.
+Remove 611 invalid queries.
+Data reading finish!
+Finished reading 18308 queries with lists.
+Read data from /data/notebooks/jupyter-notebook/violatang/l2r-paper/MSLR_30k_letor_v2/MSLR_30k_letor/tmp_data//valid in ULTRA format.
+Feature reading finish.
+List reading finish.
+Label reading finish.
+Remove 2 invalid queries.
+Data reading finish!
+Finished reading 6113 queries with lists.
+Train Rank list size 1251
+Valid Rank list size 679
+Users can only see the top 10 documents for each query in training.
+Creating model...
+Build Pairwise RegressionEM algorithm.
+corr_pair_clk_noise=True,opt_metric=None,enable_ips=True,exact_ips=True
+in pairwise regem.. hparams: [('EM_step_size', 0.05), ('clk_noise_EM_ratio', 1.0), ('corr_pair_clk_noise', True), ('corr_point_clk_noise', False), ('discount_fn', 'log1p'), ('enable_ips', True), ('exact_ips', True), ('gain_fn', 'exp'), ('grad_strategy', 'ada'), ('ips_hotstart', False), ('l2_loss', 0.0), ('learning_rate', 0.05), ('max_gradient_norm', 5.0), ('opt_metric', 'None'), ('pointwise_only', False), ('reg_em_type', 0), ('step_decay_ratio', -0.0)]
+model init: None
+None
+ranking_model: <class 'ultra.ranking_model.DNN.DNN'>
+kwargs: {'rank_list_size': 1251, 'forward_only': False}
+layer_norm objs for ips_ranking_model is:
+[<tensorflow.python.keras.layers.normalization.LayerNormalization object at 0x7f2c38635828>, <tensorflow.python.keras.layers.normalization.LayerNormalization object at 0x7f2c1069c390>, <tensorflow.python.keras.layers.normalization.LayerNormalization object at 0x7f2c1065ee10>, <tensorflow.python.keras.layers.normalization.LayerNormalization object at 0x7f2c10624080>]
+kwargs: {'rank_list_size': 10, 'forward_only': False}
+layer_norm objs for point_ranking_model is:
+[<tensorflow.python.keras.layers.normalization.LayerNormalization object at 0x7f2bb00afc88>, <tensorflow.python.keras.layers.normalization.LayerNormalization object at 0x7f2bb00440b8>, <tensorflow.python.keras.layers.normalization.LayerNormalization object at 0x7f2bb00446d8>, <tensorflow.python.keras.layers.normalization.LayerNormalization object at 0x7f2bb0044940>]
+kwargs: {'rank_list_size': 10, 'forward_only': False}
+layer_norm objs for ranking_model is:
+[<tensorflow.python.keras.layers.normalization.LayerNormalization object at 0x7f2b90782cc0>, <tensorflow.python.keras.layers.normalization.LayerNormalization object at 0x7f2b9078f940>, <tensorflow.python.keras.layers.normalization.LayerNormalization object at 0x7f2b90796048>, <tensorflow.python.keras.layers.normalization.LayerNormalization object at 0x7f2b907962b0>]
+kwargs: {'rank_list_size': 10, 'forward_only': False}
+layer_norm objs for ips_ranking_model is:
+[<tensorflow.python.keras.layers.normalization.LayerNormalization object at 0x7f2c38635828>, <tensorflow.python.keras.layers.normalization.LayerNormalization object at 0x7f2c1069c390>, <tensorflow.python.keras.layers.normalization.LayerNormalization object at 0x7f2c1065ee10>, <tensorflow.python.keras.layers.normalization.LayerNormalization object at 0x7f2c10624080>]
+trainable vars:
+[<tf.Variable 'ips_ranking_model/ips_ranking_model/layer_norm_0/gamma:0' shape=(136,) dtype=float32>, <tf.Variable 'ips_ranking_model/ips_ranking_model/layer_norm_0/beta:0' shape=(136,) dtype=float32>, <tf.Variable 'ips_ranking_model/dnn_W_0:0' shape=(136, 512) dtype=float32_ref>, <tf.Variable 'ips_ranking_model/dnn_b_0:0' shape=(512,) dtype=float32_ref>, <tf.Variable 'ips_ranking_model/ips_ranking_model/layer_norm_1/gamma:0' shape=(512,) dtype=float32>, <tf.Variable 'ips_ranking_model/ips_ranking_model/layer_norm_1/beta:0' shape=(512,) dtype=float32>, <tf.Variable 'ips_ranking_model/dnn_W_1:0' shape=(512, 256) dtype=float32_ref>, <tf.Variable 'ips_ranking_model/dnn_b_1:0' shape=(256,) dtype=float32_ref>, <tf.Variable 'ips_ranking_model/ips_ranking_model/layer_norm_2/gamma:0' shape=(256,) dtype=float32>, <tf.Variable 'ips_ranking_model/ips_ranking_model/layer_norm_2/beta:0' shape=(256,) dtype=float32>, <tf.Variable 'ips_ranking_model/dnn_W_2:0' shape=(256, 128) dtype=float32_ref>, <tf.Variable 'ips_ranking_model/dnn_b_2:0' shape=(128,) dtype=float32_ref>, <tf.Variable 'ips_ranking_model/ips_ranking_model/layer_norm_3/gamma:0' shape=(128,) dtype=float32>, <tf.Variable 'ips_ranking_model/ips_ranking_model/layer_norm_3/beta:0' shape=(128,) dtype=float32>, <tf.Variable 'ips_ranking_model/dnn_W_3:0' shape=(128, 1) dtype=float32_ref>, <tf.Variable 'ips_ranking_model/dnn_b_3:0' shape=(1,) dtype=float32_ref>, <tf.Variable 'sigmoid_prob_b:0' shape=(1,) dtype=float32_ref>, <tf.Variable 'point_ranking_model/point_ranking_model/layer_norm_0/gamma:0' shape=(136,) dtype=float32>, <tf.Variable 'point_ranking_model/point_ranking_model/layer_norm_0/beta:0' shape=(136,) dtype=float32>, <tf.Variable 'point_ranking_model/dnn_W_0:0' shape=(136, 512) dtype=float32_ref>, <tf.Variable 'point_ranking_model/dnn_b_0:0' shape=(512,) dtype=float32_ref>, <tf.Variable 'point_ranking_model/point_ranking_model/layer_norm_1/gamma:0' shape=(512,) dtype=float32>, <tf.Variable 'point_ranking_model/point_ranking_model/layer_norm_1/beta:0' shape=(512,) dtype=float32>, <tf.Variable 'point_ranking_model/dnn_W_1:0' shape=(512, 256) dtype=float32_ref>, <tf.Variable 'point_ranking_model/dnn_b_1:0' shape=(256,) dtype=float32_ref>, <tf.Variable 'point_ranking_model/point_ranking_model/layer_norm_2/gamma:0' shape=(256,) dtype=float32>, <tf.Variable 'point_ranking_model/point_ranking_model/layer_norm_2/beta:0' shape=(256,) dtype=float32>, <tf.Variable 'point_ranking_model/dnn_W_2:0' shape=(256, 128) dtype=float32_ref>, <tf.Variable 'point_ranking_model/dnn_b_2:0' shape=(128,) dtype=float32_ref>, <tf.Variable 'point_ranking_model/point_ranking_model/layer_norm_3/gamma:0' shape=(128,) dtype=float32>, <tf.Variable 'point_ranking_model/point_ranking_model/layer_norm_3/beta:0' shape=(128,) dtype=float32>, <tf.Variable 'point_ranking_model/dnn_W_3:0' shape=(128, 1) dtype=float32_ref>, <tf.Variable 'point_ranking_model/dnn_b_3:0' shape=(1,) dtype=float32_ref>, <tf.Variable 'ranking_model/ranking_model/layer_norm_0/gamma:0' shape=(136,) dtype=float32>, <tf.Variable 'ranking_model/ranking_model/layer_norm_0/beta:0' shape=(136,) dtype=float32>, <tf.Variable 'ranking_model/dnn_W_0:0' shape=(136, 512) dtype=float32_ref>, <tf.Variable 'ranking_model/dnn_b_0:0' shape=(512,) dtype=float32_ref>, <tf.Variable 'ranking_model/ranking_model/layer_norm_1/gamma:0' shape=(512,) dtype=float32>, <tf.Variable 'ranking_model/ranking_model/layer_norm_1/beta:0' shape=(512,) dtype=float32>, <tf.Variable 'ranking_model/dnn_W_1:0' shape=(512, 256) dtype=float32_ref>, <tf.Variable 'ranking_model/dnn_b_1:0' shape=(256,) dtype=float32_ref>, <tf.Variable 'ranking_model/ranking_model/layer_norm_2/gamma:0' shape=(256,) dtype=float32>, <tf.Variable 'ranking_model/ranking_model/layer_norm_2/beta:0' shape=(256,) dtype=float32>, <tf.Variable 'ranking_model/dnn_W_2:0' shape=(256, 128) dtype=float32_ref>, <tf.Variable 'ranking_model/dnn_b_2:0' shape=(128,) dtype=float32_ref>, <tf.Variable 'ranking_model/ranking_model/layer_norm_3/gamma:0' shape=(128,) dtype=float32>, <tf.Variable 'ranking_model/ranking_model/layer_norm_3/beta:0' shape=(128,) dtype=float32>, <tf.Variable 'ranking_model/dnn_W_3:0' shape=(128, 1) dtype=float32_ref>, <tf.Variable 'ranking_model/dnn_b_3:0' shape=(1,) dtype=float32_ref>]
+global_variables: [<tf.Variable 'Variable:0' shape=() dtype=int32_ref>, <tf.Variable 'Variable_1:0' shape=() dtype=float32_ref>, <tf.Variable 'ips_ranking_model/ips_ranking_model/layer_norm_0/gamma:0' shape=(136,) dtype=float32>, <tf.Variable 'ips_ranking_model/ips_ranking_model/layer_norm_0/beta:0' shape=(136,) dtype=float32>, <tf.Variable 'ips_ranking_model/dnn_W_0:0' shape=(136, 512) dtype=float32_ref>, <tf.Variable 'ips_ranking_model/dnn_b_0:0' shape=(512,) dtype=float32_ref>, <tf.Variable 'ips_ranking_model/ips_ranking_model/layer_norm_1/gamma:0' shape=(512,) dtype=float32>, <tf.Variable 'ips_ranking_model/ips_ranking_model/layer_norm_1/beta:0' shape=(512,) dtype=float32>, <tf.Variable 'ips_ranking_model/dnn_W_1:0' shape=(512, 256) dtype=float32_ref>, <tf.Variable 'ips_ranking_model/dnn_b_1:0' shape=(256,) dtype=float32_ref>, <tf.Variable 'ips_ranking_model/ips_ranking_model/layer_norm_2/gamma:0' shape=(256,) dtype=float32>, <tf.Variable 'ips_ranking_model/ips_ranking_model/layer_norm_2/beta:0' shape=(256,) dtype=float32>, <tf.Variable 'ips_ranking_model/dnn_W_2:0' shape=(256, 128) dtype=float32_ref>, <tf.Variable 'ips_ranking_model/dnn_b_2:0' shape=(128,) dtype=float32_ref>, <tf.Variable 'ips_ranking_model/ips_ranking_model/layer_norm_3/gamma:0' shape=(128,) dtype=float32>, <tf.Variable 'ips_ranking_model/ips_ranking_model/layer_norm_3/beta:0' shape=(128,) dtype=float32>, <tf.Variable 'ips_ranking_model/dnn_W_3:0' shape=(128, 1) dtype=float32_ref>, <tf.Variable 'ips_ranking_model/dnn_b_3:0' shape=(1,) dtype=float32_ref>, <tf.Variable 'sigmoid_prob_b:0' shape=(1,) dtype=float32_ref>, <tf.Variable 'point_ranking_model/point_ranking_model/layer_norm_0/gamma:0' shape=(136,) dtype=float32>, <tf.Variable 'point_ranking_model/point_ranking_model/layer_norm_0/beta:0' shape=(136,) dtype=float32>, <tf.Variable 'point_ranking_model/dnn_W_0:0' shape=(136, 512) dtype=float32_ref>, <tf.Variable 'point_ranking_model/dnn_b_0:0' shape=(512,) dtype=float32_ref>, <tf.Variable 'point_ranking_model/point_ranking_model/layer_norm_1/gamma:0' shape=(512,) dtype=float32>, <tf.Variable 'point_ranking_model/point_ranking_model/layer_norm_1/beta:0' shape=(512,) dtype=float32>, <tf.Variable 'point_ranking_model/dnn_W_1:0' shape=(512, 256) dtype=float32_ref>, <tf.Variable 'point_ranking_model/dnn_b_1:0' shape=(256,) dtype=float32_ref>, <tf.Variable 'point_ranking_model/point_ranking_model/layer_norm_2/gamma:0' shape=(256,) dtype=float32>, <tf.Variable 'point_ranking_model/point_ranking_model/layer_norm_2/beta:0' shape=(256,) dtype=float32>, <tf.Variable 'point_ranking_model/dnn_W_2:0' shape=(256, 128) dtype=float32_ref>, <tf.Variable 'point_ranking_model/dnn_b_2:0' shape=(128,) dtype=float32_ref>, <tf.Variable 'point_ranking_model/point_ranking_model/layer_norm_3/gamma:0' shape=(128,) dtype=float32>, <tf.Variable 'point_ranking_model/point_ranking_model/layer_norm_3/beta:0' shape=(128,) dtype=float32>, <tf.Variable 'point_ranking_model/dnn_W_3:0' shape=(128, 1) dtype=float32_ref>, <tf.Variable 'point_ranking_model/dnn_b_3:0' shape=(1,) dtype=float32_ref>, <tf.Variable 'ranking_model/ranking_model/layer_norm_0/gamma:0' shape=(136,) dtype=float32>, <tf.Variable 'ranking_model/ranking_model/layer_norm_0/beta:0' shape=(136,) dtype=float32>, <tf.Variable 'ranking_model/dnn_W_0:0' shape=(136, 512) dtype=float32_ref>, <tf.Variable 'ranking_model/dnn_b_0:0' shape=(512,) dtype=float32_ref>, <tf.Variable 'ranking_model/ranking_model/layer_norm_1/gamma:0' shape=(512,) dtype=float32>, <tf.Variable 'ranking_model/ranking_model/layer_norm_1/beta:0' shape=(512,) dtype=float32>, <tf.Variable 'ranking_model/dnn_W_1:0' shape=(512, 256) dtype=float32_ref>, <tf.Variable 'ranking_model/dnn_b_1:0' shape=(256,) dtype=float32_ref>, <tf.Variable 'ranking_model/ranking_model/layer_norm_2/gamma:0' shape=(256,) dtype=float32>, <tf.Variable 'ranking_model/ranking_model/layer_norm_2/beta:0' shape=(256,) dtype=float32>, <tf.Variable 'ranking_model/dnn_W_2:0' shape=(256, 128) dtype=float32_ref>, <tf.Variable 'ranking_model/dnn_b_2:0' shape=(128,) dtype=float32_ref>, <tf.Variable 'ranking_model/ranking_model/layer_norm_3/gamma:0' shape=(128,) dtype=float32>, <tf.Variable 'ranking_model/ranking_model/layer_norm_3/beta:0' shape=(128,) dtype=float32>, <tf.Variable 'ranking_model/dnn_W_3:0' shape=(128, 1) dtype=float32_ref>, <tf.Variable 'ranking_model/dnn_b_3:0' shape=(1,) dtype=float32_ref>, <tf.Variable 'Variable_2:0' shape=(1, 10) dtype=float32_ref>, <tf.Variable 'Variable_3:0' shape=(1, 10) dtype=float32_ref>, <tf.Variable 'Variable_4:0' shape=(1, 10) dtype=float32_ref>, <tf.Variable 'Variable_5:0' shape=(1, 10) dtype=float32_ref>, <tf.Variable 'Variable_6:0' shape=(1, 10, 10) dtype=float32_ref>, <tf.Variable 'Variable_7:0' shape=(1, 10, 10) dtype=float32_ref>, <tf.Variable 'ips_ranking_model/ips_ranking_model/layer_norm_0/gamma/Adagrad:0' shape=(136,) dtype=float32>, <tf.Variable 'ips_ranking_model/ips_ranking_model/layer_norm_0/beta/Adagrad:0' shape=(136,) dtype=float32>, <tf.Variable 'ips_ranking_model/dnn_W_0/Adagrad:0' shape=(136, 512) dtype=float32_ref>, <tf.Variable 'ips_ranking_model/dnn_b_0/Adagrad:0' shape=(512,) dtype=float32_ref>, <tf.Variable 'ips_ranking_model/ips_ranking_model/layer_norm_1/gamma/Adagrad:0' shape=(512,) dtype=float32>, <tf.Variable 'ips_ranking_model/ips_ranking_model/layer_norm_1/beta/Adagrad:0' shape=(512,) dtype=float32>, <tf.Variable 'ips_ranking_model/dnn_W_1/Adagrad:0' shape=(512, 256) dtype=float32_ref>, <tf.Variable 'ips_ranking_model/dnn_b_1/Adagrad:0' shape=(256,) dtype=float32_ref>, <tf.Variable 'ips_ranking_model/ips_ranking_model/layer_norm_2/gamma/Adagrad:0' shape=(256,) dtype=float32>, <tf.Variable 'ips_ranking_model/ips_ranking_model/layer_norm_2/beta/Adagrad:0' shape=(256,) dtype=float32>, <tf.Variable 'ips_ranking_model/dnn_W_2/Adagrad:0' shape=(256, 128) dtype=float32_ref>, <tf.Variable 'ips_ranking_model/dnn_b_2/Adagrad:0' shape=(128,) dtype=float32_ref>, <tf.Variable 'ips_ranking_model/ips_ranking_model/layer_norm_3/gamma/Adagrad:0' shape=(128,) dtype=float32>, <tf.Variable 'ips_ranking_model/ips_ranking_model/layer_norm_3/beta/Adagrad:0' shape=(128,) dtype=float32>, <tf.Variable 'ips_ranking_model/dnn_W_3/Adagrad:0' shape=(128, 1) dtype=float32_ref>, <tf.Variable 'ips_ranking_model/dnn_b_3/Adagrad:0' shape=(1,) dtype=float32_ref>, <tf.Variable 'sigmoid_prob_b/Adagrad:0' shape=(1,) dtype=float32_ref>, <tf.Variable 'point_ranking_model/point_ranking_model/layer_norm_0/gamma/Adagrad:0' shape=(136,) dtype=float32>, <tf.Variable 'point_ranking_model/point_ranking_model/layer_norm_0/beta/Adagrad:0' shape=(136,) dtype=float32>, <tf.Variable 'point_ranking_model/dnn_W_0/Adagrad:0' shape=(136, 512) dtype=float32_ref>, <tf.Variable 'point_ranking_model/dnn_b_0/Adagrad:0' shape=(512,) dtype=float32_ref>, <tf.Variable 'point_ranking_model/point_ranking_model/layer_norm_1/gamma/Adagrad:0' shape=(512,) dtype=float32>, <tf.Variable 'point_ranking_model/point_ranking_model/layer_norm_1/beta/Adagrad:0' shape=(512,) dtype=float32>, <tf.Variable 'point_ranking_model/dnn_W_1/Adagrad:0' shape=(512, 256) dtype=float32_ref>, <tf.Variable 'point_ranking_model/dnn_b_1/Adagrad:0' shape=(256,) dtype=float32_ref>, <tf.Variable 'point_ranking_model/point_ranking_model/layer_norm_2/gamma/Adagrad:0' shape=(256,) dtype=float32>, <tf.Variable 'point_ranking_model/point_ranking_model/layer_norm_2/beta/Adagrad:0' shape=(256,) dtype=float32>, <tf.Variable 'point_ranking_model/dnn_W_2/Adagrad:0' shape=(256, 128) dtype=float32_ref>, <tf.Variable 'point_ranking_model/dnn_b_2/Adagrad:0' shape=(128,) dtype=float32_ref>, <tf.Variable 'point_ranking_model/point_ranking_model/layer_norm_3/gamma/Adagrad:0' shape=(128,) dtype=float32>, <tf.Variable 'point_ranking_model/point_ranking_model/layer_norm_3/beta/Adagrad:0' shape=(128,) dtype=float32>, <tf.Variable 'point_ranking_model/dnn_W_3/Adagrad:0' shape=(128, 1) dtype=float32_ref>, <tf.Variable 'point_ranking_model/dnn_b_3/Adagrad:0' shape=(1,) dtype=float32_ref>, <tf.Variable 'ranking_model/ranking_model/layer_norm_0/gamma/Adagrad:0' shape=(136,) dtype=float32>, <tf.Variable 'ranking_model/ranking_model/layer_norm_0/beta/Adagrad:0' shape=(136,) dtype=float32>, <tf.Variable 'ranking_model/dnn_W_0/Adagrad:0' shape=(136, 512) dtype=float32_ref>, <tf.Variable 'ranking_model/dnn_b_0/Adagrad:0' shape=(512,) dtype=float32_ref>, <tf.Variable 'ranking_model/ranking_model/layer_norm_1/gamma/Adagrad:0' shape=(512,) dtype=float32>, <tf.Variable 'ranking_model/ranking_model/layer_norm_1/beta/Adagrad:0' shape=(512,) dtype=float32>, <tf.Variable 'ranking_model/dnn_W_1/Adagrad:0' shape=(512, 256) dtype=float32_ref>, <tf.Variable 'ranking_model/dnn_b_1/Adagrad:0' shape=(256,) dtype=float32_ref>, <tf.Variable 'ranking_model/ranking_model/layer_norm_2/gamma/Adagrad:0' shape=(256,) dtype=float32>, <tf.Variable 'ranking_model/ranking_model/layer_norm_2/beta/Adagrad:0' shape=(256,) dtype=float32>, <tf.Variable 'ranking_model/dnn_W_2/Adagrad:0' shape=(256, 128) dtype=float32_ref>, <tf.Variable 'ranking_model/dnn_b_2/Adagrad:0' shape=(128,) dtype=float32_ref>, <tf.Variable 'ranking_model/ranking_model/layer_norm_3/gamma/Adagrad:0' shape=(128,) dtype=float32>, <tf.Variable 'ranking_model/ranking_model/layer_norm_3/beta/Adagrad:0' shape=(128,) dtype=float32>, <tf.Variable 'ranking_model/dnn_W_3/Adagrad:0' shape=(128, 1) dtype=float32_ref>, <tf.Variable 'ranking_model/dnn_b_3/Adagrad:0' shape=(1,) dtype=float32_ref>]
+Created model with fresh parameters.
+Create MTL V3 simluated clicks feed
+
+Create direct label feed with list size 1251 with feature size 136
+global step 50 learning rate 0.0500 step-time 0.23 loss 11.2569
+  valid: mrr_3:0.761 mrr_5:0.761 mrr_10:0.761 linear_ndcg_3:0.387 linear_ndcg_5:0.395 linear_ndcg_10:0.412 ndcg_3:0.286 ndcg_5:0.300 ndcg_10:0.328
+Save model, valid ndcg_10:0.328
+global step 100 learning rate 0.0500 step-time 0.26 loss 17.5423
+  valid: mrr_3:0.785 mrr_5:0.785 mrr_10:0.785 linear_ndcg_3:0.403 linear_ndcg_5:0.411 linear_ndcg_10:0.430 ndcg_3:0.297 ndcg_5:0.312 ndcg_10:0.342
+Save model, valid ndcg_10:0.342
+global step 150 learning rate 0.0500 step-time 0.26 loss 22.3106
+  valid: mrr_3:0.742 mrr_5:0.742 mrr_10:0.742 linear_ndcg_3:0.378 linear_ndcg_5:0.384 linear_ndcg_10:0.400 ndcg_3:0.284 ndcg_5:0.296 ndcg_10:0.323
+global step 200 learning rate 0.0500 step-time 0.26 loss 21.7344
+  valid: mrr_3:0.749 mrr_5:0.749 mrr_10:0.749 linear_ndcg_3:0.390 linear_ndcg_5:0.395 linear_ndcg_10:0.411 ndcg_3:0.296 ndcg_5:0.308 ndcg_10:0.334
+global step 250 learning rate 0.0500 step-time 0.25 loss 21.3338
+  valid: mrr_3:0.749 mrr_5:0.749 mrr_10:0.749 linear_ndcg_3:0.396 linear_ndcg_5:0.401 linear_ndcg_10:0.417 ndcg_3:0.302 ndcg_5:0.314 ndcg_10:0.340
+global step 300 learning rate 0.0500 step-time 0.25 loss 22.4432
+  valid: mrr_3:0.729 mrr_5:0.729 mrr_10:0.729 linear_ndcg_3:0.370 linear_ndcg_5:0.378 linear_ndcg_10:0.398 ndcg_3:0.274 ndcg_5:0.289 ndcg_10:0.319
+global step 350 learning rate 0.0500 step-time 0.25 loss 21.6767
+  valid: mrr_3:0.753 mrr_5:0.753 mrr_10:0.753 linear_ndcg_3:0.404 linear_ndcg_5:0.409 linear_ndcg_10:0.424 ndcg_3:0.312 ndcg_5:0.323 ndcg_10:0.348
+Save model, valid ndcg_10:0.348
+global step 400 learning rate 0.0500 step-time 0.25 loss 21.8172
+  valid: mrr_3:0.657 mrr_5:0.657 mrr_10:0.657 linear_ndcg_3:0.316 linear_ndcg_5:0.329 linear_ndcg_10:0.357 ndcg_3:0.238 ndcg_5:0.255 ndcg_10:0.290
+global step 450 learning rate 0.0500 step-time 0.25 loss 20.7661
+  valid: mrr_3:0.760 mrr_5:0.760 mrr_10:0.760 linear_ndcg_3:0.392 linear_ndcg_5:0.399 linear_ndcg_10:0.416 ndcg_3:0.290 ndcg_5:0.304 ndcg_10:0.333
+global step 500 learning rate 0.0500 step-time 0.26 loss 21.6775
+  valid: mrr_3:0.746 mrr_5:0.746 mrr_10:0.746 linear_ndcg_3:0.385 linear_ndcg_5:0.391 linear_ndcg_10:0.408 ndcg_3:0.286 ndcg_5:0.300 ndcg_10:0.328
+global step 550 learning rate 0.0500 step-time 0.25 loss 22.0073
+  valid: mrr_3:0.721 mrr_5:0.721 mrr_10:0.721 linear_ndcg_3:0.375 linear_ndcg_5:0.382 linear_ndcg_10:0.400 ndcg_3:0.287 ndcg_5:0.299 ndcg_10:0.327
+global step 600 learning rate 0.0500 step-time 0.25 loss 20.5252
+  valid: mrr_3:0.668 mrr_5:0.668 mrr_10:0.668 linear_ndcg_3:0.332 linear_ndcg_5:0.345 linear_ndcg_10:0.371 ndcg_3:0.249 ndcg_5:0.267 ndcg_10:0.301
+global step 650 learning rate 0.0500 step-time 0.24 loss 21.0538
+  valid: mrr_3:0.780 mrr_5:0.780 mrr_10:0.780 linear_ndcg_3:0.411 linear_ndcg_5:0.416 linear_ndcg_10:0.433 ndcg_3:0.306 ndcg_5:0.318 ndcg_10:0.347
+global step 700 learning rate 0.0500 step-time 0.24 loss 21.0570
+  valid: mrr_3:0.757 mrr_5:0.757 mrr_10:0.757 linear_ndcg_3:0.409 linear_ndcg_5:0.414 linear_ndcg_10:0.428 ndcg_3:0.315 ndcg_5:0.326 ndcg_10:0.351
+Save model, valid ndcg_10:0.351
+global step 750 learning rate 0.0500 step-time 0.26 loss 20.4008
+  valid: mrr_3:0.738 mrr_5:0.738 mrr_10:0.738 linear_ndcg_3:0.388 linear_ndcg_5:0.394 linear_ndcg_10:0.412 ndcg_3:0.295 ndcg_5:0.307 ndcg_10:0.336
+global step 800 learning rate 0.0500 step-time 0.26 loss 21.0933
+  valid: mrr_3:0.709 mrr_5:0.709 mrr_10:0.709 linear_ndcg_3:0.364 linear_ndcg_5:0.372 linear_ndcg_10:0.394 ndcg_3:0.276 ndcg_5:0.289 ndcg_10:0.321
+global step 850 learning rate 0.0500 step-time 0.26 loss 20.8702
+  valid: mrr_3:0.721 mrr_5:0.721 mrr_10:0.721 linear_ndcg_3:0.383 linear_ndcg_5:0.390 linear_ndcg_10:0.409 ndcg_3:0.297 ndcg_5:0.308 ndcg_10:0.337
+global step 900 learning rate 0.0500 step-time 0.25 loss 20.1384
+  valid: mrr_3:0.745 mrr_5:0.745 mrr_10:0.745 linear_ndcg_3:0.393 linear_ndcg_5:0.399 linear_ndcg_10:0.418 ndcg_3:0.298 ndcg_5:0.310 ndcg_10:0.340
+global step 950 learning rate 0.0500 step-time 0.25 loss 21.0020
+  valid: mrr_3:0.764 mrr_5:0.764 mrr_10:0.764 linear_ndcg_3:0.402 linear_ndcg_5:0.407 linear_ndcg_10:0.424 ndcg_3:0.300 ndcg_5:0.311 ndcg_10:0.341
+global step 1000 learning rate 0.0500 step-time 0.21 loss 19.9113
+  valid: mrr_3:0.762 mrr_5:0.762 mrr_10:0.762 linear_ndcg_3:0.406 linear_ndcg_5:0.413 linear_ndcg_10:0.431 ndcg_3:0.308 ndcg_5:0.321 ndcg_10:0.350
+global step 1050 learning rate 0.0500 step-time 0.25 loss 19.9338
+  valid: mrr_3:0.769 mrr_5:0.769 mrr_10:0.769 linear_ndcg_3:0.419 linear_ndcg_5:0.423 linear_ndcg_10:0.440 ndcg_3:0.325 ndcg_5:0.335 ndcg_10:0.362
+Save model, valid ndcg_10:0.362
+global step 1100 learning rate 0.0500 step-time 0.24 loss 19.8055
+  valid: mrr_3:0.757 mrr_5:0.757 mrr_10:0.757 linear_ndcg_3:0.404 linear_ndcg_5:0.410 linear_ndcg_10:0.429 ndcg_3:0.308 ndcg_5:0.320 ndcg_10:0.350
+global step 1150 learning rate 0.0500 step-time 0.24 loss 19.2792
+  valid: mrr_3:0.783 mrr_5:0.783 mrr_10:0.783 linear_ndcg_3:0.422 linear_ndcg_5:0.428 linear_ndcg_10:0.444 ndcg_3:0.320 ndcg_5:0.332 ndcg_10:0.360
+global step 1200 learning rate 0.0500 step-time 0.25 loss 20.1456
+  valid: mrr_3:0.783 mrr_5:0.783 mrr_10:0.783 linear_ndcg_3:0.418 linear_ndcg_5:0.424 linear_ndcg_10:0.439 ndcg_3:0.314 ndcg_5:0.327 ndcg_10:0.354
+global step 1250 learning rate 0.0500 step-time 0.24 loss 19.5840
+  valid: mrr_3:0.747 mrr_5:0.747 mrr_10:0.747 linear_ndcg_3:0.396 linear_ndcg_5:0.404 linear_ndcg_10:0.424 ndcg_3:0.301 ndcg_5:0.315 ndcg_10:0.345
+global step 1300 learning rate 0.0500 step-time 0.26 loss 19.9666
+  valid: mrr_3:0.774 mrr_5:0.774 mrr_10:0.774 linear_ndcg_3:0.417 linear_ndcg_5:0.423 linear_ndcg_10:0.440 ndcg_3:0.316 ndcg_5:0.328 ndcg_10:0.357
+global step 1350 learning rate 0.0500 step-time 0.24 loss 18.8769
+  valid: mrr_3:0.762 mrr_5:0.762 mrr_10:0.762 linear_ndcg_3:0.403 linear_ndcg_5:0.411 linear_ndcg_10:0.430 ndcg_3:0.304 ndcg_5:0.318 ndcg_10:0.348
+global step 1400 learning rate 0.0500 step-time 0.25 loss 19.2954
+  valid: mrr_3:0.760 mrr_5:0.760 mrr_10:0.760 linear_ndcg_3:0.411 linear_ndcg_5:0.417 linear_ndcg_10:0.436 ndcg_3:0.313 ndcg_5:0.326 ndcg_10:0.355
+global step 1450 learning rate 0.0500 step-time 0.25 loss 18.9614
+  valid: mrr_3:0.776 mrr_5:0.776 mrr_10:0.776 linear_ndcg_3:0.414 linear_ndcg_5:0.420 linear_ndcg_10:0.436 ndcg_3:0.312 ndcg_5:0.324 ndcg_10:0.352
+global step 1500 learning rate 0.0500 step-time 0.25 loss 19.1372
+  valid: mrr_3:0.764 mrr_5:0.764 mrr_10:0.764 linear_ndcg_3:0.405 linear_ndcg_5:0.412 linear_ndcg_10:0.429 ndcg_3:0.304 ndcg_5:0.318 ndcg_10:0.347
+global step 1550 learning rate 0.0500 step-time 0.25 loss 18.7767
+  valid: mrr_3:0.761 mrr_5:0.761 mrr_10:0.761 linear_ndcg_3:0.403 linear_ndcg_5:0.412 linear_ndcg_10:0.431 ndcg_3:0.304 ndcg_5:0.319 ndcg_10:0.349
+global step 1600 learning rate 0.0500 step-time 0.25 loss 18.2712
+  valid: mrr_3:0.722 mrr_5:0.722 mrr_10:0.722 linear_ndcg_3:0.376 linear_ndcg_5:0.388 linear_ndcg_10:0.412 ndcg_3:0.286 ndcg_5:0.303 ndcg_10:0.337
+global step 1650 learning rate 0.0500 step-time 0.25 loss 18.2903
+  valid: mrr_3:0.761 mrr_5:0.761 mrr_10:0.761 linear_ndcg_3:0.407 linear_ndcg_5:0.415 linear_ndcg_10:0.433 ndcg_3:0.309 ndcg_5:0.323 ndcg_10:0.352
+global step 1700 learning rate 0.0500 step-time 0.24 loss 19.0665
+  valid: mrr_3:0.748 mrr_5:0.748 mrr_10:0.748 linear_ndcg_3:0.393 linear_ndcg_5:0.402 linear_ndcg_10:0.422 ndcg_3:0.296 ndcg_5:0.311 ndcg_10:0.342
+global step 1750 learning rate 0.0500 step-time 0.25 loss 18.3662
+  valid: mrr_3:0.747 mrr_5:0.747 mrr_10:0.747 linear_ndcg_3:0.397 linear_ndcg_5:0.404 linear_ndcg_10:0.423 ndcg_3:0.301 ndcg_5:0.314 ndcg_10:0.344
+WARNING:tensorflow:From /data/miniconda3/envs/env-3.6.8/lib/python3.6/site-packages/tensorflow_core/python/training/saver.py:963: remove_checkpoint (from tensorflow.python.training.checkpoint_management) is deprecated and will be removed in a future version.
+Instructions for updating:
+Use standard file APIs to delete files with this prefix.
+W0730 03:57:10.350582 139848813705024 deprecation.py:323] From /data/miniconda3/envs/env-3.6.8/lib/python3.6/site-packages/tensorflow_core/python/training/saver.py:963: remove_checkpoint (from tensorflow.python.training.checkpoint_management) is deprecated and will be removed in a future version.
+Instructions for updating:
+Use standard file APIs to delete files with this prefix.
+global step 1800 learning rate 0.0500 step-time 0.25 loss 18.6521
+  valid: mrr_3:0.772 mrr_5:0.772 mrr_10:0.772 linear_ndcg_3:0.417 linear_ndcg_5:0.424 linear_ndcg_10:0.443 ndcg_3:0.319 ndcg_5:0.332 ndcg_10:0.362
+Save model, valid ndcg_10:0.362
+global step 1850 learning rate 0.0500 step-time 0.26 loss 18.7787
+  valid: mrr_3:0.754 mrr_5:0.754 mrr_10:0.754 linear_ndcg_3:0.405 linear_ndcg_5:0.413 linear_ndcg_10:0.432 ndcg_3:0.309 ndcg_5:0.324 ndcg_10:0.353
+global step 1900 learning rate 0.0500 step-time 0.25 loss 18.1837
+  valid: mrr_3:0.772 mrr_5:0.772 mrr_10:0.772 linear_ndcg_3:0.413 linear_ndcg_5:0.420 linear_ndcg_10:0.438 ndcg_3:0.311 ndcg_5:0.326 ndcg_10:0.355
+global step 1950 learning rate 0.0500 step-time 0.25 loss 18.5646
+  valid: mrr_3:0.773 mrr_5:0.773 mrr_10:0.773 linear_ndcg_3:0.420 linear_ndcg_5:0.427 linear_ndcg_10:0.447 ndcg_3:0.321 ndcg_5:0.335 ndcg_10:0.365
+Save model, valid ndcg_10:0.365
+global step 2000 learning rate 0.0500 step-time 0.24 loss 18.6185
+  valid: mrr_3:0.765 mrr_5:0.765 mrr_10:0.765 linear_ndcg_3:0.415 linear_ndcg_5:0.423 linear_ndcg_10:0.442 ndcg_3:0.320 ndcg_5:0.334 ndcg_10:0.364
+global step 2050 learning rate 0.0500 step-time 0.26 loss 18.6110
+  valid: mrr_3:0.781 mrr_5:0.781 mrr_10:0.781 linear_ndcg_3:0.424 linear_ndcg_5:0.431 linear_ndcg_10:0.450 ndcg_3:0.326 ndcg_5:0.339 ndcg_10:0.369
+Save model, valid ndcg_10:0.369
+global step 2100 learning rate 0.0500 step-time 0.25 loss 17.8604
+  valid: mrr_3:0.772 mrr_5:0.772 mrr_10:0.772 linear_ndcg_3:0.414 linear_ndcg_5:0.423 linear_ndcg_10:0.442 ndcg_3:0.317 ndcg_5:0.331 ndcg_10:0.361
+global step 2150 learning rate 0.0500 step-time 0.25 loss 17.7280
+  valid: mrr_3:0.793 mrr_5:0.793 mrr_10:0.793 linear_ndcg_3:0.430 linear_ndcg_5:0.435 linear_ndcg_10:0.453 ndcg_3:0.326 ndcg_5:0.339 ndcg_10:0.368
+global step 2200 learning rate 0.0500 step-time 0.25 loss 18.3101
+  valid: mrr_3:0.775 mrr_5:0.775 mrr_10:0.775 linear_ndcg_3:0.419 linear_ndcg_5:0.426 linear_ndcg_10:0.442 ndcg_3:0.319 ndcg_5:0.333 ndcg_10:0.360
+global step 2250 learning rate 0.0500 step-time 0.25 loss 18.5179
+  valid: mrr_3:0.763 mrr_5:0.763 mrr_10:0.763 linear_ndcg_3:0.413 linear_ndcg_5:0.421 linear_ndcg_10:0.439 ndcg_3:0.315 ndcg_5:0.329 ndcg_10:0.358
+global step 2300 learning rate 0.0500 step-time 0.25 loss 18.3768
+  valid: mrr_3:0.773 mrr_5:0.773 mrr_10:0.773 linear_ndcg_3:0.421 linear_ndcg_5:0.428 linear_ndcg_10:0.445 ndcg_3:0.321 ndcg_5:0.334 ndcg_10:0.363
+global step 2350 learning rate 0.0500 step-time 0.25 loss 18.0581
+  valid: mrr_3:0.778 mrr_5:0.778 mrr_10:0.778 linear_ndcg_3:0.412 linear_ndcg_5:0.418 linear_ndcg_10:0.435 ndcg_3:0.308 ndcg_5:0.321 ndcg_10:0.350
+global step 2400 learning rate 0.0500 step-time 0.26 loss 17.8590
+  valid: mrr_3:0.771 mrr_5:0.771 mrr_10:0.771 linear_ndcg_3:0.419 linear_ndcg_5:0.425 linear_ndcg_10:0.442 ndcg_3:0.320 ndcg_5:0.333 ndcg_10:0.361
+global step 2450 learning rate 0.0500 step-time 0.25 loss 17.5821
+  valid: mrr_3:0.753 mrr_5:0.753 mrr_10:0.753 linear_ndcg_3:0.401 linear_ndcg_5:0.410 linear_ndcg_10:0.429 ndcg_3:0.305 ndcg_5:0.320 ndcg_10:0.350
+global step 2500 learning rate 0.0500 step-time 0.25 loss 17.5710
+  valid: mrr_3:0.758 mrr_5:0.758 mrr_10:0.758 linear_ndcg_3:0.403 linear_ndcg_5:0.411 linear_ndcg_10:0.430 ndcg_3:0.306 ndcg_5:0.320 ndcg_10:0.350
+global step 2550 learning rate 0.0500 step-time 0.25 loss 17.9619
+  valid: mrr_3:0.732 mrr_5:0.732 mrr_10:0.732 linear_ndcg_3:0.385 linear_ndcg_5:0.394 linear_ndcg_10:0.418 ndcg_3:0.297 ndcg_5:0.311 ndcg_10:0.344
+global step 2600 learning rate 0.0500 step-time 0.25 loss 17.5650
+  valid: mrr_3:0.769 mrr_5:0.769 mrr_10:0.769 linear_ndcg_3:0.417 linear_ndcg_5:0.425 linear_ndcg_10:0.444 ndcg_3:0.320 ndcg_5:0.334 ndcg_10:0.364
+global step 2650 learning rate 0.0500 step-time 0.26 loss 16.8741
+  valid: mrr_3:0.758 mrr_5:0.758 mrr_10:0.758 linear_ndcg_3:0.412 linear_ndcg_5:0.418 linear_ndcg_10:0.437 ndcg_3:0.315 ndcg_5:0.328 ndcg_10:0.358
+global step 2700 learning rate 0.0500 step-time 0.25 loss 18.2576
+  valid: mrr_3:0.786 mrr_5:0.786 mrr_10:0.786 linear_ndcg_3:0.426 linear_ndcg_5:0.432 linear_ndcg_10:0.452 ndcg_3:0.324 ndcg_5:0.337 ndcg_10:0.368
+global step 2750 learning rate 0.0500 step-time 0.25 loss 16.7812
+  valid: mrr_3:0.785 mrr_5:0.785 mrr_10:0.785 linear_ndcg_3:0.430 linear_ndcg_5:0.435 linear_ndcg_10:0.452 ndcg_3:0.328 ndcg_5:0.341 ndcg_10:0.369
+Save model, valid ndcg_10:0.369
+global step 2800 learning rate 0.0500 step-time 0.27 loss 17.6711
+  valid: mrr_3:0.791 mrr_5:0.791 mrr_10:0.791 linear_ndcg_3:0.428 linear_ndcg_5:0.434 linear_ndcg_10:0.451 ndcg_3:0.324 ndcg_5:0.337 ndcg_10:0.366
+global step 2850 learning rate 0.0500 step-time 0.26 loss 16.8366
+  valid: mrr_3:0.762 mrr_5:0.762 mrr_10:0.762 linear_ndcg_3:0.412 linear_ndcg_5:0.420 linear_ndcg_10:0.440 ndcg_3:0.314 ndcg_5:0.328 ndcg_10:0.359
+global step 2900 learning rate 0.0500 step-time 0.26 loss 17.6256
+  valid: mrr_3:0.779 mrr_5:0.779 mrr_10:0.779 linear_ndcg_3:0.423 linear_ndcg_5:0.429 linear_ndcg_10:0.447 ndcg_3:0.321 ndcg_5:0.334 ndcg_10:0.365
+global step 2950 learning rate 0.0500 step-time 0.25 loss 17.5115
+  valid: mrr_3:0.784 mrr_5:0.784 mrr_10:0.784 linear_ndcg_3:0.425 linear_ndcg_5:0.432 linear_ndcg_10:0.450 ndcg_3:0.323 ndcg_5:0.336 ndcg_10:0.367
+global step 3000 learning rate 0.0500 step-time 0.26 loss 16.8554
+  valid: mrr_3:0.773 mrr_5:0.773 mrr_10:0.773 linear_ndcg_3:0.420 linear_ndcg_5:0.427 linear_ndcg_10:0.445 ndcg_3:0.320 ndcg_5:0.334 ndcg_10:0.364
+global step 3050 learning rate 0.0500 step-time 0.25 loss 16.9342
+  valid: mrr_3:0.762 mrr_5:0.762 mrr_10:0.762 linear_ndcg_3:0.412 linear_ndcg_5:0.419 linear_ndcg_10:0.439 ndcg_3:0.314 ndcg_5:0.328 ndcg_10:0.359
+global step 3100 learning rate 0.0500 step-time 0.24 loss 17.3694
+  valid: mrr_3:0.767 mrr_5:0.767 mrr_10:0.767 linear_ndcg_3:0.415 linear_ndcg_5:0.423 linear_ndcg_10:0.442 ndcg_3:0.317 ndcg_5:0.331 ndcg_10:0.361
+global step 3150 learning rate 0.0500 step-time 0.25 loss 16.4860
+  valid: mrr_3:0.784 mrr_5:0.784 mrr_10:0.784 linear_ndcg_3:0.429 linear_ndcg_5:0.435 linear_ndcg_10:0.452 ndcg_3:0.327 ndcg_5:0.340 ndcg_10:0.368
+global step 3200 learning rate 0.0500 step-time 0.25 loss 17.5552
+  valid: mrr_3:0.778 mrr_5:0.778 mrr_10:0.778 linear_ndcg_3:0.425 linear_ndcg_5:0.431 linear_ndcg_10:0.451 ndcg_3:0.326 ndcg_5:0.338 ndcg_10:0.370
+Save model, valid ndcg_10:0.370
+global step 3250 learning rate 0.0500 step-time 0.25 loss 17.1284
+  valid: mrr_3:0.772 mrr_5:0.772 mrr_10:0.772 linear_ndcg_3:0.417 linear_ndcg_5:0.423 linear_ndcg_10:0.442 ndcg_3:0.317 ndcg_5:0.329 ndcg_10:0.360
+global step 3300 learning rate 0.0500 step-time 0.25 loss 17.3781
+  valid: mrr_3:0.775 mrr_5:0.775 mrr_10:0.775 linear_ndcg_3:0.416 linear_ndcg_5:0.422 linear_ndcg_10:0.442 ndcg_3:0.315 ndcg_5:0.327 ndcg_10:0.358
+global step 3350 learning rate 0.0500 step-time 0.25 loss 16.6524
+  valid: mrr_3:0.777 mrr_5:0.777 mrr_10:0.777 linear_ndcg_3:0.421 linear_ndcg_5:0.428 linear_ndcg_10:0.447 ndcg_3:0.321 ndcg_5:0.335 ndcg_10:0.365
+global step 3400 learning rate 0.0500 step-time 0.25 loss 16.5906
+  valid: mrr_3:0.791 mrr_5:0.791 mrr_10:0.791 linear_ndcg_3:0.429 linear_ndcg_5:0.434 linear_ndcg_10:0.452 ndcg_3:0.326 ndcg_5:0.337 ndcg_10:0.367
+global step 3450 learning rate 0.0500 step-time 0.25 loss 16.6635
+  valid: mrr_3:0.790 mrr_5:0.790 mrr_10:0.790 linear_ndcg_3:0.431 linear_ndcg_5:0.437 linear_ndcg_10:0.455 ndcg_3:0.328 ndcg_5:0.341 ndcg_10:0.370
+Save model, valid ndcg_10:0.370
+global step 3500 learning rate 0.0500 step-time 0.26 loss 16.0613
+  valid: mrr_3:0.767 mrr_5:0.767 mrr_10:0.767 linear_ndcg_3:0.415 linear_ndcg_5:0.422 linear_ndcg_10:0.441 ndcg_3:0.317 ndcg_5:0.331 ndcg_10:0.361
+global step 3550 learning rate 0.0500 step-time 0.25 loss 15.9342
+  valid: mrr_3:0.773 mrr_5:0.773 mrr_10:0.773 linear_ndcg_3:0.420 linear_ndcg_5:0.426 linear_ndcg_10:0.444 ndcg_3:0.320 ndcg_5:0.333 ndcg_10:0.363
+global step 3600 learning rate 0.0500 step-time 0.25 loss 16.8223
+  valid: mrr_3:0.771 mrr_5:0.771 mrr_10:0.771 linear_ndcg_3:0.415 linear_ndcg_5:0.422 linear_ndcg_10:0.441 ndcg_3:0.315 ndcg_5:0.329 ndcg_10:0.360
+global step 3650 learning rate 0.0500 step-time 0.25 loss 17.0566
+  valid: mrr_3:0.748 mrr_5:0.748 mrr_10:0.748 linear_ndcg_3:0.394 linear_ndcg_5:0.403 linear_ndcg_10:0.425 ndcg_3:0.299 ndcg_5:0.314 ndcg_10:0.347
+global step 3700 learning rate 0.0500 step-time 0.26 loss 16.5389
+  valid: mrr_3:0.786 mrr_5:0.786 mrr_10:0.786 linear_ndcg_3:0.430 linear_ndcg_5:0.438 linear_ndcg_10:0.455 ndcg_3:0.329 ndcg_5:0.344 ndcg_10:0.373
+Save model, valid ndcg_10:0.373
+global step 3750 learning rate 0.0500 step-time 0.23 loss 16.2382
+  valid: mrr_3:0.784 mrr_5:0.784 mrr_10:0.784 linear_ndcg_3:0.431 linear_ndcg_5:0.436 linear_ndcg_10:0.453 ndcg_3:0.331 ndcg_5:0.343 ndcg_10:0.372
+global step 3800 learning rate 0.0500 step-time 0.24 loss 16.9725
+  valid: mrr_3:0.782 mrr_5:0.782 mrr_10:0.782 linear_ndcg_3:0.427 linear_ndcg_5:0.432 linear_ndcg_10:0.450 ndcg_3:0.327 ndcg_5:0.339 ndcg_10:0.369
+global step 3850 learning rate 0.0500 step-time 0.25 loss 16.5974
+  valid: mrr_3:0.783 mrr_5:0.783 mrr_10:0.783 linear_ndcg_3:0.435 linear_ndcg_5:0.440 linear_ndcg_10:0.456 ndcg_3:0.336 ndcg_5:0.348 ndcg_10:0.376
+Save model, valid ndcg_10:0.376
+global step 3900 learning rate 0.0500 step-time 0.25 loss 16.6850
+  valid: mrr_3:0.799 mrr_5:0.799 mrr_10:0.799 linear_ndcg_3:0.441 linear_ndcg_5:0.445 linear_ndcg_10:0.463 ndcg_3:0.337 ndcg_5:0.349 ndcg_10:0.379
+Save model, valid ndcg_10:0.379
+global step 3950 learning rate 0.0500 step-time 0.26 loss 17.0378
+  valid: mrr_3:0.798 mrr_5:0.798 mrr_10:0.798 linear_ndcg_3:0.441 linear_ndcg_5:0.445 linear_ndcg_10:0.462 ndcg_3:0.338 ndcg_5:0.350 ndcg_10:0.379
+global step 4000 learning rate 0.0500 step-time 0.26 loss 16.3713
+  valid: mrr_3:0.778 mrr_5:0.778 mrr_10:0.778 linear_ndcg_3:0.429 linear_ndcg_5:0.435 linear_ndcg_10:0.453 ndcg_3:0.332 ndcg_5:0.345 ndcg_10:0.374
+global step 4050 learning rate 0.0500 step-time 0.25 loss 15.6233
+  valid: mrr_3:0.776 mrr_5:0.776 mrr_10:0.776 linear_ndcg_3:0.421 linear_ndcg_5:0.427 linear_ndcg_10:0.445 ndcg_3:0.322 ndcg_5:0.335 ndcg_10:0.365
+global step 4100 learning rate 0.0500 step-time 0.25 loss 16.5229
+  valid: mrr_3:0.798 mrr_5:0.798 mrr_10:0.798 linear_ndcg_3:0.437 linear_ndcg_5:0.442 linear_ndcg_10:0.459 ndcg_3:0.332 ndcg_5:0.344 ndcg_10:0.374
+global step 4150 learning rate 0.0500 step-time 0.24 loss 16.3853
+  valid: mrr_3:0.794 mrr_5:0.794 mrr_10:0.794 linear_ndcg_3:0.432 linear_ndcg_5:0.438 linear_ndcg_10:0.457 ndcg_3:0.329 ndcg_5:0.341 ndcg_10:0.372
+global step 4200 learning rate 0.0500 step-time 0.24 loss 17.0840
+  valid: mrr_3:0.778 mrr_5:0.778 mrr_10:0.778 linear_ndcg_3:0.420 linear_ndcg_5:0.426 linear_ndcg_10:0.445 ndcg_3:0.320 ndcg_5:0.332 ndcg_10:0.363
+global step 4250 learning rate 0.0500 step-time 0.25 loss 15.8222
+  valid: mrr_3:0.777 mrr_5:0.777 mrr_10:0.777 linear_ndcg_3:0.427 linear_ndcg_5:0.434 linear_ndcg_10:0.453 ndcg_3:0.329 ndcg_5:0.343 ndcg_10:0.373
+global step 4300 learning rate 0.0500 step-time 0.25 loss 16.1693
+  valid: mrr_3:0.770 mrr_5:0.770 mrr_10:0.770 linear_ndcg_3:0.414 linear_ndcg_5:0.421 linear_ndcg_10:0.441 ndcg_3:0.314 ndcg_5:0.328 ndcg_10:0.360
+global step 4350 learning rate 0.0500 step-time 0.26 loss 15.9732
+  valid: mrr_3:0.789 mrr_5:0.789 mrr_10:0.789 linear_ndcg_3:0.437 linear_ndcg_5:0.442 linear_ndcg_10:0.458 ndcg_3:0.336 ndcg_5:0.348 ndcg_10:0.376
+global step 4400 learning rate 0.0500 step-time 0.25 loss 16.6099
+  valid: mrr_3:0.784 mrr_5:0.784 mrr_10:0.784 linear_ndcg_3:0.432 linear_ndcg_5:0.438 linear_ndcg_10:0.455 ndcg_3:0.332 ndcg_5:0.345 ndcg_10:0.374
+global step 4450 learning rate 0.0500 step-time 0.25 loss 16.2476
+  valid: mrr_3:0.780 mrr_5:0.780 mrr_10:0.780 linear_ndcg_3:0.422 linear_ndcg_5:0.429 linear_ndcg_10:0.447 ndcg_3:0.320 ndcg_5:0.334 ndcg_10:0.364
+global step 4500 learning rate 0.0500 step-time 0.25 loss 16.0867
+  valid: mrr_3:0.771 mrr_5:0.771 mrr_10:0.771 linear_ndcg_3:0.422 linear_ndcg_5:0.429 linear_ndcg_10:0.447 ndcg_3:0.324 ndcg_5:0.338 ndcg_10:0.368
+global step 4550 learning rate 0.0500 step-time 0.24 loss 16.5919
+  valid: mrr_3:0.804 mrr_5:0.804 mrr_10:0.804 linear_ndcg_3:0.443 linear_ndcg_5:0.449 linear_ndcg_10:0.464 ndcg_3:0.337 ndcg_5:0.351 ndcg_10:0.378
+global step 4600 learning rate 0.0500 step-time 0.24 loss 15.9984
+  valid: mrr_3:0.769 mrr_5:0.769 mrr_10:0.769 linear_ndcg_3:0.416 linear_ndcg_5:0.423 linear_ndcg_10:0.443 ndcg_3:0.318 ndcg_5:0.332 ndcg_10:0.363
+global step 4650 learning rate 0.0500 step-time 0.25 loss 16.5652
+  valid: mrr_3:0.807 mrr_5:0.807 mrr_10:0.807 linear_ndcg_3:0.446 linear_ndcg_5:0.451 linear_ndcg_10:0.468 ndcg_3:0.341 ndcg_5:0.353 ndcg_10:0.382
+Save model, valid ndcg_10:0.382
+global step 4700 learning rate 0.0500 step-time 0.25 loss 15.8051
+  valid: mrr_3:0.791 mrr_5:0.791 mrr_10:0.791 linear_ndcg_3:0.433 linear_ndcg_5:0.439 linear_ndcg_10:0.455 ndcg_3:0.330 ndcg_5:0.344 ndcg_10:0.372
+global step 4750 learning rate 0.0500 step-time 0.25 loss 15.9899
+  valid: mrr_3:0.789 mrr_5:0.789 mrr_10:0.789 linear_ndcg_3:0.428 linear_ndcg_5:0.433 linear_ndcg_10:0.453 ndcg_3:0.324 ndcg_5:0.336 ndcg_10:0.368
+global step 4800 learning rate 0.0500 step-time 0.25 loss 15.6773
+  valid: mrr_3:0.801 mrr_5:0.801 mrr_10:0.801 linear_ndcg_3:0.445 linear_ndcg_5:0.451 linear_ndcg_10:0.466 ndcg_3:0.342 ndcg_5:0.355 ndcg_10:0.382
+Save model, valid ndcg_10:0.382
+global step 4850 learning rate 0.0500 step-time 0.25 loss 16.5483
+  valid: mrr_3:0.798 mrr_5:0.798 mrr_10:0.798 linear_ndcg_3:0.441 linear_ndcg_5:0.447 linear_ndcg_10:0.464 ndcg_3:0.337 ndcg_5:0.351 ndcg_10:0.380
+global step 4900 learning rate 0.0500 step-time 0.25 loss 16.1528
+  valid: mrr_3:0.801 mrr_5:0.801 mrr_10:0.801 linear_ndcg_3:0.445 linear_ndcg_5:0.450 linear_ndcg_10:0.467 ndcg_3:0.341 ndcg_5:0.354 ndcg_10:0.383
+Save model, valid ndcg_10:0.383
+global step 4950 learning rate 0.0500 step-time 0.24 loss 15.8502
+  valid: mrr_3:0.772 mrr_5:0.772 mrr_10:0.772 linear_ndcg_3:0.419 linear_ndcg_5:0.427 linear_ndcg_10:0.447 ndcg_3:0.321 ndcg_5:0.336 ndcg_10:0.367
+global step 5000 learning rate 0.0500 step-time 0.25 loss 16.2933
+  valid: mrr_3:0.783 mrr_5:0.783 mrr_10:0.783 linear_ndcg_3:0.433 linear_ndcg_5:0.439 linear_ndcg_10:0.456 ndcg_3:0.333 ndcg_5:0.347 ndcg_10:0.376
+global step 5050 learning rate 0.0500 step-time 0.24 loss 15.9582
+  valid: mrr_3:0.787 mrr_5:0.787 mrr_10:0.787 linear_ndcg_3:0.435 linear_ndcg_5:0.442 linear_ndcg_10:0.460 ndcg_3:0.337 ndcg_5:0.351 ndcg_10:0.380
+global step 5100 learning rate 0.0500 step-time 0.24 loss 16.2260
+  valid: mrr_3:0.801 mrr_5:0.801 mrr_10:0.801 linear_ndcg_3:0.446 linear_ndcg_5:0.450 linear_ndcg_10:0.466 ndcg_3:0.343 ndcg_5:0.354 ndcg_10:0.383
+global step 5150 learning rate 0.0500 step-time 0.23 loss 15.8759
+  valid: mrr_3:0.786 mrr_5:0.786 mrr_10:0.786 linear_ndcg_3:0.432 linear_ndcg_5:0.438 linear_ndcg_10:0.455 ndcg_3:0.331 ndcg_5:0.344 ndcg_10:0.373
+global step 5200 learning rate 0.0500 step-time 0.24 loss 15.8975
+  valid: mrr_3:0.779 mrr_5:0.779 mrr_10:0.779 linear_ndcg_3:0.427 linear_ndcg_5:0.433 linear_ndcg_10:0.453 ndcg_3:0.328 ndcg_5:0.341 ndcg_10:0.372
+global step 5250 learning rate 0.0500 step-time 0.25 loss 15.4426
+  valid: mrr_3:0.802 mrr_5:0.802 mrr_10:0.802 linear_ndcg_3:0.442 linear_ndcg_5:0.447 linear_ndcg_10:0.464 ndcg_3:0.338 ndcg_5:0.350 ndcg_10:0.379
+global step 5300 learning rate 0.0500 step-time 0.24 loss 15.5904
+  valid: mrr_3:0.794 mrr_5:0.794 mrr_10:0.794 linear_ndcg_3:0.440 linear_ndcg_5:0.446 linear_ndcg_10:0.463 ndcg_3:0.338 ndcg_5:0.351 ndcg_10:0.380
+global step 5350 learning rate 0.0500 step-time 0.25 loss 15.3846
+  valid: mrr_3:0.802 mrr_5:0.802 mrr_10:0.802 linear_ndcg_3:0.442 linear_ndcg_5:0.447 linear_ndcg_10:0.465 ndcg_3:0.337 ndcg_5:0.350 ndcg_10:0.380
+global step 5400 learning rate 0.0500 step-time 0.25 loss 15.6587
+  valid: mrr_3:0.789 mrr_5:0.789 mrr_10:0.789 linear_ndcg_3:0.438 linear_ndcg_5:0.441 linear_ndcg_10:0.459 ndcg_3:0.337 ndcg_5:0.348 ndcg_10:0.377
+global step 5450 learning rate 0.0500 step-time 0.25 loss 16.0732
+  valid: mrr_3:0.798 mrr_5:0.798 mrr_10:0.798 linear_ndcg_3:0.442 linear_ndcg_5:0.447 linear_ndcg_10:0.463 ndcg_3:0.338 ndcg_5:0.350 ndcg_10:0.379
+global step 5500 learning rate 0.0500 step-time 0.25 loss 16.3280
+  valid: mrr_3:0.782 mrr_5:0.782 mrr_10:0.782 linear_ndcg_3:0.427 linear_ndcg_5:0.435 linear_ndcg_10:0.453 ndcg_3:0.327 ndcg_5:0.341 ndcg_10:0.372
+global step 5550 learning rate 0.0500 step-time 0.25 loss 16.1793
+  valid: mrr_3:0.795 mrr_5:0.795 mrr_10:0.795 linear_ndcg_3:0.441 linear_ndcg_5:0.447 linear_ndcg_10:0.464 ndcg_3:0.340 ndcg_5:0.353 ndcg_10:0.382
+global step 5600 learning rate 0.0500 step-time 0.26 loss 15.8314
+  valid: mrr_3:0.796 mrr_5:0.796 mrr_10:0.796 linear_ndcg_3:0.438 linear_ndcg_5:0.444 linear_ndcg_10:0.460 ndcg_3:0.335 ndcg_5:0.348 ndcg_10:0.377
+global step 5650 learning rate 0.0500 step-time 0.26 loss 15.5673
+  valid: mrr_3:0.790 mrr_5:0.790 mrr_10:0.790 linear_ndcg_3:0.439 linear_ndcg_5:0.444 linear_ndcg_10:0.461 ndcg_3:0.337 ndcg_5:0.350 ndcg_10:0.379
+global step 5700 learning rate 0.0500 step-time 0.25 loss 16.6607
+  valid: mrr_3:0.783 mrr_5:0.783 mrr_10:0.783 linear_ndcg_3:0.432 linear_ndcg_5:0.439 linear_ndcg_10:0.458 ndcg_3:0.334 ndcg_5:0.348 ndcg_10:0.378
+global step 5750 learning rate 0.0500 step-time 0.25 loss 15.5353
+  valid: mrr_3:0.799 mrr_5:0.799 mrr_10:0.799 linear_ndcg_3:0.444 linear_ndcg_5:0.450 linear_ndcg_10:0.467 ndcg_3:0.342 ndcg_5:0.354 ndcg_10:0.384
+Save model, valid ndcg_10:0.384
+global step 5800 learning rate 0.0500 step-time 0.25 loss 15.5944
+  valid: mrr_3:0.786 mrr_5:0.786 mrr_10:0.786 linear_ndcg_3:0.435 linear_ndcg_5:0.442 linear_ndcg_10:0.459 ndcg_3:0.334 ndcg_5:0.348 ndcg_10:0.377
+global step 5850 learning rate 0.0500 step-time 0.25 loss 15.5149
+  valid: mrr_3:0.794 mrr_5:0.794 mrr_10:0.794 linear_ndcg_3:0.439 linear_ndcg_5:0.445 linear_ndcg_10:0.462 ndcg_3:0.338 ndcg_5:0.350 ndcg_10:0.380
+global step 5900 learning rate 0.0500 step-time 0.25 loss 16.0476
+  valid: mrr_3:0.806 mrr_5:0.806 mrr_10:0.806 linear_ndcg_3:0.449 linear_ndcg_5:0.454 linear_ndcg_10:0.470 ndcg_3:0.345 ndcg_5:0.357 ndcg_10:0.386
+Save model, valid ndcg_10:0.386
+global step 5950 learning rate 0.0500 step-time 0.25 loss 15.7948
+  valid: mrr_3:0.803 mrr_5:0.803 mrr_10:0.803 linear_ndcg_3:0.441 linear_ndcg_5:0.446 linear_ndcg_10:0.464 ndcg_3:0.336 ndcg_5:0.348 ndcg_10:0.378
+global step 6000 learning rate 0.0500 step-time 0.25 loss 15.7194
+  valid: mrr_3:0.803 mrr_5:0.803 mrr_10:0.803 linear_ndcg_3:0.448 linear_ndcg_5:0.453 linear_ndcg_10:0.470 ndcg_3:0.345 ndcg_5:0.358 ndcg_10:0.386
+Save model, valid ndcg_10:0.386
+global step 6050 learning rate 0.0500 step-time 0.24 loss 15.7254
+  valid: mrr_3:0.794 mrr_5:0.794 mrr_10:0.794 linear_ndcg_3:0.444 linear_ndcg_5:0.448 linear_ndcg_10:0.465 ndcg_3:0.344 ndcg_5:0.355 ndcg_10:0.385
+global step 6100 learning rate 0.0500 step-time 0.26 loss 15.6714
+  valid: mrr_3:0.766 mrr_5:0.766 mrr_10:0.766 linear_ndcg_3:0.412 linear_ndcg_5:0.420 linear_ndcg_10:0.441 ndcg_3:0.314 ndcg_5:0.329 ndcg_10:0.361
+global step 6150 learning rate 0.0500 step-time 0.25 loss 15.7514
+  valid: mrr_3:0.806 mrr_5:0.806 mrr_10:0.806 linear_ndcg_3:0.445 linear_ndcg_5:0.451 linear_ndcg_10:0.468 ndcg_3:0.341 ndcg_5:0.353 ndcg_10:0.383
+global step 6200 learning rate 0.0500 step-time 0.25 loss 16.1007
+  valid: mrr_3:0.793 mrr_5:0.793 mrr_10:0.793 linear_ndcg_3:0.435 linear_ndcg_5:0.441 linear_ndcg_10:0.460 ndcg_3:0.333 ndcg_5:0.346 ndcg_10:0.377
+global step 6250 learning rate 0.0500 step-time 0.25 loss 15.3488
+  valid: mrr_3:0.802 mrr_5:0.802 mrr_10:0.802 linear_ndcg_3:0.446 linear_ndcg_5:0.451 linear_ndcg_10:0.467 ndcg_3:0.343 ndcg_5:0.355 ndcg_10:0.384
+global step 6300 learning rate 0.0500 step-time 0.25 loss 16.2320
+  valid: mrr_3:0.800 mrr_5:0.800 mrr_10:0.800 linear_ndcg_3:0.445 linear_ndcg_5:0.450 linear_ndcg_10:0.466 ndcg_3:0.341 ndcg_5:0.354 ndcg_10:0.383
+global step 6350 learning rate 0.0500 step-time 0.26 loss 16.0162
+  valid: mrr_3:0.784 mrr_5:0.784 mrr_10:0.784 linear_ndcg_3:0.431 linear_ndcg_5:0.438 linear_ndcg_10:0.456 ndcg_3:0.332 ndcg_5:0.346 ndcg_10:0.376
+global step 6400 learning rate 0.0500 step-time 0.25 loss 15.8627
+  valid: mrr_3:0.797 mrr_5:0.797 mrr_10:0.797 linear_ndcg_3:0.445 linear_ndcg_5:0.451 linear_ndcg_10:0.466 ndcg_3:0.345 ndcg_5:0.358 ndcg_10:0.386
+global step 6450 learning rate 0.0500 step-time 0.25 loss 16.0182
+  valid: mrr_3:0.793 mrr_5:0.793 mrr_10:0.793 linear_ndcg_3:0.443 linear_ndcg_5:0.448 linear_ndcg_10:0.464 ndcg_3:0.343 ndcg_5:0.355 ndcg_10:0.383
+global step 6500 learning rate 0.0500 step-time 0.25 loss 15.5860
+  valid: mrr_3:0.790 mrr_5:0.790 mrr_10:0.790 linear_ndcg_3:0.439 linear_ndcg_5:0.443 linear_ndcg_10:0.461 ndcg_3:0.338 ndcg_5:0.350 ndcg_10:0.380
+global step 6550 learning rate 0.0500 step-time 0.23 loss 15.3871
+  valid: mrr_3:0.804 mrr_5:0.804 mrr_10:0.804 linear_ndcg_3:0.449 linear_ndcg_5:0.455 linear_ndcg_10:0.471 ndcg_3:0.346 ndcg_5:0.359 ndcg_10:0.387
+Save model, valid ndcg_10:0.387
+global step 6600 learning rate 0.0500 step-time 0.25 loss 15.7082
+  valid: mrr_3:0.794 mrr_5:0.794 mrr_10:0.794 linear_ndcg_3:0.439 linear_ndcg_5:0.445 linear_ndcg_10:0.462 ndcg_3:0.337 ndcg_5:0.350 ndcg_10:0.379
+global step 6650 learning rate 0.0500 step-time 0.25 loss 15.8261
+  valid: mrr_3:0.803 mrr_5:0.803 mrr_10:0.803 linear_ndcg_3:0.448 linear_ndcg_5:0.453 linear_ndcg_10:0.469 ndcg_3:0.344 ndcg_5:0.357 ndcg_10:0.385
+global step 6700 learning rate 0.0500 step-time 0.24 loss 15.8726
+  valid: mrr_3:0.798 mrr_5:0.798 mrr_10:0.798 linear_ndcg_3:0.446 linear_ndcg_5:0.451 linear_ndcg_10:0.467 ndcg_3:0.345 ndcg_5:0.358 ndcg_10:0.386
+global step 6750 learning rate 0.0500 step-time 0.25 loss 15.7266
+  valid: mrr_3:0.794 mrr_5:0.794 mrr_10:0.794 linear_ndcg_3:0.442 linear_ndcg_5:0.448 linear_ndcg_10:0.464 ndcg_3:0.341 ndcg_5:0.354 ndcg_10:0.382
+global step 6800 learning rate 0.0500 step-time 0.25 loss 15.8767
+  valid: mrr_3:0.808 mrr_5:0.808 mrr_10:0.808 linear_ndcg_3:0.439 linear_ndcg_5:0.447 linear_ndcg_10:0.464 ndcg_3:0.332 ndcg_5:0.346 ndcg_10:0.376
+global step 6850 learning rate 0.0500 step-time 0.26 loss 15.8814
+  valid: mrr_3:0.779 mrr_5:0.779 mrr_10:0.779 linear_ndcg_3:0.422 linear_ndcg_5:0.430 linear_ndcg_10:0.450 ndcg_3:0.323 ndcg_5:0.337 ndcg_10:0.369
+global step 6900 learning rate 0.0500 step-time 0.25 loss 15.5505
+  valid: mrr_3:0.792 mrr_5:0.792 mrr_10:0.792 linear_ndcg_3:0.427 linear_ndcg_5:0.434 linear_ndcg_10:0.452 ndcg_3:0.323 ndcg_5:0.337 ndcg_10:0.367
+global step 6950 learning rate 0.0500 step-time 0.25 loss 15.4149
+  valid: mrr_3:0.787 mrr_5:0.787 mrr_10:0.787 linear_ndcg_3:0.437 linear_ndcg_5:0.444 linear_ndcg_10:0.462 ndcg_3:0.338 ndcg_5:0.352 ndcg_10:0.382
+global step 7000 learning rate 0.0500 step-time 0.24 loss 15.4835
+  valid: mrr_3:0.806 mrr_5:0.806 mrr_10:0.806 linear_ndcg_3:0.445 linear_ndcg_5:0.452 linear_ndcg_10:0.468 ndcg_3:0.339 ndcg_5:0.353 ndcg_10:0.382
+global step 7050 learning rate 0.0500 step-time 0.24 loss 15.4850
+  valid: mrr_3:0.806 mrr_5:0.806 mrr_10:0.806 linear_ndcg_3:0.447 linear_ndcg_5:0.453 linear_ndcg_10:0.470 ndcg_3:0.342 ndcg_5:0.355 ndcg_10:0.385
+global step 7100 learning rate 0.0500 step-time 0.25 loss 15.4551
+  valid: mrr_3:0.786 mrr_5:0.786 mrr_10:0.786 linear_ndcg_3:0.431 linear_ndcg_5:0.438 linear_ndcg_10:0.457 ndcg_3:0.331 ndcg_5:0.345 ndcg_10:0.375
+global step 7150 learning rate 0.0500 step-time 0.26 loss 15.7265
+  valid: mrr_3:0.808 mrr_5:0.808 mrr_10:0.808 linear_ndcg_3:0.451 linear_ndcg_5:0.456 linear_ndcg_10:0.471 ndcg_3:0.347 ndcg_5:0.359 ndcg_10:0.388
+Save model, valid ndcg_10:0.388
+global step 7200 learning rate 0.0500 step-time 0.25 loss 15.4008
+  valid: mrr_3:0.794 mrr_5:0.794 mrr_10:0.794 linear_ndcg_3:0.439 linear_ndcg_5:0.444 linear_ndcg_10:0.462 ndcg_3:0.337 ndcg_5:0.350 ndcg_10:0.380
+global step 7250 learning rate 0.0500 step-time 0.25 loss 15.7096
+  valid: mrr_3:0.795 mrr_5:0.795 mrr_10:0.795 linear_ndcg_3:0.439 linear_ndcg_5:0.446 linear_ndcg_10:0.463 ndcg_3:0.337 ndcg_5:0.351 ndcg_10:0.380
+global step 7300 learning rate 0.0500 step-time 0.25 loss 15.4268
+  valid: mrr_3:0.793 mrr_5:0.792 mrr_10:0.792 linear_ndcg_3:0.437 linear_ndcg_5:0.444 linear_ndcg_10:0.462 ndcg_3:0.335 ndcg_5:0.349 ndcg_10:0.379
+global step 7350 learning rate 0.0500 step-time 0.25 loss 15.5727
+  valid: mrr_3:0.784 mrr_5:0.784 mrr_10:0.784 linear_ndcg_3:0.433 linear_ndcg_5:0.440 linear_ndcg_10:0.460 ndcg_3:0.337 ndcg_5:0.351 ndcg_10:0.381
+global step 7400 learning rate 0.0500 step-time 0.25 loss 15.2837
+  valid: mrr_3:0.790 mrr_5:0.790 mrr_10:0.790 linear_ndcg_3:0.439 linear_ndcg_5:0.446 linear_ndcg_10:0.463 ndcg_3:0.340 ndcg_5:0.355 ndcg_10:0.383
+global step 7450 learning rate 0.0500 step-time 0.25 loss 15.8261
+  valid: mrr_3:0.797 mrr_5:0.797 mrr_10:0.797 linear_ndcg_3:0.445 linear_ndcg_5:0.451 linear_ndcg_10:0.468 ndcg_3:0.344 ndcg_5:0.357 ndcg_10:0.387
+global step 7500 learning rate 0.0500 step-time 0.25 loss 15.1353
+  valid: mrr_3:0.788 mrr_5:0.788 mrr_10:0.788 linear_ndcg_3:0.437 linear_ndcg_5:0.444 linear_ndcg_10:0.462 ndcg_3:0.337 ndcg_5:0.351 ndcg_10:0.381
+global step 7550 learning rate 0.0500 step-time 0.25 loss 15.2993
+  valid: mrr_3:0.810 mrr_5:0.810 mrr_10:0.810 linear_ndcg_3:0.448 linear_ndcg_5:0.454 linear_ndcg_10:0.471 ndcg_3:0.341 ndcg_5:0.355 ndcg_10:0.384
+global step 7600 learning rate 0.0500 step-time 0.25 loss 15.8250
+  valid: mrr_3:0.799 mrr_5:0.799 mrr_10:0.799 linear_ndcg_3:0.445 linear_ndcg_5:0.451 linear_ndcg_10:0.468 ndcg_3:0.343 ndcg_5:0.356 ndcg_10:0.385
+global step 7650 learning rate 0.0500 step-time 0.25 loss 15.4635
+  valid: mrr_3:0.795 mrr_5:0.795 mrr_10:0.795 linear_ndcg_3:0.442 linear_ndcg_5:0.448 linear_ndcg_10:0.466 ndcg_3:0.341 ndcg_5:0.353 ndcg_10:0.383
+global step 7700 learning rate 0.0500 step-time 0.25 loss 15.5260
+  valid: mrr_3:0.790 mrr_5:0.790 mrr_10:0.790 linear_ndcg_3:0.438 linear_ndcg_5:0.443 linear_ndcg_10:0.461 ndcg_3:0.337 ndcg_5:0.350 ndcg_10:0.379
+global step 7750 learning rate 0.0500 step-time 0.25 loss 15.1517
+  valid: mrr_3:0.801 mrr_5:0.801 mrr_10:0.801 linear_ndcg_3:0.441 linear_ndcg_5:0.448 linear_ndcg_10:0.464 ndcg_3:0.336 ndcg_5:0.350 ndcg_10:0.378
+global step 7800 learning rate 0.0500 step-time 0.25 loss 15.3163
+  valid: mrr_3:0.796 mrr_5:0.796 mrr_10:0.796 linear_ndcg_3:0.445 linear_ndcg_5:0.451 linear_ndcg_10:0.468 ndcg_3:0.345 ndcg_5:0.357 ndcg_10:0.387
+global step 7850 learning rate 0.0500 step-time 0.25 loss 15.2622
+  valid: mrr_3:0.784 mrr_5:0.784 mrr_10:0.784 linear_ndcg_3:0.431 linear_ndcg_5:0.438 linear_ndcg_10:0.456 ndcg_3:0.332 ndcg_5:0.346 ndcg_10:0.376
+global step 7900 learning rate 0.0500 step-time 0.24 loss 15.2826
+  valid: mrr_3:0.811 mrr_5:0.811 mrr_10:0.811 linear_ndcg_3:0.451 linear_ndcg_5:0.456 linear_ndcg_10:0.472 ndcg_3:0.344 ndcg_5:0.357 ndcg_10:0.386
+global step 7950 learning rate 0.0500 step-time 0.25 loss 15.8416
+  valid: mrr_3:0.801 mrr_5:0.801 mrr_10:0.801 linear_ndcg_3:0.449 linear_ndcg_5:0.455 linear_ndcg_10:0.470 ndcg_3:0.348 ndcg_5:0.360 ndcg_10:0.389
+Save model, valid ndcg_10:0.389
+global step 8000 learning rate 0.0500 step-time 0.25 loss 15.4752
+  valid: mrr_3:0.797 mrr_5:0.797 mrr_10:0.797 linear_ndcg_3:0.442 linear_ndcg_5:0.448 linear_ndcg_10:0.464 ndcg_3:0.340 ndcg_5:0.353 ndcg_10:0.382
+global step 8050 learning rate 0.0500 step-time 0.24 loss 15.2564
+  valid: mrr_3:0.806 mrr_5:0.806 mrr_10:0.806 linear_ndcg_3:0.453 linear_ndcg_5:0.458 linear_ndcg_10:0.473 ndcg_3:0.350 ndcg_5:0.363 ndcg_10:0.390
+Save model, valid ndcg_10:0.390
+WARNING:tensorflow:From main.py:350: The name tf.app.run is deprecated. Please use tf.compat.v1.app.run instead.
+
+WARNING:tensorflow:From main.py:285: The name tf.ConfigProto is deprecated. Please use tf.compat.v1.ConfigProto instead.
+
+W0730 07:10:59.562934 140361173202752 module_wrapper.py:139] From main.py:285: The name tf.ConfigProto is deprecated. Please use tf.compat.v1.ConfigProto instead.
+
+WARNING:tensorflow:From main.py:287: The name tf.Session is deprecated. Please use tf.compat.v1.Session instead.
+
+W0730 07:10:59.563117 140361173202752 module_wrapper.py:139] From main.py:287: The name tf.Session is deprecated. Please use tf.compat.v1.Session instead.
+
+2021-07-30 07:10:59.569033: I tensorflow/core/platform/cpu_feature_guard.cc:142] Your CPU supports instructions that this TensorFlow binary was not compiled to use: AVX2 FMA
+2021-07-30 07:10:59.605547: I tensorflow/core/platform/profile_utils/cpu_utils.cc:94] CPU Frequency: 2595120000 Hz
+2021-07-30 07:10:59.609890: I tensorflow/compiler/xla/service/service.cc:168] XLA service 0x7fa8662f7440 initialized for platform Host (this does not guarantee that XLA will be used). Devices:
+2021-07-30 07:10:59.609948: I tensorflow/compiler/xla/service/service.cc:176]   StreamExecutor device (0): Host, Default Version
+2021-07-30 07:10:59.611805: W tensorflow/stream_executor/platform/default/dso_loader.cc:55] Could not load dynamic library 'libcuda.so.1'; dlerror: libcuda.so.1: cannot open shared object file: No such file or directory; LD_LIBRARY_PATH: /usr/local/cuda/lib64:/usr/local/cuda/extras/CUPTI/lib64/:/usr/local/nvidia/lib:/usr/local/nvidia/lib64:/usr/lib:/usr/local/lib:/usr/local/cuda/lib64:/usr/local/cuda/extras/CUPTI/lib64/:/usr/local/nvidia/lib:/usr/local/nvidia/lib64:/usr/lib:/usr/local/lib::/usr/local/cuda-10.0/lib64:/usr/local/cuda-10.0/extras/CUPTI/lib64/:/usr/local/cuda-10.0/lib64:/usr/local/cuda-10.0/extras/CUPTI/lib64/
+2021-07-30 07:10:59.611820: E tensorflow/stream_executor/cuda/cuda_driver.cc:318] failed call to cuInit: UNKNOWN ERROR (303)
+2021-07-30 07:10:59.611847: I tensorflow/stream_executor/cuda/cuda_diagnostics.cc:156] kernel driver does not appear to be running on this host (9-223-245-177): /proc/driver/nvidia/version does not exist
+WARNING:tensorflow:From /data/notebooks/jupyter-notebook/violatang/l2r-paper/ULTRA/ultra/learning_algorithm/pairwise_reg_em.py:103: The name tf.summary.scalar is deprecated. Please use tf.compat.v1.summary.scalar instead.
+
+W0730 07:13:00.413610 140361173202752 module_wrapper.py:139] From /data/notebooks/jupyter-notebook/violatang/l2r-paper/ULTRA/ultra/learning_algorithm/pairwise_reg_em.py:103: The name tf.summary.scalar is deprecated. Please use tf.compat.v1.summary.scalar instead.
+
+WARNING:tensorflow:From /data/notebooks/jupyter-notebook/violatang/l2r-paper/ULTRA/ultra/learning_algorithm/pairwise_reg_em.py:118: The name tf.placeholder is deprecated. Please use tf.compat.v1.placeholder instead.
+
+W0730 07:13:00.415265 140361173202752 module_wrapper.py:139] From /data/notebooks/jupyter-notebook/violatang/l2r-paper/ULTRA/ultra/learning_algorithm/pairwise_reg_em.py:118: The name tf.placeholder is deprecated. Please use tf.compat.v1.placeholder instead.
+
+WARNING:tensorflow:From /data/notebooks/jupyter-notebook/violatang/l2r-paper/ULTRA/ultra/learning_algorithm/pairwise_reg_em.py:120: Print (from tensorflow.python.ops.logging_ops) is deprecated and will be removed after 2018-08-20.
+Instructions for updating:
+Use tf.print instead of tf.Print. Note that tf.print returns a no-output operator that directly prints the output. Outside of defuns or eager mode, this operator will not be executed unless it is directly specified in session.run or used as a control dependency for other operators. This is only a concern in graph mode. Below is an example of how to ensure tf.print executes in graph mode:
+
+W0730 07:13:00.416092 140361173202752 deprecation.py:323] From /data/notebooks/jupyter-notebook/violatang/l2r-paper/ULTRA/ultra/learning_algorithm/pairwise_reg_em.py:120: Print (from tensorflow.python.ops.logging_ops) is deprecated and will be removed after 2018-08-20.
+Instructions for updating:
+Use tf.print instead of tf.Print. Note that tf.print returns a no-output operator that directly prints the output. Outside of defuns or eager mode, this operator will not be executed unless it is directly specified in session.run or used as a control dependency for other operators. This is only a concern in graph mode. Below is an example of how to ensure tf.print executes in graph mode:
+
+WARNING:tensorflow:From /data/notebooks/jupyter-notebook/violatang/l2r-paper/ULTRA/ultra/learning_algorithm/base_algorithm.py:124: The name tf.variable_scope is deprecated. Please use tf.compat.v1.variable_scope instead.
+
+W0730 07:13:01.125351 140361173202752 module_wrapper.py:139] From /data/notebooks/jupyter-notebook/violatang/l2r-paper/ULTRA/ultra/learning_algorithm/base_algorithm.py:124: The name tf.variable_scope is deprecated. Please use tf.compat.v1.variable_scope instead.
+
+WARNING:tensorflow:From /data/notebooks/jupyter-notebook/violatang/l2r-paper/ULTRA/ultra/ranking_model/DNN.py:61: The name tf.get_variable_scope is deprecated. Please use tf.compat.v1.get_variable_scope instead.
+
+W0730 07:13:02.415812 140361173202752 module_wrapper.py:139] From /data/notebooks/jupyter-notebook/violatang/l2r-paper/ULTRA/ultra/ranking_model/DNN.py:61: The name tf.get_variable_scope is deprecated. Please use tf.compat.v1.get_variable_scope instead.
+
+WARNING:tensorflow:From /data/notebooks/jupyter-notebook/violatang/l2r-paper/ULTRA/ultra/ranking_model/DNN.py:62: The name tf.AUTO_REUSE is deprecated. Please use tf.compat.v1.AUTO_REUSE instead.
+
+W0730 07:13:02.416011 140361173202752 module_wrapper.py:139] From /data/notebooks/jupyter-notebook/violatang/l2r-paper/ULTRA/ultra/ranking_model/DNN.py:62: The name tf.AUTO_REUSE is deprecated. Please use tf.compat.v1.AUTO_REUSE instead.
+
+WARNING:tensorflow:From /data/miniconda3/envs/env-3.6.8/lib/python3.6/site-packages/tensorflow_core/python/ops/resource_variable_ops.py:1630: calling BaseResourceVariable.__init__ (from tensorflow.python.ops.resource_variable_ops) with constraint is deprecated and will be removed in a future version.
+Instructions for updating:
+If using Keras pass *_constraint arguments to layers.
+W0730 07:13:02.478944 140361173202752 deprecation.py:506] From /data/miniconda3/envs/env-3.6.8/lib/python3.6/site-packages/tensorflow_core/python/ops/resource_variable_ops.py:1630: calling BaseResourceVariable.__init__ (from tensorflow.python.ops.resource_variable_ops) with constraint is deprecated and will be removed in a future version.
+Instructions for updating:
+If using Keras pass *_constraint arguments to layers.
+WARNING:tensorflow:From /data/notebooks/jupyter-notebook/violatang/l2r-paper/ULTRA/ultra/ranking_model/base_ranking_model.py:121: The name tf.get_variable is deprecated. Please use tf.compat.v1.get_variable instead.
+
+W0730 07:13:02.491317 140361173202752 module_wrapper.py:139] From /data/notebooks/jupyter-notebook/violatang/l2r-paper/ULTRA/ultra/ranking_model/base_ranking_model.py:121: The name tf.get_variable is deprecated. Please use tf.compat.v1.get_variable instead.
+
+WARNING:tensorflow:From /data/notebooks/jupyter-notebook/violatang/l2r-paper/ULTRA/ultra/learning_algorithm/base_algorithm.py:85: where (from tensorflow.python.ops.array_ops) is deprecated and will be removed in a future version.
+Instructions for updating:
+Use tf.where in 2.0, which has the same broadcast rule as np.where
+W0730 07:13:05.454092 140361173202752 deprecation.py:323] From /data/notebooks/jupyter-notebook/violatang/l2r-paper/ULTRA/ultra/learning_algorithm/base_algorithm.py:85: where (from tensorflow.python.ops.array_ops) is deprecated and will be removed in a future version.
+Instructions for updating:
+Use tf.where in 2.0, which has the same broadcast rule as np.where
+WARNING:tensorflow:From /data/notebooks/jupyter-notebook/violatang/l2r-paper/ULTRA/ultra/utils/metrics.py:328: to_float (from tensorflow.python.ops.math_ops) is deprecated and will be removed in a future version.
+Instructions for updating:
+Use `tf.cast` instead.
+W0730 07:13:09.554969 140361173202752 deprecation.py:323] From /data/notebooks/jupyter-notebook/violatang/l2r-paper/ULTRA/ultra/utils/metrics.py:328: to_float (from tensorflow.python.ops.math_ops) is deprecated and will be removed in a future version.
+Instructions for updating:
+Use `tf.cast` instead.
+WARNING:tensorflow:From /data/notebooks/jupyter-notebook/violatang/l2r-paper/ULTRA/ultra/utils/metrics.py:200: div (from tensorflow.python.ops.math_ops) is deprecated and will be removed in a future version.
+Instructions for updating:
+Deprecated in favor of operator or tf.math.divide.
+W0730 07:13:10.186373 140361173202752 deprecation.py:323] From /data/notebooks/jupyter-notebook/violatang/l2r-paper/ULTRA/ultra/utils/metrics.py:200: div (from tensorflow.python.ops.math_ops) is deprecated and will be removed in a future version.
+Instructions for updating:
+Deprecated in favor of operator or tf.math.divide.
+WARNING:tensorflow:From /data/notebooks/jupyter-notebook/violatang/l2r-paper/ULTRA/ultra/learning_algorithm/pairwise_reg_em.py:269: The name tf.summary.merge_all is deprecated. Please use tf.compat.v1.summary.merge_all instead.
+
+W0730 07:13:11.093139 140361173202752 module_wrapper.py:139] From /data/notebooks/jupyter-notebook/violatang/l2r-paper/ULTRA/ultra/learning_algorithm/pairwise_reg_em.py:269: The name tf.summary.merge_all is deprecated. Please use tf.compat.v1.summary.merge_all instead.
+
+WARNING:tensorflow:From /data/notebooks/jupyter-notebook/violatang/l2r-paper/ULTRA/ultra/learning_algorithm/pairwise_reg_em.py:271: The name tf.global_variables is deprecated. Please use tf.compat.v1.global_variables instead.
+
+W0730 07:13:11.094502 140361173202752 module_wrapper.py:139] From /data/notebooks/jupyter-notebook/violatang/l2r-paper/ULTRA/ultra/learning_algorithm/pairwise_reg_em.py:271: The name tf.global_variables is deprecated. Please use tf.compat.v1.global_variables instead.
+
+WARNING:tensorflow:From /data/notebooks/jupyter-notebook/violatang/l2r-paper/ULTRA/ultra/learning_algorithm/pairwise_reg_em.py:280: The name tf.train.Saver is deprecated. Please use tf.compat.v1.train.Saver instead.
+
+W0730 07:13:11.095021 140361173202752 module_wrapper.py:139] From /data/notebooks/jupyter-notebook/violatang/l2r-paper/ULTRA/ultra/learning_algorithm/pairwise_reg_em.py:280: The name tf.train.Saver is deprecated. Please use tf.compat.v1.train.Saver instead.
+
+INFO:tensorflow:Restoring parameters from /data/notebooks/jupyter-notebook/violatang/l2r-paper/MSLR_30k_letor_v2/MSLR_30k_letor/tmp_model_mtl_pairwiseem_nodecay_nopointcorr_extractips_evallinear_10/ultra.learning_algorithm.PairwiseRegressionEM.ckpt-8050
+I0730 07:13:11.154722 140361173202752 saver.py:1284] Restoring parameters from /data/notebooks/jupyter-notebook/violatang/l2r-paper/MSLR_30k_letor_v2/MSLR_30k_letor/tmp_model_mtl_pairwiseem_nodecay_nopointcorr_extractips_evallinear_10/ultra.learning_algorithm.PairwiseRegressionEM.ckpt-8050
+WARNING:tensorflow:From main.py:302: The name tf.summary.FileWriter is deprecated. Please use tf.compat.v1.summary.FileWriter instead.
+
+W0730 07:13:12.243976 140361173202752 module_wrapper.py:139] From main.py:302: The name tf.summary.FileWriter is deprecated. Please use tf.compat.v1.summary.FileWriter instead.
+
+Reading data in /data/notebooks/jupyter-notebook/violatang/l2r-paper/MSLR_30k_letor_v2/MSLR_30k_letor/tmp_data/
+Read data from /data/notebooks/jupyter-notebook/violatang/l2r-paper/MSLR_30k_letor_v2/MSLR_30k_letor/tmp_data//test in ULTRA format.
+Feature reading finish.
+List reading finish.
+Label reading finish.
+Remove 2 invalid queries.
+Data reading finish!
+Finished reading 6115 queries with lists.
+Build Pairwise RegressionEM algorithm.
+corr_pair_clk_noise=True,opt_metric=None,enable_ips=True,exact_ips=True
+in pairwise regem.. hparams: [('EM_step_size', 0.05), ('clk_noise_EM_ratio', 1.0), ('corr_pair_clk_noise', True), ('corr_point_clk_noise', False), ('discount_fn', 'log1p'), ('enable_ips', True), ('exact_ips', True), ('gain_fn', 'exp'), ('grad_strategy', 'ada'), ('ips_hotstart', False), ('l2_loss', 0.0), ('learning_rate', 0.05), ('max_gradient_norm', 5.0), ('opt_metric', 'None'), ('pointwise_only', False), ('reg_em_type', 0), ('step_decay_ratio', -0.0)]
+model init: None
+None
+ranking_model: <class 'ultra.ranking_model.DNN.DNN'>
+kwargs: {'rank_list_size': 908, 'forward_only': False}
+layer_norm objs for ips_ranking_model is:
+[<tensorflow.python.keras.layers.normalization.LayerNormalization object at 0x7fa09828c0f0>, <tensorflow.python.keras.layers.normalization.LayerNormalization object at 0x7fa097d38e10>, <tensorflow.python.keras.layers.normalization.LayerNormalization object at 0x7fa097d6dc88>, <tensorflow.python.keras.layers.normalization.LayerNormalization object at 0x7fa097d6deb8>]
+global_variables: [<tf.Variable 'Variable:0' shape=() dtype=int32_ref>, <tf.Variable 'Variable_1:0' shape=() dtype=float32_ref>, <tf.Variable 'ips_ranking_model/ips_ranking_model/layer_norm_0/gamma:0' shape=(136,) dtype=float32>, <tf.Variable 'ips_ranking_model/ips_ranking_model/layer_norm_0/beta:0' shape=(136,) dtype=float32>, <tf.Variable 'ips_ranking_model/dnn_W_0:0' shape=(136, 512) dtype=float32_ref>, <tf.Variable 'ips_ranking_model/dnn_b_0:0' shape=(512,) dtype=float32_ref>, <tf.Variable 'ips_ranking_model/ips_ranking_model/layer_norm_1/gamma:0' shape=(512,) dtype=float32>, <tf.Variable 'ips_ranking_model/ips_ranking_model/layer_norm_1/beta:0' shape=(512,) dtype=float32>, <tf.Variable 'ips_ranking_model/dnn_W_1:0' shape=(512, 256) dtype=float32_ref>, <tf.Variable 'ips_ranking_model/dnn_b_1:0' shape=(256,) dtype=float32_ref>, <tf.Variable 'ips_ranking_model/ips_ranking_model/layer_norm_2/gamma:0' shape=(256,) dtype=float32>, <tf.Variable 'ips_ranking_model/ips_ranking_model/layer_norm_2/beta:0' shape=(256,) dtype=float32>, <tf.Variable 'ips_ranking_model/dnn_W_2:0' shape=(256, 128) dtype=float32_ref>, <tf.Variable 'ips_ranking_model/dnn_b_2:0' shape=(128,) dtype=float32_ref>, <tf.Variable 'ips_ranking_model/ips_ranking_model/layer_norm_3/gamma:0' shape=(128,) dtype=float32>, <tf.Variable 'ips_ranking_model/ips_ranking_model/layer_norm_3/beta:0' shape=(128,) dtype=float32>, <tf.Variable 'ips_ranking_model/dnn_W_3:0' shape=(128, 1) dtype=float32_ref>, <tf.Variable 'ips_ranking_model/dnn_b_3:0' shape=(1,) dtype=float32_ref>]
+Reading model parameters from /data/notebooks/jupyter-notebook/violatang/l2r-paper/MSLR_30k_letor_v2/MSLR_30k_letor/tmp_model_mtl_pairwiseem_nodecay_nopointcorr_extractips_evallinear_10/ultra.learning_algorithm.PairwiseRegressionEM.ckpt-8050
+restore all parameters
+Create direct label feed with list size 908 with feature size 136
+Testing 4% finishedTesting 8% finishedTesting 13% finishedTesting 17% finishedTesting 21% finishedTesting 25% finishedTesting 29% finishedTesting 33% finishedTesting 38% finishedTesting 42% finishedTesting 46% finishedTesting 50% finishedTesting 54% finishedTesting 59% finishedTesting 63% finishedTesting 67% finishedTesting 71% finishedTesting 75% finishedTesting 80% finishedTesting 84% finishedTesting 88% finishedTesting 92% finishedTesting 96% finishedTesting 100% finishedWARNING:tensorflow:From /data/notebooks/jupyter-notebook/violatang/l2r-paper/ULTRA/ultra/utils/data_utils.py:367: The name tf.Summary is deprecated. Please use tf.compat.v1.Summary instead.
+
+W0730 07:13:56.349205 140361173202752 module_wrapper.py:139] From /data/notebooks/jupyter-notebook/violatang/l2r-paper/ULTRA/ultra/utils/data_utils.py:367: The name tf.Summary is deprecated. Please use tf.compat.v1.Summary instead.
+
+
+[Done]
+  eval: mrr_3:0.811 mrr_5:0.811 mrr_10:0.811 linear_ndcg_3:0.455 linear_ndcg_5:0.459 linear_ndcg_10:0.474 ndcg_3:0.351 ndcg_5:0.363 ndcg_10:0.392
