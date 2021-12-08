@@ -74,8 +74,29 @@ class DirectLabelFeed(BaseInputFeed):
             if data_set.initial_list[i][x] >= 0:
                 letor_features.append(
                     data_set.features[data_set.initial_list[i][x]])
-        docid_inputs.append(list([-1 if data_set.initial_list[i][x]
-                                  < 0 else base + x for x in range(self.rank_list_size)]))
+
+        docid_list = list([-1 if data_set.initial_list[i][x]
+                                  < 0 else base + x for x in range(self.rank_list_size)])
+        tuple_list = list(zip(docid_list, label_list))
+        random.shuffle(tuple_list)
+        rand_doc_list, rand_label_list = zip(*tuple_list)
+        padding_docid_list = []
+        padding_label_list = []
+        docid_list = []
+        label_list = []
+
+        for i in range(len(rand_doc_list)):
+            if rand_doc_list[i] < 0:
+                padding_docid_list.append(rand_doc_list[i])
+                padding_label_list.append(rand_label_list[i])
+            else:
+                docid_list.append(rand_doc_list[i])
+                label_list.append(rand_label_list[i])
+
+        label_list.extend(padding_label_list)
+        docid_list.extend(padding_docid_list)
+
+        docid_inputs.append(docid_list)
         labels.append(label_list)
         return
 

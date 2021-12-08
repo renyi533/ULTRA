@@ -42,7 +42,7 @@ rm -rf $Data_path/tmp_model_$algo_name/*
 export SETTING_ARGS="--data_dir=$Data_path/tmp_data/ --model_dir=$Data_path/tmp_model_$algo_name/ --output_dir=$Data_path/tmp_output_$algo_name/ --setting_file=./example/offline_setting/naive_algorithm_directlabel_pairwise_exp_settings.json"
 echo $SETTING_ARGS
 # Run model
-python main.py --max_train_iteration=5000 $SETTING_ARGS
+python main.py --max_train_iteration=5000 --steps_per_checkpoint=50 --batch_size=256 --selection_bias_cutoff=150 $SETTING_ARGS
 
 # Test model
 python main.py --test_only=True $SETTING_ARGS

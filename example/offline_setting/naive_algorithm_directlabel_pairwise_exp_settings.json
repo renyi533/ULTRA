@@ -9,8 +9,8 @@
 	"ranking_model":"ultra.ranking_model.DNN",
 	"ranking_model_hparams":"hidden_layer_sizes=[512, 256, 128]",
     
-	"learning_algorithm": "ultra.learning_algorithm.NavieAlgorithm",
-	"learning_algorithm_hparams":"learning_rate=0.02,loss_func=pairwise_loss",
+	"learning_algorithm": "ultra.learning_algorithm.PairwiseAdversarial",
+	"learning_algorithm_hparams":"learning_rate=0.002,opt_metric=None,mode=naive",
     
 	"metrics": [
 	    "err", "mrr", "ndcg"
