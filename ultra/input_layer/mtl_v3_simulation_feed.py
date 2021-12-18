@@ -43,6 +43,7 @@ class MTLV3SimulationFeed(BaseInputFeed):
             hparam_str: the hyper-parameters for the input layer.
         """
         self.hparams = ultra.utils.hparams.HParams(
+            use_max_candidate_num=True,
             # the setting file for the predefined click models.
             click_model_json='./example/ClickModelMTL_v2/pbm_0.1_1_4_1.0_0.1_10.json',
             # Set True to feed relevance labels instead of simulated clicks.
@@ -55,7 +56,6 @@ class MTLV3SimulationFeed(BaseInputFeed):
             dynamic_bias_step_interval=1000,
         )
 
-        print('Create MTL V3 simluated clicks feed')
         print(hparam_str)
         self.hparams.parse(hparam_str)
         self.click_model = None
@@ -66,11 +66,16 @@ class MTLV3SimulationFeed(BaseInputFeed):
 
         self.start_index = 0
         self.count = 1
-        self.rank_list_size = model.rank_list_size
+        #self.rank_list_size = model.rank_list_size
+        self.rank_list_size = model.max_candidate_num if self.hparams.use_max_candidate_num else model.rank_list_size
+        print("use_max_candidate_num:%s, model.max_candidate_num:%d, self.rank_list_size:%d" %(self.hparams.use_max_candidate_num, model.max_candidate_num, self.rank_list_size))
         self.feature_size = model.feature_size
         self.batch_size = batch_size
         self.model = model
         self.global_batch_count = 0
+        print(
+            'Create MTL V3 simluated clicks feed with list size %d with feature size %d' %
+            (self.rank_list_size, self.feature_size))
 
     def prepare_sim_clicks_with_index(
             self, data_set, index, docid_inputs, letor_features, labels, check_validation=True):
@@ -86,6 +91,7 @@ class MTLV3SimulationFeed(BaseInputFeed):
         else:
             click_list, _, _, watchtime_list = self.click_model.sampleClicksForOneList(
                 list(label_list))
+            #print("click:%s, watchtime:%s" %(click_list[0], watchtime_list[0]))
             for j in range(0, len(click_list)):
                 click_list[j] += watchtime_list[j]
             #sample_count = 0

@@ -26,11 +26,25 @@ from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
 
+import json
 import tensorflow as tf
 from tensorflow.python.framework import ops
 from tensorflow.python.ops import array_ops
 from tensorflow.python.ops import math_ops
 from ultra.utils import metric_utils as utils
+from ultra.utils import click_models_mtl_v3 as cm
+click_model_json='./example/ClickModelMTL_v2/pbm_0.1_1_4_1.0_0.1_10.json'
+with open(click_model_json) as fin:
+    model_desc = json.load(fin)
+    click_model = cm.loadModelFromJson(model_desc)
+
+click_prob = tf.reshape(tf.convert_to_tensor(click_model.click_prob, dtype=tf.float32), [-1,1])
+exam_prob = tf.reshape(tf.convert_to_tensor(click_model.exam_prob, dtype=tf.float32), [-1,1])
+watchtime_bias_mean = tf.reshape(tf.convert_to_tensor(click_model.watchtime_bias_mean, dtype=tf.float32), [-1,1])
+watchtime_bias_std = tf.reshape(tf.convert_to_tensor(click_model.watchtime_bias_std, dtype=tf.float32), [-1,1])
+unbiased_watchtime_mean = tf.reshape(tf.convert_to_tensor(click_model.unbiased_watchtime_mean, dtype=tf.float32), [-1,1])
+unbiased_watchtime_std = tf.reshape(tf.convert_to_tensor(click_model.unbiased_watchtime_std, dtype=tf.float32), [-1,1])
+
 
 _LINEAR_GAIN_FN = lambda label: label
 
@@ -54,9 +68,15 @@ class RankingMetricKey(object):
 
     # Discounted Culmulative Gain.
     DCG = 'dcg'
-
+    
     # Linear Discounted Culmulative Gain.
     LINEAR_DCG = 'linear_dcg'
+    
+    # Linear Culmulative Reward
+    LINEAR_REWARD = 'linear_reward'
+
+    # Linear Culmulative Gain.
+    LINEAR_CG = 'linear_cg'
 
     # Precision. For binary relevance.
     PRECISION = 'precision'
@@ -142,6 +162,24 @@ def make_ranking_metric_fn(metric_key,
             weights=weights,
             topn=topn,
             name=name)
+    
+    def _cumulative_linear_gain_fn(labels, predictions, weights):
+        """Returns discounted cumulative linear gain as the metric."""
+        return cumulative_linear_gain(
+            labels,
+            predictions,
+            weights=weights,
+            topn=topn,
+            name=name)
+    
+    def _cumulative_linear_reward_fn(labels, predictions, weights):
+        """Returns cumulative reward as the metric."""
+        return cumulative_linear_reward(
+            labels,
+            predictions,
+            weights=weights,
+            topn=topn,
+            name=name)
 
     def _precision_fn(labels, predictions, weights):
         """Returns precision as the metric."""
@@ -174,6 +212,8 @@ def make_ranking_metric_fn(metric_key,
         RankingMetricKey.LINEAR_NDCG: _normalized_discounted_cumulative_linear_gain_fn,
         RankingMetricKey.DCG: _discounted_cumulative_gain_fn,
         RankingMetricKey.LINEAR_DCG: _discounted_cumulative_linear_gain_fn,
+        RankingMetricKey.LINEAR_REWARD: _cumulative_linear_reward_fn,
+        RankingMetricKey.LINEAR_CG: _cumulative_linear_gain_fn,
         RankingMetricKey.PRECISION: _precision_fn,
         RankingMetricKey.MAP: _mean_average_precision_fn,
         RankingMetricKey.ORDERED_PAIR_ACCURACY: _ordered_pair_accuracy_fn,
@@ -261,6 +301,90 @@ def _discounted_cumulative_linear_gain(labels, weights=None):
     return math_ops.reduce_sum(
         weights * numerator / denominator, 1, keepdims=True)
 
+def _cumulative_linear_gain(labels, weights=None):
+    """Computes cumulative gain (CG).
+
+    CG =  SUM(label).
+
+    Args:
+     labels: The relevance `Tensor` of shape [batch_size, list_size]. For the
+       ideal ranking, the examples are sorted by relevance in reverse order.
+      weights: A `Tensor` of the same shape as labels or [batch_size, 1]. The
+        former case is per-example and the latter case is per-list.
+
+    Returns:
+      A `Tensor` as the weighted discounted cumulative gain per-list. The
+      tensor shape is [batch_size, 1].
+    """
+    numerator = _LINEAR_GAIN_FN(math_ops.to_float(labels))
+    return math_ops.reduce_sum(
+        weights * numerator, 1, keepdims=True)
+
+def _lookup_random_value(random_values, indices):
+    """lookup random values based on indices"""
+    n_class = array_ops.shape(random_values)[-1]
+    list_size = array_ops.shape(indices)[1]
+    #random_values = tf.tile(tf.expand_dims(random_values, 1), [1, list_size, 1]) # [batch_size, list_size, n_class]
+    indices_onehot = tf.one_hot(indices, n_class) # [batch_size, list_size, n_class]
+    print("indices_onehot:", indices_onehot)
+    res = tf.reduce_sum(random_values * indices_onehot, -1)
+    return res
+
+def _cumulative_linear_reward(labels, weights=None):
+    """Computes cumulative reward (CR).
+
+    CR =  SUM(sampled_label).
+
+    Args:
+     labels: The relevance `Tensor` of shape [batch_size, list_size]. For the
+       ideal ranking, the examples are sorted by relevance in reverse order.
+      weights: A `Tensor` of the same shape as labels or [batch_size, 1]. The
+        former case is per-example and the latter case is per-list.
+
+    Returns:
+      A `Tensor` as the weighted cumulative gain per-list. The
+      tensor shape is [batch_size, 1].
+    """
+  
+    labels = tf.cast(labels, tf.int32) 
+    click_p = tf.nn.embedding_lookup(click_prob, labels) # [batch_size, list_size, 1] 
+    list_size = array_ops.shape(labels)[1]
+    batch_size = array_ops.shape(labels)[0]
+    positions = math_ops.to_int32(math_ops.range(0, list_size))
+    positions = tf.tile(tf.expand_dims(positions, 0), [tf.shape(labels)[0], 1])
+    print("positions:", positions)
+    exam_p = tf.nn.embedding_lookup(exam_prob, positions) # [batch_size, list_size, 1] 
+    print("click_prob:%s, exam_prob:%s, click_p:%s, exam_p:%s" %(click_prob, exam_prob, click_p, exam_p))
+
+    random_value = tf.random.uniform(tf.shape(click_p))
+    click_final_p = click_p * exam_p
+    click = tf.where(random_value < click_final_p, tf.ones_like(random_value), tf.zeros_like(random_value))
+
+    # sample watch time
+    watchtime_bias_rands = []
+    watchtime_unbiased_rands = []
+    for pos in range(0, len(click_model.watchtime_bias_mean)):
+        mean = click_model.watchtime_bias_mean[pos]
+        std = click_model.watchtime_bias_std[pos]
+        watchtime_bias_rands.append(tf.random.normal([array_ops.shape(labels)[0], list_size, 1], mean=mean, stddev=std))
+    for relevance in range(0, len(click_model.unbiased_watchtime_mean)):
+        mean = click_model.unbiased_watchtime_mean[relevance]
+        std = click_model.unbiased_watchtime_std[relevance]
+        watchtime_unbiased_rands.append(tf.random.normal([array_ops.shape(labels)[0], list_size, 1], mean=mean, stddev=std))
+    watchtime_bias_rand = tf.concat(watchtime_bias_rands, -1)
+    watchtime_unbiased_rand = tf.concat(watchtime_unbiased_rands, -1)
+    print("watchtime_bias_rand:", watchtime_bias_rand)
+    print("watchtime_unbiased_rand:", watchtime_unbiased_rand)
+
+    watchtime_bias = _lookup_random_value(watchtime_bias_rand, positions)
+    watchtime_unbiased = _lookup_random_value(watchtime_unbiased_rand, labels)
+    print("watchtime_bias:", watchtime_bias)
+    print("watchtime_unbiased:", watchtime_unbiased)
+    watchtime = watchtime_bias * watchtime_unbiased
+
+    numerator = tf.reshape(click, [-1, list_size]) + watchtime 
+    return math_ops.reduce_sum(
+        weights * numerator, 1, keepdims=True)
 
 def _prepare_and_validate_params(labels, predictions, weights=None, topn=None):
     """Prepares and validates the parameters.
@@ -635,6 +759,72 @@ def discounted_cumulative_linear_gain(labels,
         return math_ops.reduce_mean(
             _safe_div(dcg, per_list_weights) * per_list_weights)
 
+
+def cumulative_linear_gain(labels,
+                           predictions,
+                           weights=None,
+                           topn=None,
+                           name=None):
+    """Computes cumulative linear gain (CG).
+
+    Args:
+      labels: A `Tensor` of the same shape as `predictions`.
+      predictions: A `Tensor` with shape [batch_size, list_size]. Each value is
+        the ranking score of the corresponding example.
+      weights: A `Tensor` of the same shape of predictions or [batch_size, 1]. The
+        former case is per-example and the latter case is per-list.
+      topn: A cutoff for how many examples to consider for this metric.
+      name: A string used as the name for this metric.
+
+    Returns:
+      A metric for the cumulative gain of the batch.
+    """
+    with ops.name_scope(name, 'cumulative_gain',
+                        (labels, predictions, weights)):
+        labels, predictions, weights, topn = _prepare_and_validate_params(
+            labels, predictions, weights, topn)
+        sorted_labels, sorted_weights = utils.sort_by_scores(
+            predictions, [labels, weights], topn=topn)
+        cg = _cumulative_linear_gain(sorted_labels,
+                                     sorted_weights)
+        per_list_weights = _per_example_weights_to_per_list_weights(
+            weights=weights,
+            relevance=_LINEAR_GAIN_FN(math_ops.to_float(labels)))
+        return math_ops.reduce_mean(
+            _safe_div(cg, per_list_weights) * per_list_weights)
+
+def cumulative_linear_reward(labels,
+                           predictions,
+                           weights=None,
+                           topn=None,
+                           name=None):
+    """Computes cumulative linear reward (CR).
+
+    Args:
+      labels: A `Tensor` of the same shape as `predictions`.
+      predictions: A `Tensor` with shape [batch_size, list_size]. Each value is
+        the ranking score of the corresponding example.
+      weights: A `Tensor` of the same shape of predictions or [batch_size, 1]. The
+        former case is per-example and the latter case is per-list.
+      topn: A cutoff for how many examples to consider for this metric.
+      name: A string used as the name for this metric.
+
+    Returns:
+      A metric for the cumulative gain of the batch.
+    """
+    with ops.name_scope(name, 'cumulative_reward',
+                        (labels, predictions, weights)):
+        labels, predictions, weights, topn = _prepare_and_validate_params(
+            labels, predictions, weights, topn)
+        sorted_labels, sorted_weights = utils.sort_by_scores(
+            predictions, [labels, weights], topn=topn)
+        cg = _cumulative_linear_reward(sorted_labels,
+                                     sorted_weights)
+        per_list_weights = _per_example_weights_to_per_list_weights(
+            weights=weights,
+            relevance=_LINEAR_GAIN_FN(math_ops.to_float(labels)))
+        return math_ops.reduce_mean(
+            _safe_div(cg, per_list_weights) * per_list_weights)
 
 def ordered_pair_accuracy(labels, predictions, weights=None, name=None):
     """Computes the percentage of correctedly ordered pair.

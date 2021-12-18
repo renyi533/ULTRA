@@ -261,6 +261,9 @@ class PairwiseRegressionEM(BaseAlgorithm):
             pad_removed_train_output = self.remove_padding_for_metric_eval(
                 self.docid_inputs, train_output)
             for metric in self.exp_settings['metrics']:
+                if metric == "linear_reward":
+                    print("linear_reward metric in training")
+                    continue
                 for topn in self.exp_settings['metrics_topn']:
                     metric_value = ultra.utils.make_ranking_metric_fn(metric, topn)(
                         reshaped_train_labels, pad_removed_train_output, None)

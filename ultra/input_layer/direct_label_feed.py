@@ -51,6 +51,7 @@ class DirectLabelFeed(BaseInputFeed):
         self.start_index = 0
         self.count = 1
         self.rank_list_size = model.max_candidate_num if self.hparams.use_max_candidate_num else model.rank_list_size
+        print("use_max_candidate_num:%s, model.max_candidate_num:%d, self.rank_list_size:%d" %(self.hparams.use_max_candidate_num, model.max_candidate_num, self.rank_list_size))
         self.feature_size = model.feature_size
         self.batch_size = batch_size
         self.model = model
