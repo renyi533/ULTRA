@@ -19,21 +19,26 @@ import ultra.utils
 from ultra.utils import losses_impl
 from ultra.utils import utils_func
 
+splitted_propensity = None
 DEFAULT_GAIN_FN = lambda label: label
 EXP_GAIN_FN = lambda label: tf.pow(2.0, label) - 1
 DEFAULT_RANK_DISCOUNT_FN = lambda rank: tf.math.log(2.) / tf.math.log1p(rank)
 RECIPROCAL_RANK_DISCOUNT_FN = lambda rank: 1. / rank
-
-def create_dcg_lambda_weight(discount_func, gain_func, topn=None, normalized=True, smooth_fraction=0.):
-    """Creates _LambdaWeight for DCG metric."""
-    RANK_DISCOUNT_FN = DEFAULT_RANK_DISCOUNT_FN if discount_func == 'log1p' else RECIPROCAL_RANK_DISCOUNT_FN
-    GAIN_FN = DEFAULT_GAIN_FN if gain_func == 'linear' else EXP_GAIN_FN
-    return losses_impl.DCGLambdaWeight(
-        topn,
-        gain_fn=GAIN_FN,
-        rank_discount_fn=RANK_DISCOUNT_FN,
-        normalized=normalized,
-        smooth_fraction=smooth_fraction)
+#PROPENSITY_DISCOUNT_FN = lambda rank: tf.reduce_mean(splitted_propensity[rank])
+#
+#def create_dcg_lambda_weight(discount_func, gain_func, topn=None, normalized=True, smooth_fraction=0.):
+#    """Creates _LambdaWeight for DCG metric."""
+#    RANK_DISCOUNT_FN = DEFAULT_RANK_DISCOUNT_FN if discount_func == 'log1p' else RECIPROCAL_RANK_DISCOUNT_FN
+#    if discount_func == 'propensity':
+#        print('propensity discount func')
+#        RANK_DISCOUNT_FN = PROPENSITY_DISCOUNT_FN
+#    GAIN_FN = DEFAULT_GAIN_FN if (gain_func == 'linear' or gain_func == 'propensity') else EXP_GAIN_FN
+#    return losses_impl.DCGLambdaWeight(
+#        topn,
+#        gain_fn=GAIN_FN,
+#        rank_discount_fn=RANK_DISCOUNT_FN,
+#        normalized=normalized,
+#        smooth_fraction=smooth_fraction)
 
 def get_bernoulli_sample(probs):
     """Conduct Bernoulli sampling according to a specific probability distribution.
@@ -106,16 +111,17 @@ class PairwiseRegressionEM(BaseAlgorithm):
             'curr_EM_step_size',
             self.curr_EM_step_size,
             collections=['train'])        
-        self.lambda_weight = None
-        if self.hparams.opt_metric == 'ndcg':
-            self.lambda_weight = create_dcg_lambda_weight(self.hparams.discount_fn, \
-                                                          self.hparams.gain_fn, \
-                                                          normalized=True)
-        elif self.hparams.opt_metric == 'dcg':
-            self.lambda_weight = create_dcg_lambda_weight(self.hparams.discount_fn, \
-                                                          self.hparams.gain_fn, \
-                                                          normalized=False)
-        print(self.lambda_weight)
+        #self.lambda_weight = None
+        #self.build_propensity_variables()                        
+        #if self.hparams.opt_metric == 'ndcg':
+        #    self.lambda_weight = create_dcg_lambda_weight(self.hparams.discount_fn, \
+        #                                                  self.hparams.gain_fn, \
+        #                                                  normalized=True)
+        #elif self.hparams.opt_metric == 'dcg':
+        #    self.lambda_weight = create_dcg_lambda_weight(self.hparams.discount_fn, \
+        #                                                   self.hparams.gain_fn, \
+        #                                                   normalized=False)
+        #print(self.lambda_weight)
         # Feeds for inputs.
         self.is_training = tf.placeholder(tf.bool, name="is_train")
         self.only_ips = tf.placeholder(tf.bool, name="only_ips")
@@ -173,6 +179,17 @@ class PairwiseRegressionEM(BaseAlgorithm):
             
             train_labels = self.labels[:self.rank_list_size]
             self.build_propensity_variables()                        
+            self.lambda_weight = None
+            if self.hparams.opt_metric == 'ndcg':
+                self.lambda_weight = self.create_dcg_lambda_weight(self.hparams.discount_fn, \
+                                                              self.hparams.gain_fn, \
+                                                              normalized=True)
+            elif self.hparams.opt_metric == 'dcg':
+                self.lambda_weight = self.create_dcg_lambda_weight(self.hparams.discount_fn, \
+                                                               self.hparams.gain_fn, \
+                                                               normalized=False)
+            print(self.lambda_weight)
+
 
             # Conduct pointwise regression EM
             tf.summary.histogram("point_train_output", point_train_output, 
@@ -390,7 +407,13 @@ class PairwiseRegressionEM(BaseAlgorithm):
         ranks = losses_impl._compute_ranks(train_output, mask)
 
         if self.lambda_weight is not None:
-            pairwise_weights = self.lambda_weight.pair_weights(train_labels, ranks)
+            if self.hparams.gain_fn == 'propensity':
+               input_labels = train_labels / self.propensity
+               print('set propensity gain fn')
+            else:
+               input_labels = train_labels
+               print('set non propensity gain fn')
+            pairwise_weights = self.lambda_weight.pair_weights(input_labels, ranks)
             pairwise_weights *= tf.cast(tf.shape(input=train_labels)[1], dtype=tf.float32)
 
             pairwise_weights = tf.stop_gradient(
@@ -615,7 +638,8 @@ class PairwiseRegressionEM(BaseAlgorithm):
                 self.propensity, self.rank_list_size, axis=1)
         self.splitted_propensity_minus = tf.split(
                 self.propensity_minus, self.rank_list_size, axis=1)    
-
+        splitted_propensity = self.splitted_propensity
+        print('splitted_propensity', splitted_propensity)
         self.splitted_omega_plus = tf.split(
                 self.omega_plus, self.rank_list_size, axis=1)
         self.splitted_omega_minus = tf.split(
@@ -672,6 +696,23 @@ class PairwiseRegressionEM(BaseAlgorithm):
                             self.splitted_epsilon_minus[i][j]),
                         collections=['train'])
 
+  
+
+    def create_dcg_lambda_weight(self, discount_func, gain_func, topn=None, normalized=True, smooth_fraction=0.):
+        propensity = tf.reshape(self.propensity,[-1])
+        PROPENSITY_DISCOUNT_FN = lambda rank: tf.gather(propensity, tf.minimum(tf.maximum(tf.cast(rank, tf.int32)-1, 0),9))
+        """Creates _LambdaWeight for DCG metric."""
+        RANK_DISCOUNT_FN = DEFAULT_RANK_DISCOUNT_FN if discount_func == 'log1p' else RECIPROCAL_RANK_DISCOUNT_FN
+        if discount_func == 'propensity':
+            print('propensity discount func')
+            RANK_DISCOUNT_FN = PROPENSITY_DISCOUNT_FN
+        GAIN_FN = DEFAULT_GAIN_FN if (gain_func == 'linear' or gain_func == 'propensity') else EXP_GAIN_FN
+        return losses_impl.DCGLambdaWeight(
+            topn,
+            gain_fn=GAIN_FN,
+            rank_discount_fn=RANK_DISCOUNT_FN,
+            normalized=normalized,
+            smooth_fraction=smooth_fraction)
     def step(self, session, input_feed, forward_only, only_ips):
         """Run a step of the model feeding the given inputs.
 

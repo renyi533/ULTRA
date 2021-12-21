@@ -356,7 +356,8 @@ def _cumulative_linear_reward(labels, weights=None):
 
     random_value = tf.random.uniform(tf.shape(click_p))
     click_final_p = click_p * exam_p
-    click = tf.where(random_value < click_final_p, tf.ones_like(random_value), tf.zeros_like(random_value))
+    #click = tf.where(random_value < click_final_p, tf.ones_like(random_value), tf.zeros_like(random_value))
+    click = click_final_p
     click = tf.reshape(click, [-1, list_size])
 
     # sample watch time
@@ -364,7 +365,8 @@ def _cumulative_linear_reward(labels, weights=None):
     for relevance in range(0, len(click_model.unbiased_watchtime_mean)):
         mean = click_model.unbiased_watchtime_mean[relevance]
         std = click_model.unbiased_watchtime_std[relevance]
-        watchtime_unbiased_rands.append(tf.random.normal([array_ops.shape(labels)[0], list_size, 1], mean=mean, stddev=std))
+        #watchtime_unbiased_rands.append(tf.random.normal([array_ops.shape(labels)[0], list_size, 1], mean=mean, stddev=std))
+        watchtime_unbiased_rands.append(tf.random.normal([array_ops.shape(labels)[0], list_size, 1], mean=mean, stddev=0))
     watchtime_unbiased_rand = tf.concat(watchtime_unbiased_rands, -1)
     print("watchtime_unbiased_rand:", watchtime_unbiased_rand)
 
