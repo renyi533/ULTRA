@@ -17,6 +17,8 @@ from .direct_label_mtl_sep_feed import *
 from .deterministic_online_simulation_feed import *
 from .stochastic_online_simulation_feed import *
 from .mtl_deterministic_online_simulation_feed import *
+from .mtl_prod_simulation_feed import *
+from .mtl_sep_prod_simulation_feed import *
 
 def list_available() -> list:
     from .base_input_feed import BaseInputFeed

@@ -32,14 +32,16 @@ from tensorflow.python.framework import ops
 from tensorflow.python.ops import array_ops
 from tensorflow.python.ops import math_ops
 from ultra.utils import metric_utils as utils
-from ultra.utils import mtl_models_production as cm
-click_model_json='./example/MTLModelProd/pbm_0.1_1_4_1.0_10.json'
+from ultra.utils import click_models_mtl_v3 as cm
+click_model_json='./example/ClickModelMTL_v2/pbm_0.1_1_4_1.0_0.1_10.json'
 with open(click_model_json) as fin:
     model_desc = json.load(fin)
     click_model = cm.loadModelFromJson(model_desc)
 
 click_prob = tf.reshape(tf.convert_to_tensor(click_model.click_prob, dtype=tf.float32), [-1,1])
 exam_prob = tf.reshape(tf.convert_to_tensor(click_model.exam_prob, dtype=tf.float32), [-1,1])
+watchtime_bias_mean = tf.reshape(tf.convert_to_tensor(click_model.watchtime_bias_mean, dtype=tf.float32), [-1,1])
+watchtime_bias_std = tf.reshape(tf.convert_to_tensor(click_model.watchtime_bias_std, dtype=tf.float32), [-1,1])
 unbiased_watchtime_mean = tf.reshape(tf.convert_to_tensor(click_model.unbiased_watchtime_mean, dtype=tf.float32), [-1,1])
 unbiased_watchtime_std = tf.reshape(tf.convert_to_tensor(click_model.unbiased_watchtime_std, dtype=tf.float32), [-1,1])
 
@@ -357,22 +359,30 @@ def _cumulative_linear_reward(labels, weights=None):
     random_value = tf.random.uniform(tf.shape(click_p))
     click_final_p = click_p * exam_p
     click = tf.where(random_value < click_final_p, tf.ones_like(random_value), tf.zeros_like(random_value))
-    click = tf.reshape(click, [-1, list_size])
 
     # sample watch time
+    watchtime_bias_rands = []
     watchtime_unbiased_rands = []
+    for pos in range(0, len(click_model.watchtime_bias_mean)):
+        mean = click_model.watchtime_bias_mean[pos]
+        std = click_model.watchtime_bias_std[pos]
+        watchtime_bias_rands.append(tf.random.normal([array_ops.shape(labels)[0], list_size, 1], mean=mean, stddev=std))
     for relevance in range(0, len(click_model.unbiased_watchtime_mean)):
         mean = click_model.unbiased_watchtime_mean[relevance]
         std = click_model.unbiased_watchtime_std[relevance]
         watchtime_unbiased_rands.append(tf.random.normal([array_ops.shape(labels)[0], list_size, 1], mean=mean, stddev=std))
+    watchtime_bias_rand = tf.concat(watchtime_bias_rands, -1)
     watchtime_unbiased_rand = tf.concat(watchtime_unbiased_rands, -1)
+    print("watchtime_bias_rand:", watchtime_bias_rand)
     print("watchtime_unbiased_rand:", watchtime_unbiased_rand)
 
+    watchtime_bias = _lookup_random_value(watchtime_bias_rand, positions)
     watchtime_unbiased = _lookup_random_value(watchtime_unbiased_rand, labels)
+    print("watchtime_bias:", watchtime_bias)
     print("watchtime_unbiased:", watchtime_unbiased)
-    watchtime = watchtime_unbiased * click
+    watchtime = watchtime_bias * watchtime_unbiased
 
-    numerator = click + watchtime 
+    numerator = tf.reshape(click, [-1, list_size]) + watchtime 
     return math_ops.reduce_sum(
         weights * numerator, 1, keepdims=True)
 
