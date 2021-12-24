@@ -440,7 +440,7 @@ class PairwiseRegressionEM(BaseAlgorithm):
         ips_pairwise_logits = ips_train_output_i - ips_train_output_j
         tf.summary.histogram("ips_pairwise_logits", ips_pairwise_logits, 
                 collections=['train'])
-        if not self.hparams.exact_ips_true:
+        if not self.hparams.exact_ips:
             print('compute m_ij in non-exact ips mode')
             if self.hparams.ips_v2: 
                 print('compute v2 m_ij in exact ips mode') 

@@ -129,8 +129,6 @@ class PositionBiasedModel(ClickModel):
             print('RELEVANCE LABEL MUST BE INTEGER!')
         relevance_label = int(relevance_label) if relevance_label > 0 else 0
         unbiased_watchtime = self.getUnbiasedWatchtime(relevance_label)
-        while unbiased_watchtime < 0:
-            unbiased_watchtime = self.getUnbiasedWatchtime(relevance_label)
         return unbiased_watchtime
 
     def getUnbiasedWatchtime(self, relevance_label):
@@ -139,7 +137,8 @@ class PositionBiasedModel(ClickModel):
         unbiased_watchtime_mean = self.unbiased_watchtime_mean[relevance_label if relevance_label < len(self.unbiased_watchtime_mean) else -1]
         unbiased_watchtime_std = self.unbiased_watchtime_std[relevance_label if relevance_label < len(self.unbiased_watchtime_std) else -1]
         # sample 1 value ~ N(mean, std)
-        return np.random.normal(unbiased_watchtime_mean, unbiased_watchtime_std, 1)[0]
+        t = np.random.normal(unbiased_watchtime_mean, unbiased_watchtime_std, 1)[0]
+        return math.exp(t) / 60.0
 
     def getExamProb(self, rank):
         return self.exam_prob[rank if rank < len(self.exam_prob) else -1]
