@@ -138,7 +138,7 @@ class PositionBiasedModel(ClickModel):
         unbiased_watchtime_std = self.unbiased_watchtime_std[relevance_label if relevance_label < len(self.unbiased_watchtime_std) else -1]
         # sample 1 value ~ N(mean, std)
         t = np.random.normal(unbiased_watchtime_mean, unbiased_watchtime_std, 1)[0]
-        return math.exp(t) / 60.0
+        return math.exp(t) / math.exp(2.0)
 
     def getExamProb(self, rank):
         return self.exam_prob[rank if rank < len(self.exam_prob) else -1]
