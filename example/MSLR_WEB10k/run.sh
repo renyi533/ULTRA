@@ -30,6 +30,7 @@ bash ./offline_exp_pipeline_pairwise_debias.sh > $log_dir/pairwise_debias_$i.log
 bash ./offline_exp_pipeline_dla.sh > $log_dir/dla_$i.log 2>&1 &
 wait_function
 
+bash ./offline_exp_pipeline_regression_em.sh > $log_dir/regression_em_$i.log 2>&1 &
 bash ./offline_exp_pipeline_pairwise_reg_em.sh > $log_dir/pair_reg_em_$i.log 2>&1 &
 bash ./offline_exp_pipeline_pairwise_reg_em_trustcorr_1.0_ndcg.sh > $log_dir/pair_reg_em_trustcorr1.0_ndcg_$i.log 2>&1 &
 bash ./offline_exp_pipeline_pairwise_reg_em_trustcorr_1.0.sh > $log_dir/pair_reg_em_trustcorr1.0_$i.log 2>&1 &

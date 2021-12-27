@@ -16,6 +16,16 @@ def loadModelFromJson(model_desc):
     click_model.eta = model_desc['eta']
     click_model.click_prob = model_desc['click_prob']
     click_model.exam_prob = model_desc['exam_prob']
+
+    if model_desc['model_name'] == 'noisy_position_biased_model' \
+        or model_desc['model_name'] == 'position_biased_model':
+        print('adjust original exam prob with eta:', click_model.eta)
+        click_model.original_exam_prob = click_model.exam_prob
+        click_model.exam_prob = [pow(x, click_model.eta) for x in \
+            click_model.original_exam_prob]
+        print('original exam prob:', click_model.original_exam_prob)
+        print('adjusted exam prob:', click_model.exam_prob)
+
     return click_model
 
 
