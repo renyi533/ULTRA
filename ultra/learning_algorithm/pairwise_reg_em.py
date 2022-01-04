@@ -144,7 +144,7 @@ class PairwiseRegressionEM(BaseAlgorithm):
                 self.max_candidate_num, scope='ips_ranking_model')              
         else:
             self.output = self.ranking_model(
-                self.max_candidate_num, scope='ranking_model')            
+                self.max_candidate_num, scope='pair_ranking_model')            
 
         # reshape from [max_candidate_num, ?] to [?, max_candidate_num]
         reshaped_labels = tf.transpose(tf.convert_to_tensor(self.labels))
@@ -172,7 +172,7 @@ class PairwiseRegressionEM(BaseAlgorithm):
             point_train_output = point_train_output + sigmoid_prob_b
             
             train_output = self.ranking_model(
-                self.rank_list_size, scope='ranking_model')
+                self.rank_list_size, scope='pair_ranking_model')
             
             ips_train_output = self.ranking_model(
                 self.rank_list_size, scope='ips_ranking_model')
@@ -239,6 +239,12 @@ class PairwiseRegressionEM(BaseAlgorithm):
             if self.hparams.grad_strategy == 'sgd':
                 self.optimizer_func = tf.train.GradientDescentOptimizer
 
+            other_grad = []
+            other_var = []
+            ips_grad = []
+            ips_var = []
+            pair_grad = []
+            pair_var = []
             # Gradients and SGD update operation for training the model.
             opt = self.optimizer_func(self.learning_rate)
             self.gradients = tf.gradients(self.loss, params)
@@ -247,20 +253,56 @@ class PairwiseRegressionEM(BaseAlgorithm):
                 if grad is not None:
                     tf.summary.histogram(var.op.name + '/gradients', 
                             grad, collections=['train'])
+                    if var.op.name.find('ips_ranking_model') != -1:
+                        ips_grad.append(grad)
+                        ips_var.append(var)
+                    elif var.op.name.find('pair_ranking_model') != -1:
+                        pair_grad.append(grad)
+                        pair_var.append(var)
+                    else:
+                        other_grad.append(grad)
+                        other_var.append(var)
             #for var in tf.global_variables():
             #    tf.summary.histogram(var.op.name, var)
+            print('ips vars:')
+            print(ips_var)
+            print('pair vars:')
+            print(pair_var)
+            print('other vars:')
+            print(other_var)
+
+            self.norm = tf.global_norm(self.gradients)
+            tf.summary.scalar(
+                'grad_norm',
+                self.norm,
+                collections=['train'])
 
             if self.hparams.max_gradient_norm > 0:
-                self.clipped_gradients, self.norm = tf.clip_by_global_norm(self.gradients,
-                                                                           self.hparams.max_gradient_norm)
-                self.updates = opt.apply_gradients(zip(self.clipped_gradients, params),
+                print('clip gradients separately')
+                other_grad, other_grad_norm = tf.clip_by_global_norm(other_grad,
+                                                       self.hparams.max_gradient_norm)
+                ips_grad, ips_grad_norm = tf.clip_by_global_norm(ips_grad,
+                                                     self.hparams.max_gradient_norm)
+                pair_grad, pair_grad_norm = tf.clip_by_global_norm(pair_grad,
+                                                     self.hparams.max_gradient_norm)
+                other_updates = opt.apply_gradients(zip(other_grad, other_var),
                                                    global_step=self.global_step)
+                pair_updates = opt.apply_gradients(zip(pair_grad, pair_var))
+                ips_updates = opt.apply_gradients(zip(ips_grad, ips_var))
+                self.updates = tf.group([other_updates, pair_updates, ips_updates])
                 tf.summary.scalar(
-                    'Gradient_Norm',
-                    self.norm,
+                    'other_grad_norm',
+                    other_grad_norm,
+                    collections=['train'])
+                tf.summary.scalar(
+                    'ips_grad_norm',
+                    ips_grad_norm,
+                    collections=['train'])
+                tf.summary.scalar(
+                    'pair_grad_norm',
+                    pair_grad_norm,
                     collections=['train'])
             else:
-                self.norm = None
                 self.updates = opt.apply_gradients(zip(self.gradients, params),
                                                    global_step=self.global_step)
 
@@ -280,7 +322,7 @@ class PairwiseRegressionEM(BaseAlgorithm):
             for metric in self.exp_settings['metrics']:
                 if metric == "linear_reward":
                     print("linear_reward metric in training")
-                    continue
+                    continue                
                 for topn in self.exp_settings['metrics_topn']:
                     metric_value = ultra.utils.make_ranking_metric_fn(metric, topn)(
                         reshaped_train_labels, pad_removed_train_output, None)
@@ -623,6 +665,11 @@ class PairwiseRegressionEM(BaseAlgorithm):
             self.omega_minus = tf.Variable(
                     tf.ones([1, self.rank_list_size]) * 0.0, trainable=False)              
 
+        self.debug_vector_tensor(self.propensity, 'propensity', self.rank_list_size)
+        self.debug_vector_tensor(self.propensity_minus, 'propensity_minus', self.rank_list_size)
+        self.debug_vector_tensor(self.omega_plus, 'omega_plus', self.rank_list_size)
+        self.debug_vector_tensor(self.omega_minus, 'omega_minus', self.rank_list_size)
+
         if self.hparams.corr_pair_clk_noise:
             self.epsilon_plus = tf.Variable(
                     tf.ones([1, self.rank_list_size, self.rank_list_size]) * 0.95, trainable=False)
@@ -634,69 +681,8 @@ class PairwiseRegressionEM(BaseAlgorithm):
             self.epsilon_minus = tf.Variable(
                     tf.ones([1, self.rank_list_size, self.rank_list_size]) * 0.0, trainable=False)            
 
-        self.splitted_propensity = tf.split(
-                self.propensity, self.rank_list_size, axis=1)
-        self.splitted_propensity_minus = tf.split(
-                self.propensity_minus, self.rank_list_size, axis=1)    
-        splitted_propensity = self.splitted_propensity
-        print('splitted_propensity', splitted_propensity)
-        self.splitted_omega_plus = tf.split(
-                self.omega_plus, self.rank_list_size, axis=1)
-        self.splitted_omega_minus = tf.split(
-                self.omega_minus, self.rank_list_size, axis=1) 
-
-        self.splitted_epsilon_plus = tf.split(
-                self.epsilon_plus, self.rank_list_size, axis=1)
-        self.splitted_epsilon_minus = tf.split(
-                self.epsilon_minus, self.rank_list_size, axis=1)
-
-        for i in range(len(self.splitted_epsilon_plus)):
-            self.splitted_epsilon_plus[i] = tf.split(self.splitted_epsilon_plus[i], 
-                    self.rank_list_size, axis=2)
-            self.splitted_epsilon_minus[i] = tf.split(self.splitted_epsilon_minus[i], 
-                    self.rank_list_size, axis=2)
-
-        for i in range(self.rank_list_size):
-            tf.summary.scalar(
-                    'splitted_propensity_%d' %
-                    i,
-                    tf.reduce_max(
-                        self.splitted_propensity[i]),
-                    collections=['train'])
-
-            tf.summary.scalar(
-                    'splitted_propensity_minus_%d' %
-                    i,
-                    tf.reduce_max(
-                        self.splitted_propensity_minus[i]),
-                    collections=['train'])
-
-            tf.summary.scalar(
-                    'splitted_omega_plus_%d' %
-                    i,
-                    tf.reduce_max(
-                        self.splitted_omega_plus[i]),
-                    collections=['train'])
-
-            tf.summary.scalar(
-                    'splitted_omega_minus_%d' %
-                    i,
-                    tf.reduce_max(
-                        self.splitted_omega_minus[i]),
-                    collections=['train'])
-            for j in range(self.rank_list_size):
-                tf.summary.scalar(
-                        'splitted_epsilon_plus_%d_%d' % (i,j),
-                        tf.reduce_max(
-                            self.splitted_epsilon_plus[i][j]),
-                        collections=['train'])
-                tf.summary.scalar(
-                        'splitted_epsilon_minus_%d_%d' % (i,j),
-                        tf.reduce_max(
-                            self.splitted_epsilon_minus[i][j]),
-                        collections=['train'])
-
-  
+        self.debug_square_tensor(self.epsilon_plus, 'epsilon_plus', self.rank_list_size)
+        self.debug_square_tensor(self.epsilon_minus, 'epsilon_minus', self.rank_list_size)
 
     def create_dcg_lambda_weight(self, discount_func, gain_func, topn=None, normalized=True, smooth_fraction=0.):
         propensity = tf.reshape(self.propensity,[-1])
@@ -713,6 +699,41 @@ class PairwiseRegressionEM(BaseAlgorithm):
             rank_discount_fn=RANK_DISCOUNT_FN,
             normalized=normalized,
             smooth_fraction=smooth_fraction)
+
+    def debug_square_tensor(self, var, name, size):
+        splitted_var = tf.split(var, size, axis=1)
+        print('debug square tensor: ' + name)
+        for i in range(len(splitted_var)):
+            splitted_var[i] = tf.split(splitted_var[i], 
+                    size, axis=2)
+
+        for i in range(size):
+            for j in range(size):
+                tf.summary.scalar(
+                        '%s_%d_%d' % (name, i,j),
+                        tf.reduce_mean(
+                            splitted_var[i][j]),
+                        collections=['train'])
+                tf.summary.histogram(
+                                '%s_%d_%d_histogram' % (name, i,j),
+                                splitted_var[i][j],
+                                collections=['train'])
+
+    def debug_vector_tensor(self, var, name, size):
+        splitted_var = tf.split(var, size, axis=1)
+        print('debug vector tensor: ' + name)
+
+        for i in range(size):
+            tf.summary.scalar(
+                    '%s_%d' % (name, i),
+                    tf.reduce_mean(
+                        splitted_var[i]),
+                    collections=['train'])
+            tf.summary.histogram(
+                            '%s_%d_histogram' % (name, i),
+                            splitted_var[i],
+                            collections=['train'])
+
     def step(self, session, input_feed, forward_only, only_ips):
         """Run a step of the model feeding the given inputs.
 
