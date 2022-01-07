@@ -53,6 +53,7 @@ class ClickSimulationFeed(BaseInputFeed):
             # Set how many steps to change eta for dynamic bias severity in
             # training, 0.0 means no change.
             dynamic_bias_step_interval=1000,
+            enable_epsilon_stat=False,
         )
 
         print('Create simluated clicks feed')
@@ -65,17 +66,46 @@ class ClickSimulationFeed(BaseInputFeed):
                 self.click_model = cm.loadModelFromJson(model_desc)
 
         self.start_index = 0
-        self.count = 1
+        self.count = 0
         self.rank_list_size = model.rank_list_size
         self.feature_size = model.feature_size
         self.batch_size = batch_size
         self.model = model
         self.global_batch_count = 0
+        self.rel_pair_count = np.zeros((self.rank_list_size, self.rank_list_size), dtype=float)
+        self.rel_click_pair_count = np.zeros((self.rank_list_size, self.rank_list_size), dtype=float)
+        self.norel_pair_count = np.zeros((self.rank_list_size, self.rank_list_size), dtype=float)
+        self.norel_click_pair_count = np.zeros((self.rank_list_size, self.rank_list_size), dtype=float)
+        self.mean_relevance = np.zeros((self.rank_list_size), dtype=float)
+
+    def __del__(self):
+        print('destruct ClickSimulationFeed')
+        if not self.hparams.enable_epsilon_stat:
+            return
+
+        print('mean relevance:')
+        for k in range(self.rank_list_size):
+            self.mean_relevance[k] = self.mean_relevance[k] / self.count
+            print(k, self.mean_relevance[k])
+
+        print('true epsilon_plus')
+        for k in range(self.rank_list_size):
+            for j in range(self.rank_list_size):
+                print(k, j, self.rel_click_pair_count[k][j])
+                print(k, j, self.rel_pair_count[k][j])
+                print(k, j, self.rel_click_pair_count[k][j]/self.rel_pair_count[k][j])
+
+        print('true epsilon_minus')
+        for k in range(self.rank_list_size):
+            for j in range(self.rank_list_size):
+                print(k, j, self.norel_click_pair_count[k][j])
+                print(k, j, self.norel_pair_count[k][j])
+                print(k, j, self.norel_click_pair_count[k][j]/self.norel_pair_count[k][j])
 
     def prepare_sim_clicks_with_index(
             self, data_set, index, docid_inputs, letor_features, labels, check_validation=True):
         i = index
-
+        self.count += 1
         # Generate clicks with click models.
         label_list = [
             0 if data_set.initial_list[i][x] < 0 else data_set.labels[i][x] for x in range(
@@ -84,7 +114,7 @@ class ClickSimulationFeed(BaseInputFeed):
         if self.hparams.oracle_mode:
             click_list = label_list
         else:
-            click_list, _, _ = self.click_model.sampleClicksForOneList(
+            click_list, exam_p_list, click_p_list = self.click_model.sampleClicksForOneList(
                 list(label_list))
             #sample_count = 0
             # while check_validation and sum(click_list) == 0 and sample_count < self.MAX_SAMPLE_ROUND_NUM:
@@ -103,6 +133,28 @@ class ClickSimulationFeed(BaseInputFeed):
         docid_inputs.append(list([-1 if data_set.initial_list[i][x]
                                   < 0 else base + x for x in range(self.rank_list_size)]))
         labels.append(click_list)
+
+        if not self.hparams.enable_epsilon_stat:
+            return
+
+        for k in range(self.rank_list_size):
+            self.mean_relevance[k] += label_list[k]
+            for j in range(self.rank_list_size):
+                if not (
+                    (click_list[k] > 0 or (random.random() < exam_p_list[k] * (1-click_p_list[k])) ) \
+                        and \
+                    (click_list[j] > 0 or (random.random() < exam_p_list[j] * (1-click_p_list[j])) ) \
+                    ):
+                    continue
+
+                if label_list[k] > label_list[j]:
+                    self.rel_pair_count[k][j] += 1.0
+                    if click_list[k] > click_list[j]:
+                        self.rel_click_pair_count[k][j] += 1.0
+                else:
+                    self.norel_pair_count[k][j] += 1.0
+                    if click_list[k] > click_list[j]:
+                        self.norel_click_pair_count[k][j] += 1.0
 
     def get_batch(self, data_set, check_validation=False):
         """Get a random batch of data, prepare for step. Typically used for training.
