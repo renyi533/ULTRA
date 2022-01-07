@@ -367,7 +367,7 @@ def _cumulative_linear_reward(labels, weights=None):
         std = click_model.unbiased_watchtime_std[relevance]
         #t = tf.random.normal([array_ops.shape(labels)[0], list_size, 1], mean=mean, stddev=std)
         t = tf.random.normal([array_ops.shape(labels)[0], list_size, 1], mean=mean, stddev=0)
-        t = tf.math.exp(t) / tf.math.exp(2.0)
+        t = tf.math.exp(t) / tf.math.exp(3.0)
         watchtime_unbiased_rands.append(t)
     watchtime_unbiased_rand = tf.concat(watchtime_unbiased_rands, -1)
     print("watchtime_unbiased_rand:", watchtime_unbiased_rand)

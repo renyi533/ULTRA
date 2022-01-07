@@ -205,6 +205,9 @@ class DLA(BaseAlgorithm):
             pad_removed_train_output = self.remove_padding_for_metric_eval(
                 self.docid_inputs, train_output)
             for metric in self.exp_settings['metrics']:
+                if metric == "linear_reward":
+                    print("linear_reward metric in training")
+                    continue   
                 for topn in self.exp_settings['metrics_topn']:
                     list_weights = tf.reduce_mean(
                         self.propensity_weights * clipped_labels, axis=1, keep_dims=True)

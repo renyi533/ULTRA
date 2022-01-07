@@ -17,7 +17,9 @@ while [ $i -lt 10 ]
 do
 
 echo "starting round $i"
-
+bash ./offline_exp_pipeline_pairwise_debias.sh > $log_dir/pairwise_debias_$i.log 2>&1 &
+bash ./offline_exp_pipeline_dla.sh > $log_dir/dla_$i.log 2>&1 &
+wait_function
 bash ./offline_exp_pipeline_pairwise_reg_em_trustcorr_1.0_dcg.sh > $log_dir/pairwise_reg_em_dcg_$i.log 2>&1 &
 bash ./offline_exp_pipeline_biastower_mtl.sh > $log_dir/biastower_mtl_$i.log 2>&1 &
 bash ./offline_exp_pipeline_biastower_mse.sh > $log_dir/biastower_mse_$i.log 2>&1 &

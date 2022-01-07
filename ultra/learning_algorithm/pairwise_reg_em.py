@@ -399,9 +399,12 @@ class PairwiseRegressionEM(BaseAlgorithm):
         # conduct maximization step
         sum_p_e11_r1_c1 =  tf.reduce_sum(pairwise_labels * p_e11_r1_c1, axis=0,\
                  keep_dims=True) 
+        self.debug_square_tensor(sum_p_e11_r1_c1, 'sum_p_e11_r1_c1', self.rank_list_size)
         sum_p_e11_r1_c0 = tf.reduce_sum((1-pairwise_labels) * p_e11_r1_c0, axis=0,\
                  keep_dims=True) 
+        self.debug_square_tensor(sum_p_e11_r1_c0, 'sum_p_e11_r1_c0', self.rank_list_size)
         epsilon_plus_target = (sum_p_e11_r1_c1)/(sum_p_e11_r1_c1+sum_p_e11_r1_c0+self.tau)
+        self.debug_square_tensor(epsilon_plus_target, 'epsilon_plus_target', self.rank_list_size)
         epsilon_plus_delta = epsilon_plus_target-self.epsilon_plus
         tf.summary.histogram("epsilon_plus_delta", epsilon_plus_delta, 
                 collections=['train'])
@@ -413,9 +416,12 @@ class PairwiseRegressionEM(BaseAlgorithm):
 
         sum_p_e11_r0_c1 =  tf.reduce_sum(pairwise_labels * p_e11_r0_c1, axis=0,\
                  keep_dims=True) 
+        self.debug_square_tensor(sum_p_e11_r0_c1, 'sum_p_e11_r0_c1', self.rank_list_size)
         sum_p_e11_r0_c0 = tf.reduce_sum((1-pairwise_labels) * p_e11_r0_c0, axis=0,\
                  keep_dims=True) 
+        self.debug_square_tensor(sum_p_e11_r0_c0, 'sum_p_e11_r0_c0', self.rank_list_size)
         epsilon_minus_target = (sum_p_e11_r0_c1)/(sum_p_e11_r0_c1+sum_p_e11_r0_c0+self.tau)
+        self.debug_square_tensor(epsilon_minus_target, 'epsilon_minus_target', self.rank_list_size)
         epsilon_minus_delta = epsilon_minus_target-self.epsilon_minus
         tf.summary.histogram("epsilon_minus_delta", epsilon_minus_delta, 
                 collections=['train'])
